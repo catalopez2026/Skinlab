@@ -1,0 +1,23 @@
+# SKINLAB — configuración de Netlify
+# La carpeta "public" es la app; "netlify/functions" son las funciones de servidor.
+
+[build]
+  publish = "public"
+  command = "echo SKINLAB listo"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Link público del test de cada tienda: /t/nombre-de-la-tienda
+[[redirects]]
+  from = "/t/*"
+  to = "/test.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "same-origin"
+    Permissions-Policy = "camera=(self)"

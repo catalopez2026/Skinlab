@@ -1,0 +1,22 @@
+SKINLAB — carpeta lista para subir a GitHub y publicar con Netlify
+====================================================================
+
+Qué hay adentro
+- public/          La app (index.html) y el panel para crear códigos (admin.html).
+- netlify/         Las funciones de servidor: códigos de 7 días y conexión con la IA.
+- netlify.toml     Le dice a Netlify cómo publicar todo.
+- package.json     La única dependencia (Netlify Blobs, para guardar los códigos).
+
+Importante
+- No uses "arrastrar y soltar" en Netlify: así no se publican las funciones de servidor.
+  Subí esta carpeta a un repositorio de GitHub y conectalo a Netlify (ver la guía).
+
+Variables que tenés que cargar en Netlify (Site configuration > Environment variables)
+- ADMIN_PASSWORD   Obligatoria. Contraseña para entrar a /admin.html (mínimo 8 caracteres).
+- YOUCAM_API_KEY   Para el análisis con IA. Sin esta clave, la app funciona en modo demostración.
+- TRIAL_DAYS       Opcional. Días de prueba por defecto (7).
+- MAX_ANALYSES     Opcional. Máximo de análisis con IA por código (30).
+
+Para cambiar tu contacto
+- Abrí public/index.html y buscá OWNER_CONTACT (cerca del principio del script).
+  Reemplazá [TU WHATSAPP O MAIL] por tu número o tu mail.

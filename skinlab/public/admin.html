@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>SKINLAB · Administración</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+:root {
+  --bg: #F6F1EC; --surface: #FFFDFB; --line: #E6DDD5; --line-soft: #EFE8E1; --fg: #2A2B27; --muted: #67645C;
+  --accent: #55654F; --accent-ink: #FFFFFF; --accent-soft: #E7ECE3; --accent-strong: #3E4A3A;
+  --rose-soft: #F3E4DF; --rose-ink: #8A5248; --bad: #A3392B; --bad-soft: #F8E3DF; --warn: #8A5A00; --warn-soft: #FBF0D8;
+  --display: 'Bodoni Moda', Georgia, serif; --body: 'Manrope', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #171A16; --surface: #20241F; --line: #353B34; --line-soft: #2A2F29; --fg: #EEECE7; --muted: #ABA89F;
+    --accent: #A9BCA0; --accent-ink: #182016; --accent-soft: #2A3327; --accent-strong: #CADAC2; --rose-soft: #3A2B28; --rose-ink: #EBC5BC;
+    --bad: #F09A8C; --bad-soft: #3D2320; --warn: #F0C46E; --warn-soft: #3A2F17; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+[hidden] { display: none !important; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 64px; display: flex; flex-direction: column; gap: 20px; }
+h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 30px; }
+h2 { margin: 0; font-size: 18px; }
+p { margin: 0; }
+.muted { color: var(--muted); } .small { font-size: 13px; }
+.mono { font-family: var(--mono); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+label { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; flex: 1; min-width: 180px; }
+input { min-height: 46px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 16px; }
+.btn { min-height: 44px; padding: 0 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-weight: 700; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.small { min-height: 36px; padding: 0 10px; font-size: 13px; }
+:focus-visible { outline: 3px solid #C9A39A; outline-offset: 2px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+th { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 8px; }
+.s-Activo { background: var(--accent-soft); color: var(--accent-strong); }
+.s-Sin { background: var(--line-soft); color: var(--muted); }
+.s-Vencido { background: var(--warn-soft); color: var(--warn); }
+.s-Desactivado { background: var(--bad-soft); color: var(--bad); }
+.newcode { font-family: var(--mono); font-size: 34px; letter-spacing: 0.12em; font-weight: 600; }
+.msg { white-space: pre-wrap; background: var(--line-soft); border-radius: 12px; padding: 12px; font-size: 14px; user-select: all; }
+.err { color: var(--bad); font-weight: 600; }
+[role="tab"][aria-selected="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent-strong); }
+.stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; min-width: 140px; }
+.stat b { display: block; font-family: var(--display); font-size: 28px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <div><span class="mono small muted">SKINLAB · ADMINISTRACIÓN</span><h1>Códigos de prueba</h1></div>
+    <a class="btn" href="/" style="display:inline-flex;align-items:center;text-decoration:none">Ir a la app</a>
+  </div>
+
+  <form class="card" id="loginForm">
+    <label for="pw">Contraseña de administración
+      <input type="password" id="pw" autocomplete="current-password" required>
+    </label>
+    <div class="row"><button class="btn primary" type="submit">Entrar</button><span class="err" id="loginErr"></span></div>
+    <p class="small muted">Es la que cargaste en Netlify como ADMIN_PASSWORD.</p>
+  </form>
+
+  <div id="panel" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div class="row" role="tablist" aria-label="Secciones">
+      <button class="btn" type="button" role="tab" id="tabShops" aria-selected="true">Tiendas de skincare</button>
+      <button class="btn" type="button" role="tab" id="tabCos" aria-selected="false">Cosmetólogas</button>
+    </div>
+
+    <div id="secShops" style="display:flex;flex-direction:column;gap:20px">
+      <div class="stats" id="shopStats"></div>
+      <form class="card" id="shopForm">
+        <h2>Crear test para una tienda</h2>
+        <div class="row">
+          <label for="sName">Nombre de la tienda<input type="text" id="sName" placeholder="Ej.: Bella Piel Skincare" required></label>
+          <label for="sWa">WhatsApp de pedidos<input type="tel" id="sWa" placeholder="11 5555 5555"></label>
+          <label for="sIg">Instagram<input type="text" id="sIg" placeholder="@bellapiel"></label>
+          <label for="sDays" style="max-width:140px;min-width:110px">Días de prueba<input type="number" id="sDays" min="1" max="60" value="7"></label>
+        </div>
+        <div class="row"><button class="btn primary" type="submit">Crear tienda</button><span class="err" id="shopErr"></span></div>
+        <div id="shopCreated" hidden class="card" style="background:var(--rose-soft);border-color:transparent">
+          <span class="small muted">Tienda creada: <strong id="scName"></strong></span>
+          <p>Link del test: <span class="mono" id="scLink"></span></p>
+          <p>Código del panel: <span class="newcode" style="font-size:24px" id="scCode"></span></p>
+          <div class="row"><a class="btn primary" id="scPanel" target="_blank" rel="noopener">Cargar sus productos</a></div>
+          <p class="small">Mensaje para enviarle a la tienda:</p>
+          <div class="msg" id="scMsg"></div>
+          <div class="row"><button class="btn" type="button" id="scCopy">Copiar mensaje</button></div>
+        </div>
+      </form>
+      <div class="row" style="justify-content:space-between"><h2>Tiendas</h2><button class="btn small" type="button" id="shopRefresh">Actualizar</button></div>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Tienda</th><th>Estado</th><th>Vence</th><th>Productos</th><th>Visitas</th><th>Rutinas</th><th>Pedidos</th><th>Acciones</th></tr></thead>
+        <tbody id="shopRows"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+      </table></div>
+    </div>
+
+    <div id="secCos" hidden style="display:flex;flex-direction:column;gap:20px">
+    <div class="banner card" id="aiState"></div>
+    <div class="stats" id="stats"></div>
+
+    <form class="card" id="createForm">
+      <h2>Crear código para una profesional</h2>
+      <div class="row">
+        <label for="cName">Nombre<input type="text" id="cName" placeholder="Ej.: Carla Pérez" required></label>
+        <label for="cContact">WhatsApp o Instagram (opcional)<input type="text" id="cContact" placeholder="Ej.: @gabineteluna"></label>
+        <label for="cDays" style="max-width:140px;min-width:110px">Días de prueba<input type="number" id="cDays" min="1" max="60" value="7"></label>
+      </div>
+      <div class="row"><button class="btn primary" type="submit">Crear código</button><span class="err" id="createErr"></span></div>
+      <div id="created" hidden class="card" style="background:var(--rose-soft);border-color:transparent">
+        <span class="small muted">Código nuevo para <strong id="newName"></strong></span>
+        <span class="newcode" id="newCode"></span>
+        <p class="small">Mensaje listo para enviarle:</p>
+        <div class="msg" id="newMsg"></div>
+        <div class="row"><button class="btn" type="button" id="copyMsg">Copiar mensaje</button></div>
+      </div>
+    </form>
+
+    <div class="row" style="justify-content:space-between"><h2>Profesionales</h2><button class="btn small" type="button" id="refresh">Actualizar</button></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Profesional</th><th>Código</th><th>Estado</th><th>Vence</th><th>Análisis IA</th><th>Último uso</th><th>Acciones</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+    </table></div>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var pw = '', data = null;
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fdate(iso) { if (!iso) return '—'; var d = new Date(iso); return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }); }
+  function api(body) {
+    body.password = pw;
+    return fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { j._status = r.status; return j; }); });
+  }
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault(); pw = $('pw').value; $('loginErr').textContent = '';
+    load().then(function (ok) { if (ok) { $('loginForm').hidden = true; $('panel').hidden = false; loadShops(); } });
+  });
+
+  // ----- pestañas -----
+  function tab(which) {
+    $('secShops').hidden = which !== 'shops'; $('secCos').hidden = which !== 'cos';
+    $('tabShops').setAttribute('aria-selected', which === 'shops'); $('tabCos').setAttribute('aria-selected', which === 'cos');
+  }
+  $('tabShops').addEventListener('click', function () { tab('shops'); });
+  $('tabCos').addEventListener('click', function () { tab('cos'); });
+
+  // ----- tiendas -----
+  function loadShops() {
+    return api({ action: 'shop-list' }).then(function (j) {
+      if (!j.ok) return;
+      var it = j.items, T = function (k) { return it.reduce(function (t, x) { return t + ((x.totals || {})[k] || 0); }, 0); };
+      var orders = T('whatsapp') + T('counter'), comp = T('complete');
+      $('shopStats').innerHTML = stat(it.length, 'tiendas') + stat(it.filter(function (x) { return x.status === 'Activa'; }).length, 'pruebas activas') +
+        stat(comp, 'rutinas recomendadas') + stat(orders, 'pedidos (WhatsApp + local)') + stat(comp ? Math.min(100, Math.round(orders / comp * 100)) + '%' : '—', 'rutinas que terminan en pedido');
+      $('shopRows').innerHTML = it.length ? it.map(function (x) {
+        var t = x.totals || {}, cls = 's-' + x.status.split(' ')[0].replace('Activa', 'Activo').replace('Vencida', 'Vencido').replace('Desactivada', 'Desactivado');
+        var acts = '<a class="btn small" href="/tienda.html#code=' + x.code + '" target="_blank" rel="noopener">Productos</a> ' +
+          '<a class="btn small" href="/t/' + x.slug + '" target="_blank" rel="noopener">Ver test</a> ' +
+          '<button class="btn small" data-sact="shop-extend" data-slug="' + x.slug + '">+7 días</button> ' +
+          (x.status === 'Desactivada' ? '<button class="btn small" data-sact="shop-restore" data-slug="' + x.slug + '">Reactivar</button>' : '<button class="btn small" data-sact="shop-revoke" data-slug="' + x.slug + '">Desactivar</button>');
+        return '<tr><td><strong>' + esc(x.name) + '</strong><br><span class="small muted mono">' + esc(x.pretty) + '</span> <span class="small muted">' + esc(x.instagram) + '</span></td>' +
+          '<td><span class="pill ' + cls + '">' + esc(x.status) + '</span></td><td>' + (x.expiresAt ? fdate(x.expiresAt) : '<span class="small muted">' + x.days + ' días desde el primer uso</span>') + '</td>' +
+          '<td class="mono">' + x.products + '</td><td class="mono">' + (t.view || 0) + '</td><td class="mono">' + (t.complete || 0) + '</td><td class="mono">' + ((t.whatsapp || 0) + (t.counter || 0)) + '</td><td style="white-space:nowrap">' + acts + '</td></tr>';
+      }).join('') : '<tr><td colspan="8" class="muted">Todavía no creaste tiendas.</td></tr>';
+    });
+  }
+  $('shopRefresh').addEventListener('click', loadShops);
+  $('shopRows').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-sact]'); if (!b) return; b.disabled = true;
+    api({ action: b.dataset.sact, slug: b.dataset.slug, days: 7 }).then(loadShops);
+  });
+  $('shopForm').addEventListener('submit', function (e) {
+    e.preventDefault(); $('shopErr').textContent = '';
+    api({ action: 'shop-create', name: $('sName').value, whatsapp: $('sWa').value, instagram: $('sIg').value, days: Number($('sDays').value) || 7 }).then(function (j) {
+      if (!j.ok) { $('shopErr').textContent = j.message || 'No se pudo crear.'; return; }
+      var x = j.item, link = location.origin + '/t/' + x.slug, panel = location.origin + '/tienda.html';
+      $('scName').textContent = x.name; $('scLink').textContent = link; $('scCode').textContent = x.pretty; $('scPanel').href = '/tienda.html#code=' + x.code;
+      $('scMsg').textContent = 'Hola! Les armé un test de piel para ' + x.name + ': sus clientas responden unas preguntas (y si quieren suman una selfie) y reciben una rutina con SUS productos, lista para pedirla por WhatsApp o mostrarla en el local.\n\n' +
+        'Pruébenlo: ' + link + '\n\nPanel para ver los resultados y editar productos: ' + panel + '\nCódigo: ' + x.pretty + '\n\nTienen ' + x.days + ' días de prueba gratis. Ahí van a ver cuántas personas lo hicieron y cuántas pidieron su rutina.';
+      $('shopCreated').hidden = false; $('sName').value = ''; $('sWa').value = ''; $('sIg').value = '';
+      loadShops();
+    });
+  });
+  $('scCopy').addEventListener('click', function () { try { navigator.clipboard.writeText($('scMsg').textContent).then(function () { $('scCopy').textContent = 'Copiado'; }); } catch (er) {} });
+  function load() {
+    return api({ action: 'list' }).then(function (j) {
+      if (!j.ok) { $('loginErr').textContent = j.message || 'No se pudo entrar.'; return false; }
+      data = j; render(); return true;
+    }).catch(function () { $('loginErr').textContent = 'No se pudo conectar con el servidor.'; return false; });
+  }
+  function render() {
+    $('aiState').innerHTML = data.aiEnabled
+      ? '<strong>Análisis con IA conectado.</strong> Cada análisis exitoso consume unidades de tu cuenta de YouCam.'
+      : '<strong>IA sin conectar.</strong> Las profesionales usan el modo demostración hasta que cargues YOUCAM_API_KEY en Netlify.';
+    var it = data.items, act = it.filter(function (x) { return x.status === 'Activo'; }).length;
+    var total = it.reduce(function (t, x) { return t + (x.analyses || 0); }, 0);
+    $('stats').innerHTML = stat(it.length, 'códigos creados') + stat(act, 'pruebas activas') + stat(total, 'análisis con IA');
+    $('rows').innerHTML = it.length ? it.map(function (x) {
+      var cls = 's-' + x.status.split(' ')[0];
+      var acts = (x.status === 'Desactivado'
+        ? '<button class="btn small" data-act="restore" data-code="' + x.code + '">Reactivar</button>'
+        : '<button class="btn small" data-act="revoke" data-code="' + x.code + '">Desactivar</button>') +
+        ' <button class="btn small" data-act="extend" data-code="' + x.code + '">+7 días</button>';
+      return '<tr><td><strong>' + esc(x.name) + '</strong><br><span class="small muted">' + esc(x.contact) + '</span></td>' +
+        '<td class="mono">' + esc(x.pretty) + '</td><td><span class="pill ' + cls + '">' + esc(x.status) + '</span></td>' +
+        '<td>' + (x.expiresAt ? fdate(x.expiresAt) : '<span class="small muted">' + x.days + ' días desde que entre</span>') + '</td>' +
+        '<td class="mono">' + x.analyses + ' / ' + x.maxAnalyses + '</td><td>' + fdate(x.lastSeenAt) + '</td><td style="white-space:nowrap">' + acts + '</td></tr>';
+    }).join('') : '<tr><td colspan="7" class="muted">Todavía no creaste códigos.</td></tr>';
+  }
+  function stat(n, t) { return '<div class="stat"><b>' + n + '</b><span class="small muted">' + t + '</span></div>'; }
+  $('rows').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]'); if (!b) return;
+    b.disabled = true;
+    api({ action: b.dataset.act, code: b.dataset.code, days: 7 }).then(load);
+  });
+  $('refresh').addEventListener('click', load);
+  $('createForm').addEventListener('submit', function (e) {
+    e.preventDefault(); $('createErr').textContent = '';
+    api({ action: 'create', name: $('cName').value, contact: $('cContact').value, days: Number($('cDays').value) || 7 }).then(function (j) {
+      if (!j.ok) { $('createErr').textContent = j.message || 'No se pudo crear.'; return; }
+      var x = j.item, first = x.name.split(' ')[0];
+      $('newName').textContent = x.name; $('newCode').textContent = x.pretty;
+      $('newMsg').textContent = 'Hola ' + first + '! Te comparto SKINLAB, la app de análisis de piel para tu gabinete.\n\n' +
+        '1. Entrá desde el celular a ' + location.origin + '\n2. Ingresá tu código: ' + x.pretty + '\n\n' +
+        'Tenés ' + x.days + ' días de prueba desde que lo activás. Después me encantaría que me cuentes qué te pareció.';
+      $('created').hidden = false; $('cName').value = ''; $('cContact').value = '';
+      load();
+    });
+  });
+  $('copyMsg').addEventListener('click', function () {
+    var t = $('newMsg').textContent;
+    try { navigator.clipboard.writeText(t).then(function () { $('copyMsg').textContent = 'Copiado'; }); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

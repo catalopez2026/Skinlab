@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SKINLAB</title>
+<meta name="description" content="Análisis de piel y ficha de clientas para cosmetólogas.">
+<meta name="theme-color" content="#55654F">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* SKINLAB · gabinete premium: crema, verde salvia y rosa empolvado. Una columna tipo app (máx. 540px). */
+:root {
+  --bg: #F6F1EC;
+  --surface: #FFFDFB;
+  --line: #E6DDD5;
+  --line-soft: #EFE8E1;
+  --fg: #2A2B27;
+  --muted: #67645C;
+  --accent: #55654F;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E7ECE3;
+  --accent-strong: #3E4A3A;
+  --rose: #C9A39A;
+  --rose-soft: #F3E4DF;
+  --rose-ink: #8A5248;
+  --good: #3E6B48;
+  --warn: #8A5A00;
+  --warn-soft: #FBF0D8;
+  --bad: #A3392B;
+  --bad-soft: #F8E3DF;
+  --bar-good: #6F8F69;
+  --bar-warn: #D2A24A;
+  --bar-bad: #C46B5E;
+  --display: 'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --r: 16px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171A16; --surface: #20241F; --line: #353B34; --line-soft: #2A2F29;
+    --fg: #EEECE7; --muted: #ABA89F; --accent: #A9BCA0; --accent-ink: #182016;
+    --accent-soft: #2A3327; --accent-strong: #CADAC2; --rose: #D9B3AA; --rose-soft: #3A2B28; --rose-ink: #EBC5BC;
+    --good: #93C59B; --warn: #F0C46E; --warn-soft: #3A2F17; --bad: #F09A8C; --bad-soft: #3D2320;
+    --bar-good: #8FB087; --bar-warn: #E0AE4C; --bar-bad: #E07F70;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+.app { max-width: 540px; margin: 0 auto; padding-block: max(16px, env(safe-area-inset-top, 0px)) calc(48px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+h1 { font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1.1; letter-spacing: -0.01em; }
+h2 { font-size: 18px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 700; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.row.between { justify-content: space-between; }
+.wrap { flex-wrap: wrap; }
+.grow { flex: 1; min-width: 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
+.list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); display: flex; flex-direction: column; overflow: hidden; }
+.list > * + * { border-top: 1px solid var(--line-soft); }
+
+/* marca */
+.wm { display: inline-flex; align-items: baseline; gap: 3px; color: var(--fg); text-decoration: none; }
+.wm b { font-family: var(--display); font-weight: 600; font-size: 22px; letter-spacing: 0.04em; }
+.wm i { font-family: var(--mono); font-style: normal; font-weight: 600; font-size: 12px; letter-spacing: 0.22em; color: var(--accent); }
+.mark { width: 36px; height: 36px; flex-shrink: 0; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.trial { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 999px; background: var(--rose-soft); color: var(--rose-ink); white-space: nowrap; }
+
+.tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 4px; }
+.tab { flex: 1; min-height: 42px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.tab[aria-current="page"] { background: var(--accent-soft); color: var(--accent-strong); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.big { min-height: 56px; font-size: 17px; width: 100%; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--accent-strong); padding: 0 8px; min-height: 44px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
+.iconbtn { width: 44px; height: 44px; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+
+.banner { border-radius: 14px; padding: 12px 14px; background: var(--accent-soft); color: var(--fg); font-size: 14px; }
+.banner.rose { background: var(--rose-soft); }
+.banner.warn { background: var(--warn-soft); }
+.banner.warn strong { color: var(--warn); }
+
+.client { display: flex; align-items: center; gap: 12px; padding: 14px; background: none; border: 0; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.avatar { width: 44px; height: 44px; border-radius: 22px; background: var(--rose-soft); color: var(--rose-ink); display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chip { font-family: var(--mono); font-size: 11.5px; font-weight: 600; padding: 4px 8px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-strong); white-space: nowrap; }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.chip.plain { background: var(--line-soft); color: var(--muted); }
+.chip.rose { background: var(--rose-soft); color: var(--rose-ink); }
+
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; }
+input[type=text], input[type=tel], textarea { width: 100%; min-height: 48px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 16px; }
+textarea { resize: vertical; min-height: 76px; }
+.codeinput { font-family: var(--mono); font-size: 22px !important; letter-spacing: 0.2em; text-align: center; text-transform: uppercase; }
+fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+legend { padding: 0 0 10px 0; font-weight: 700; font-size: 15px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { min-height: 44px; padding: 0 16px; border-radius: 22px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.pill[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
+.check { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; font-weight: 500; }
+.check input { width: 22px; height: 22px; margin: 0; accent-color: var(--accent); flex-shrink: 0; }
+
+.progress { display: flex; flex-direction: column; gap: 6px; }
+.progress .track { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.progress .fill { height: 100%; background: var(--accent); border-radius: 3px; }
+
+.drop { border: 2px dashed var(--line); border-radius: 20px; background: var(--surface); padding: 22px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.photo-wrap { position: relative; width: 100%; border-radius: 18px; overflow: hidden; background: #111; }
+.photo-wrap canvas { display: block; width: 100%; height: auto; }
+.legend-dot { width: 10px; height: 10px; border-radius: 5px; display: inline-block; }
+
+.score { display: flex; align-items: center; gap: 16px; }
+.ring { width: 100px; height: 100px; flex-shrink: 0; }
+.ind { display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; }
+.bar { height: 8px; border-radius: 4px; background: var(--line-soft); overflow: hidden; }
+.bar > span { display: block; height: 100%; border-radius: 4px; }
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 400px) { .duo { grid-template-columns: minmax(0, 1fr); } }
+.duo ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.duo li span, .treat span.sub { display: block; color: var(--muted); font-size: 12.5px; }
+.treat { display: flex; gap: 12px; padding: 14px 16px; align-items: flex-start; }
+.treat .n { font-family: var(--display); font-size: 26px; line-height: 1; color: var(--rose-ink); width: 22px; flex-shrink: 0; }
+.compare { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px 14px; align-items: center; font-size: 14px; }
+.sep { height: 1px; background: var(--line-soft); }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; z-index: 20; max-width: calc(100% - 32px); }
+.prodrow { display: grid; gap: 8px; padding: 14px; }
+.prodrow .two { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 8px; }
+.copybox { white-space: pre-wrap; font-size: 13px; background: var(--line-soft); border-radius: 10px; padding: 12px; user-select: all; overflow-wrap: anywhere; }
+.spinner { width: 36px; height: 36px; border-radius: 50%; border: 4px solid var(--accent-soft); border-top-color: var(--accent); animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* pantalla de acceso */
+.gate { min-height: calc(100vh - 64px); display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+.gate-hero { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.gate-hero .mark { width: 84px; height: 84px; }
+.gate-hero .wm b { font-size: 38px; }
+.gate-hero .wm i { font-size: 16px; }
+.gate-hero p { max-width: 34ch; }
+@media (prefers-reduced-motion: reduce) { .spinner { animation: none; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 512 512">
+    <circle cx="256" cy="256" r="232" fill="var(--accent)"/>
+    <circle cx="256" cy="256" r="150" fill="none" stroke="#F4EDE6" stroke-width="20"/>
+    <path d="M190 330c10-92 64-150 150-166-8 90-62 150-150 166z" fill="#E3C3BA"/>
+    <path d="M190 330c38-40 74-86 112-140" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="346" cy="352" r="17" fill="#F4EDE6"/>
+  </symbol>
+</svg>
+
+<div class="app" id="app">
+
+  <!-- ACCESO CON CÓDIGO -->
+  <section id="v-gate" class="gate" hidden>
+    <div class="gate-hero">
+      <svg class="mark" aria-hidden="true"><use href="#logo"/></svg>
+      <span class="wm" aria-label="SKINLAB"><b>SKIN</b><i>LAB</i></span>
+      <p class="muted">Análisis de piel, ficha de clientas y rutinas para tu gabinete.</p>
+    </div>
+    <form class="card stack" id="gateForm" novalidate>
+      <label class="field" for="fCode">Código de acceso
+        <input class="codeinput" type="text" id="fCode" autocomplete="one-time-code" inputmode="text" maxlength="9" placeholder="XXXX-XXXX" required>
+      </label>
+      <p class="small muted" id="gateMsg">Con tu código tenés 7 días de prueba desde que lo activás.</p>
+      <button class="btn primary big" type="submit" id="btnGate">Entrar</button>
+    </form>
+    <p class="small muted" style="text-align:center">¿No tenés código? Pedilo a <span id="ownerContact">[TU WHATSAPP O MAIL]</span></p>
+    <button class="btn ghost" type="button" id="btnDemo" hidden>Probar en modo demostración (sin servidor)</button>
+  </section>
+
+  <!-- PRUEBA VENCIDA -->
+  <section id="v-expired" class="gate" hidden>
+    <div class="gate-hero">
+      <svg class="mark" aria-hidden="true"><use href="#logo"/></svg>
+      <h1 id="expTitle">Tu prueba terminó</h1>
+      <p class="muted" id="expText">Gracias por probar SKINLAB. Tus clientas siguen guardadas en este teléfono.</p>
+    </div>
+    <div class="card stack">
+      <p>Para seguir usándola, escribinos y te pasamos los planes:</p>
+      <p class="num" style="font-size:18px;user-select:all" id="expContact">[TU WHATSAPP O MAIL]</p>
+      <button class="btn" type="button" id="btnOtherCode">Tengo otro código</button>
+    </div>
+  </section>
+
+  <!-- APP -->
+  <header class="topbar" id="topbar" hidden>
+    <a class="row" href="#" id="homeLink" style="gap:10px;text-decoration:none" aria-label="SKINLAB, ir a clientas">
+      <svg class="mark" aria-hidden="true"><use href="#logo"/></svg>
+      <span class="wm"><b>SKIN</b><i>LAB</i></span>
+    </a>
+    <span class="trial" id="trialChip"></span>
+  </header>
+  <nav class="tabs" aria-label="Secciones" id="tabs" hidden>
+    <button class="tab" type="button" data-tab="inicio" aria-current="page">Clientas</button>
+    <button class="tab" type="button" data-tab="catalogo">Catálogo</button>
+    <button class="tab" type="button" data-tab="ajustes">Ajustes</button>
+  </nav>
+
+  <section id="v-inicio" class="stack" hidden>
+    <div class="stack" style="gap:4px">
+      <span class="eyebrow" id="greetName"></span>
+      <h1>Tus clientas</h1>
+    </div>
+    <div class="banner rose" id="modeBanner" hidden></div>
+    <button class="btn primary big" type="button" id="btnNuevo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+      Nuevo análisis
+    </button>
+    <div class="row between"><h2>Recientes</h2><span class="muted small num" id="clientCount"></span></div>
+    <div class="list" id="clientList"></div>
+    <p class="small muted">Las fichas se guardan en este teléfono. Si borrás los datos del navegador, se pierden.</p>
+  </section>
+
+  <!-- PASO 1 -->
+  <section id="v-paso1" class="stack" hidden>
+    <div class="progress"><span class="eyebrow">Paso 1 de 4 · Datos y consentimiento</span><div class="track"><div class="fill" style="width:25%"></div></div></div>
+    <div class="card stack">
+      <label class="field" for="fNombre">Nombre de la clienta
+        <input type="text" id="fNombre" autocomplete="off" placeholder="Ej.: Sofía R.">
+      </label>
+      <label class="field" for="fTel">WhatsApp (opcional)
+        <input type="tel" id="fTel" autocomplete="off" placeholder="Ej.: 11 5555 5555">
+      </label>
+      <div class="sep"></div>
+      <label class="check" for="fConsent"><input type="checkbox" id="fConsent">
+        <span>La clienta autoriza tomar y guardar fotos de su rostro y sus respuestas para su ficha cosmetológica, y que la foto se procese para el análisis. Puede pedir que se borren cuando quiera.</span>
+      </label>
+      <label class="check" for="fRedes"><input type="checkbox" id="fRedes">
+        <span>También autoriza usar el antes y después en redes (opcional).</span>
+      </label>
+    </div>
+    <div class="row"><button class="btn" type="button" data-go="inicio">Cancelar</button><button class="btn primary grow" type="button" id="to2" disabled>Continuar</button></div>
+  </section>
+
+  <!-- PASO 2 -->
+  <section id="v-paso2" class="stack" hidden>
+    <div class="progress"><span class="eyebrow">Paso 2 de 4 · Cuestionario</span><div class="track"><div class="fill" style="width:50%"></div></div></div>
+    <div class="card stack" id="quiz"></div>
+    <label class="field" for="fMed">Medicación, alergias o tratamientos recientes
+      <textarea id="fMed" placeholder="Ej.: isotretinoína, peeling hace 2 semanas, alergia a perfumes"></textarea>
+    </label>
+    <div class="row"><button class="btn" type="button" id="back1">Atrás</button><button class="btn primary grow" type="button" id="to3">Continuar a la foto</button></div>
+  </section>
+
+  <!-- PASO 3 -->
+  <section id="v-paso3" class="stack" hidden>
+    <div class="progress"><span class="eyebrow">Paso 3 de 4 · Foto de frente</span><div class="track"><div class="fill" style="width:75%"></div></div></div>
+    <div class="drop" id="drop">
+      <svg width="56" height="72" viewBox="0 0 56 72" aria-hidden="true"><ellipse cx="28" cy="36" rx="25" ry="33" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/></svg>
+      <p><strong>Rostro de frente, centrado, ocupando más de la mitad del ancho de la foto.</strong></p>
+      <p class="small muted">Luz pareja de frente, sin maquillaje ni anteojos, frente despejada, boca cerrada, sin filtros.</p>
+      <label class="btn primary" for="fFoto">Tomar o elegir foto</label>
+      <input type="file" id="fFoto" accept="image/jpeg,image/png,image/*" capture="user" hidden>
+    </div>
+    <div id="photoBox" class="stack" hidden>
+      <div class="photo-wrap"><canvas id="cv" aria-label="Foto de la clienta"></canvas></div>
+      <div class="row wrap small muted">
+        <span class="row" style="gap:6px"><span class="legend-dot" style="background:#E5484D"></span>Rojeces</span>
+        <span class="row" style="gap:6px"><span class="legend-dot" style="background:#7B4BD8"></span>Tono desigual</span>
+        <label class="check" for="fOverlay" style="margin-left:auto"><input type="checkbox" id="fOverlay">Ver zonas de color</label>
+      </div>
+      <div id="quality"></div>
+    </div>
+    <div class="row"><button class="btn" type="button" data-go="paso2">Atrás</button><button class="btn primary grow" type="button" id="to4" disabled>Analizar</button></div>
+  </section>
+
+  <!-- ANALIZANDO -->
+  <section id="v-analizando" class="stack" hidden>
+    <div class="card stack" style="align-items:center;text-align:center;padding:40px 20px">
+      <div class="spinner" role="status" aria-label="Analizando"></div>
+      <h2 id="anTitle">Analizando la piel…</h2>
+      <p class="small muted" id="anText">Suele tardar entre 10 y 30 segundos.</p>
+    </div>
+  </section>
+
+  <!-- INFORME -->
+  <section id="v-informe" class="stack" hidden>
+    <div id="reportBody" class="stack"></div>
+    <div class="card stack">
+      <h3>Mensaje para la clienta</h3>
+      <div class="copybox" id="copyText"></div>
+      <div class="row wrap">
+        <button class="btn primary grow" type="button" id="btnCopy">Copiar mensaje</button>
+        <a class="btn grow" id="btnWa" href="https://wa.me/" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      </div>
+    </div>
+    <button class="btn big" type="button" id="btnFin">Volver a clientas</button>
+  </section>
+
+  <!-- FICHA -->
+  <section id="v-ficha" class="stack" hidden>
+    <div class="row"><button class="iconbtn" type="button" data-go="inicio" aria-label="Volver a clientas"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button><span class="eyebrow" id="fichaSub"></span></div>
+    <div id="fichaBody" class="stack"></div>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <section id="v-catalogo" class="stack" hidden>
+    <h1>Tu catálogo</h1>
+    <p class="muted">El informe recomienda productos y tratamientos de esta lista. Cargá tus marcas y precios, y apagá los tratamientos que no hacés.</p>
+    <h2>Tratamientos de gabinete</h2>
+    <div class="list" id="treatList"></div>
+    <h2>Productos para la rutina</h2>
+    <div class="list" id="catList"></div>
+    <button class="btn primary big" type="button" id="btnSaveCat">Guardar catálogo</button>
+  </section>
+
+  <!-- AJUSTES -->
+  <section id="v-ajustes" class="stack" hidden>
+    <h1>Ajustes</h1>
+    <div class="card stack">
+      <label class="field" for="fMarca">Nombre de tu gabinete (sale en el informe)
+        <input type="text" id="fMarca" placeholder="Ej.: Gabinete Luna">
+      </label>
+      <label class="field" for="fProf">Tu nombre
+        <input type="text" id="fProf" placeholder="Ej.: Lic. Carla Pérez">
+      </label>
+      <button class="btn primary" type="button" id="btnSaveBrand">Guardar</button>
+    </div>
+    <div class="card stack">
+      <h3>Tu prueba</h3>
+      <p class="small" id="trialInfo"></p>
+      <button class="btn" type="button" id="btnLogout">Salir y usar otro código</button>
+    </div>
+    <div class="card stack">
+      <h3>Cómo funciona el análisis</h3>
+      <p class="small">SKINLAB envía la foto a un motor de análisis de piel con inteligencia artificial (YouCam, de Perfect Corp) y recibe un puntaje de 0 a 100 por indicador, donde 100 significa sin signos visibles. SKINLAB no guarda la foto en sus servidores: queda solo en este teléfono, dentro de la ficha.</p>
+      <p class="small muted">Es una herramienta de apoyo para el diagnóstico cosmetológico. No reemplaza la evaluación profesional ni la consulta médica.</p>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  'use strict';
+  // ====== Configuración que podés cambiar ======
+  var OWNER_CONTACT = '[TU WHATSAPP O MAIL]';   // aparece cuando piden un código o se vence la prueba
+  // ============================================
+  var KEY = 'skinlab-data-v1', KEY_CODE = 'skinlab-code';
+
+  var IND = [
+    { id: 'redness', name: 'Rojeces' },
+    { id: 'spots', name: 'Manchas' },
+    { id: 'pores', name: 'Poros' },
+    { id: 'oil', name: 'Brillo y oleosidad' },
+    { id: 'moisture', name: 'Hidratación' },
+    { id: 'acne', name: 'Imperfecciones y acné' },
+    { id: 'texture', name: 'Textura' },
+    { id: 'lines', name: 'Líneas y arrugas' }
+  ];
+  var CATS = [
+    { id: 'limpiador', label: 'Limpiador suave' },
+    { id: 'calmante', label: 'Sérum calmante (centella, pantenol)' },
+    { id: 'despig', label: 'Sérum despigmentante (vitamina C)' },
+    { id: 'niacina', label: 'Sérum de niacinamida' },
+    { id: 'salicilico', label: 'Gel o sérum con ácido salicílico' },
+    { id: 'hialuronico', label: 'Sérum de ácido hialurónico' },
+    { id: 'exfol', label: 'Exfoliante suave (PHA o enzimático)' },
+    { id: 'hidrat', label: 'Crema hidratante liviana' },
+    { id: 'barrera', label: 'Crema barrera / reparadora' },
+    { id: 'spf', label: 'Protector solar FPS 50' }
+  ];
+  // Tratamientos de gabinete: para qué indicadores sirven y cuándo NO conviene sugerirlos.
+  var TREATS = [
+    { id: 'limpieza', name: 'Limpieza facial profunda', for: ['pores', 'acne', 'oil'], sessions: '1 por mes' },
+    { id: 'hidratacion', name: 'Hidratación profunda con mascarilla', for: ['moisture', 'lines', 'redness'], sessions: 'Cada 15 días, 4 sesiones' },
+    { id: 'descongestivo', name: 'Protocolo descongestivo para piel sensible', for: ['redness'], sessions: 'Cada 15 días, 3 a 4 sesiones' },
+    { id: 'peeling', name: 'Peeling químico superficial (mandélico o láctico)', for: ['spots', 'texture', 'acne'], sessions: 'Cada 15 días, 4 a 6 sesiones', avoid: ['embarazo', 'iso', 'sensible', 'sinSol'] },
+    { id: 'dermaplaning', name: 'Dermaplaning', for: ['texture'], sessions: '1 por mes', avoid: ['iso', 'acneActivo', 'sensible'] },
+    { id: 'microdermo', name: 'Microdermoabrasión con punta de diamante', for: ['texture', 'pores', 'spots'], sessions: 'Cada 15 días, 4 a 6 sesiones', avoid: ['iso', 'acneActivo', 'sensible'] },
+    { id: 'altafrec', name: 'Alta frecuencia', for: ['acne'], sessions: 'Semanal, 4 a 6 sesiones', avoid: ['embarazo'] },
+    { id: 'led', name: 'Fototerapia LED', for: ['acne', 'redness', 'lines'], sessions: 'Semanal, 6 a 8 sesiones' },
+    { id: 'radiofrec', name: 'Radiofrecuencia facial', for: ['lines'], sessions: 'Cada 15 días, 6 sesiones', avoid: ['embarazo'] },
+    { id: 'microneedling', name: 'Microneedling', for: ['texture', 'spots', 'lines'], sessions: 'Cada 4 semanas, 3 sesiones', avoid: ['embarazo', 'iso', 'acneActivo', 'sensible'], off: true }
+  ];
+  var AVOID_TXT = {
+    embarazo: 'embarazo o lactancia', iso: 'medicación para el acné', sensible: 'piel sensible o rojeces marcadas',
+    acneActivo: 'acné activo', sinSol: 'no usa protector solar'
+  };
+  var QUIZ = [
+    { id: 'tipo', q: '¿Cómo siente la piel al final del día?', opts: ['Grasa', 'Mixta', 'Seca', 'Normal'] },
+    { id: 'sensible', q: '¿Se enrojece o le arde con facilidad?', opts: ['Sí, seguido', 'A veces', 'No'] },
+    { id: 'embarazo', q: '¿Embarazo o lactancia?', opts: ['Sí', 'No'] },
+    { id: 'sol', q: '¿Usa protector solar todos los días?', opts: ['Sí', 'A veces', 'No'] },
+    { id: 'objetivo', q: '¿Qué le gustaría mejorar primero?', opts: ['Rojeces', 'Manchas', 'Acné', 'Poros y brillo', 'Textura', 'Arrugas', 'Hidratación'] }
+  ];
+  var GOAL_KEY = { 'Rojeces': 'redness', 'Manchas': 'spots', 'Acné': 'acne', 'Poros y brillo': 'pores', 'Textura': 'texture', 'Arrugas': 'lines', 'Hidratación': 'moisture' };
+
+  // ---------- estado ----------
+  var state = load();
+  var access = null;   // { code, name, daysLeft, analysesLeft, aiEnabled, demo }
+  var draft = null, lastReport = null, img = null, overlay = null;
+
+  function seed() {
+    return { brand: { marca: '', prof: '' }, catalog: {}, treatOff: { microneedling: true }, clients: [
+      { id: 'ej1', name: 'Lucía M. (ejemplo)', phone: '', example: true, redes: true, sessions: [
+        mk('2026-09-12', { tipo: 'Mixta', sensible: 'A veces', embarazo: 'No', sol: 'A veces', objetivo: 'Manchas' }, { redness: 66, spots: 42, pores: 58, oil: 61, moisture: 55, acne: 80, texture: 70, lines: 82 }),
+        mk('2026-10-24', { tipo: 'Mixta', sensible: 'A veces', embarazo: 'No', sol: 'Sí', objetivo: 'Manchas' }, { redness: 68, spots: 51, pores: 60, oil: 64, moisture: 62, acne: 82, texture: 72, lines: 83 })
+      ] }
+    ] };
+    function mk(date, answers, sc) { return { id: uid(), date: date, answers: answers, med: '', scores: sc, source: 'ejemplo', thumb: '' }; }
+  }
+  function load() {
+    try { var raw = localStorage.getItem(KEY); if (raw) { var s = JSON.parse(raw); if (s && s.clients) { s.treatOff = s.treatOff || {}; return s; } } } catch (e) {}
+    return seed();
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+    catch (e) {
+      try { state.clients.forEach(function (c) { c.sessions.slice(1, -1).forEach(function (s) { s.thumb = ''; }); }); localStorage.setItem(KEY, JSON.stringify(state)); return true; }
+      catch (e2) { return false; }
+    }
+  }
+  function getCode() { try { return localStorage.getItem(KEY_CODE) || ''; } catch (e) { return ''; } }
+  function setCode(c) { try { if (c) localStorage.setItem(KEY_CODE, c); else localStorage.removeItem(KEY_CODE); } catch (e) {} }
+
+  // ---------- utilidades ----------
+  function $(id) { return document.getElementById(id); }
+  function uid() { return Math.random().toString(36).slice(2, 10); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function present(sc) { return IND.filter(function (k) { return typeof sc[k.id] === 'number'; }); }
+  function generalOf(sc) { var p = present(sc); if (!p.length) return 0; return Math.round(p.reduce(function (t, k) { return t + sc[k.id]; }, 0) / p.length); }
+  function initials(n) { return String(n).replace(/\(.*?\)/g, '').trim().split(/\s+/).slice(0, 2).map(function (w) { return w[0] || ''; }).join('').toUpperCase(); }
+  function fmtDate(iso) { var m = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic']; var p = iso.split('-'); return Number(p[2]) + ' ' + m[Number(p[1]) - 1] + ' ' + p[0]; }
+  function today() { var d = new Date(), z = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); }
+  function level(v) { return v < 50 ? 'bad' : v < 70 ? 'warn' : 'good'; }
+  function toast(msg) { var t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(function () { t.hidden = true; }, 2600); }
+  function brandName() { return state.brand.marca || '[Nombre de tu gabinete]'; }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function last(c) { return c.sessions[c.sessions.length - 1]; }
+  function findClient(id) { return state.clients.filter(function (c) { return c.id === id; })[0]; }
+
+  function api(path, body) {
+    return fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) {
+        var ct = r.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') < 0) { var e = new Error('no_api'); e.noApi = true; throw e; }
+        return r.json().then(function (j) { j._status = r.status; return j; });
+      });
+  }
+
+  // ---------- acceso ----------
+  $('ownerContact').textContent = OWNER_CONTACT;
+  $('expContact').textContent = OWNER_CONTACT;
+  $('fCode').addEventListener('input', function () {
+    var v = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+    this.value = v.length > 4 ? v.slice(0, 4) + '-' + v.slice(4) : v;
+  });
+  $('gateForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var c = $('fCode').value.replace(/[^A-Z0-9]/gi, '');
+    if (c.length < 8) { $('gateMsg').textContent = 'El código tiene 8 letras y números.'; return; }
+    tryCode(c, true);
+  });
+  function tryCode(code, fromForm) {
+    $('btnGate').disabled = true; $('btnGate').textContent = 'Verificando…';
+    return api('/api/activate', { code: code }).then(function (j) {
+      $('btnGate').disabled = false; $('btnGate').textContent = 'Entrar';
+      if (j.ok) { setCode(code); access = { code: code, name: j.name, daysLeft: j.daysLeft, analysesLeft: j.analysesLeft, aiEnabled: j.aiEnabled, expiresAt: j.expiresAt }; enterApp(); return; }
+      if (j.error === 'expired') { setCode(code); showExpired(j); return; }
+      if (!fromForm) setCode('');
+      showGate(j.message || 'No se pudo verificar el código.');
+    }).catch(function (err) {
+      $('btnGate').disabled = false; $('btnGate').textContent = 'Entrar';
+      if (err && err.noApi) { showGate('Esta versión no está conectada al servidor. Podés usar el modo demostración.'); $('btnDemo').hidden = false; return; }
+      // sin internet: si ya tenía código, dejamos entrar con lo guardado
+      if (getCode() && !fromForm) { access = { code: getCode(), offline: true, aiEnabled: false }; enterApp(); toast('Sin conexión: el análisis usa el modo demostración'); return; }
+      showGate('No hay conexión. Revisá internet y probá de nuevo.');
+    });
+  }
+  $('btnDemo').addEventListener('click', function () { access = { demo: true, aiEnabled: false, name: '' }; enterApp(); });
+  $('btnOtherCode').addEventListener('click', function () { setCode(''); showGate(''); });
+  $('btnLogout').addEventListener('click', function () { setCode(''); access = null; showGate('Ingresá otro código.'); });
+
+  function hideAll() { Array.prototype.forEach.call(document.querySelectorAll('.app > section'), function (s) { s.hidden = true; }); $('topbar').hidden = true; $('tabs').hidden = true; }
+  function showGate(msg) { hideAll(); $('v-gate').hidden = false; if (msg) $('gateMsg').textContent = msg; }
+  function showExpired(j) {
+    hideAll(); $('v-expired').hidden = false;
+    $('expTitle').textContent = (j.name ? j.name.split(' ')[0] + ', tu' : 'Tu') + ' prueba terminó';
+  }
+  function enterApp() {
+    $('trialChip').textContent = access.demo ? 'Demostración' : access.offline ? 'Sin conexión' :
+      (access.daysLeft === 1 ? 'Queda 1 día' : 'Quedan ' + access.daysLeft + ' días');
+    $('greetName').textContent = access.name ? 'Hola, ' + access.name.split(' ')[0] : brandName();
+    var mb = $('modeBanner');
+    if (access.demo || !access.aiEnabled) {
+      mb.hidden = false;
+      mb.innerHTML = '<strong>Análisis en modo demostración.</strong> Los puntajes se estiman por el color de la foto mientras se conecta la inteligencia artificial.';
+    } else mb.hidden = true;
+    $('trialInfo').textContent = access.demo ? 'Estás usando el modo demostración, sin código.' :
+      'Código ' + access.code.slice(0, 4) + '-' + access.code.slice(4) + (access.expiresAt ? ' · vence el ' + fmtDate(access.expiresAt.slice(0, 10)) : '') +
+      (typeof access.analysesLeft === 'number' ? ' · te quedan ' + access.analysesLeft + ' análisis con IA' : '');
+    go('inicio');
+  }
+
+  // ---------- navegación ----------
+  var VIEWS = ['inicio', 'paso1', 'paso2', 'paso3', 'analizando', 'informe', 'ficha', 'catalogo', 'ajustes'];
+  function go(v) {
+    $('v-gate').hidden = true; $('v-expired').hidden = true;
+    VIEWS.forEach(function (k) { $('v-' + k).hidden = k !== v; });
+    $('topbar').hidden = false;
+    var tab = (v === 'catalogo' || v === 'ajustes') ? v : 'inicio';
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.setAttribute('aria-current', b.dataset.tab === tab ? 'page' : 'false'); });
+    $('tabs').hidden = /^paso|analizando|informe/.test(v);
+    if (v === 'inicio') renderClients();
+    if (v === 'catalogo') renderCatalog();
+    if (v === 'ajustes') { $('fMarca').value = state.brand.marca; $('fProf').value = state.brand.prof; }
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', function (e) {
+    var g = e.target.closest('[data-go]'); if (g) { go(g.dataset.go); return; }
+    var t = e.target.closest('[data-tab]'); if (t) go(t.dataset.tab);
+  });
+  $('homeLink').addEventListener('click', function (e) { e.preventDefault(); go('inicio'); });
+
+  // ---------- clientas ----------
+  function renderClients() {
+    var list = $('clientList');
+    var cs = state.clients.slice().sort(function (a, b) { return last(b).date.localeCompare(last(a).date); });
+    $('clientCount').textContent = cs.length + (cs.length === 1 ? ' clienta' : ' clientas');
+    if (!cs.length) { list.innerHTML = '<p class="muted" style="padding:16px">Todavía no hay clientas. Tocá “Nuevo análisis” para cargar la primera.</p>'; return; }
+    list.innerHTML = cs.map(function (c) {
+      var s = last(c), first = c.sessions[0], chip;
+      if (c.sessions.length > 1) { var d = generalOf(s.scores) - generalOf(first.scores); chip = '<span class="chip ' + (d >= 0 ? '' : 'bad') + '">' + (d >= 0 ? '+' : '') + d + ' pts</span>'; }
+      else chip = '<span class="chip plain">1.ª sesión</span>';
+      var av = s.thumb ? '<img alt="" src="' + s.thumb + '">' : esc(initials(c.name));
+      return '<button class="client" type="button" data-client="' + c.id + '"><span class="avatar">' + av + '</span>' +
+        '<span class="grow stack" style="gap:2px"><strong>' + esc(c.name) + '</strong><span class="small muted">' +
+        c.sessions.length + (c.sessions.length === 1 ? ' sesión' : ' sesiones') + ' · ' + fmtDate(s.date) + ' · ' + esc((s.answers.objetivo || '').toLowerCase()) + '</span></span>' + chip + '</button>';
+    }).join('');
+  }
+  $('clientList').addEventListener('click', function (e) { var b = e.target.closest('[data-client]'); if (b) openFicha(b.dataset.client); });
+
+  // ---------- nuevo análisis ----------
+  $('btnNuevo').addEventListener('click', function () { startDraft(null); });
+  function startDraft(clientId) {
+    var c = clientId ? findClient(clientId) : null;
+    draft = { clientId: clientId, answers: c ? JSON.parse(JSON.stringify(last(c).answers)) : {}, local: null, zones: null, method: '', thumb: '', jpeg: '' };
+    $('fNombre').value = c ? c.name : ''; $('fTel').value = c ? (c.phone || '') : '';
+    $('fNombre').disabled = !!c; $('fConsent').checked = !!c; $('fRedes').checked = c ? !!c.redes : false;
+    $('fMed').value = c ? (last(c).med || '') : '';
+    $('fFoto').value = ''; $('photoBox').hidden = true; $('drop').hidden = false; $('to4').disabled = true; $('fOverlay').checked = false;
+    img = null; overlay = null;
+    validate1(); renderQuiz(); go(c ? 'paso2' : 'paso1');
+  }
+  function validate1() { $('to2').disabled = !($('fNombre').value.trim() && $('fConsent').checked); }
+  $('fNombre').addEventListener('input', validate1);
+  $('fConsent').addEventListener('change', validate1);
+  $('to2').addEventListener('click', function () { go('paso2'); });
+  $('back1').addEventListener('click', function () { go(draft && draft.clientId ? 'inicio' : 'paso1'); });
+
+  function renderQuiz() {
+    $('quiz').innerHTML = QUIZ.map(function (q) {
+      return '<fieldset><legend>' + esc(q.q) + '</legend><div class="pills">' + q.opts.map(function (o) {
+        return '<button type="button" class="pill" data-q="' + q.id + '" data-v="' + esc(o) + '" aria-pressed="' + (draft.answers[q.id] === o) + '">' + esc(o) + '</button>';
+      }).join('') + '</div></fieldset>';
+    }).join('');
+  }
+  $('quiz').addEventListener('click', function (e) {
+    var p = e.target.closest('.pill'); if (!p) return;
+    draft.answers[p.dataset.q] = p.dataset.v;
+    Array.prototype.forEach.call($('quiz').querySelectorAll('[data-q="' + p.dataset.q + '"]'), function (b) { b.setAttribute('aria-pressed', b === p); });
+  });
+  $('to3').addEventListener('click', function () {
+    var missing = QUIZ.filter(function (q) { return !draft.answers[q.id]; });
+    if (missing.length) { toast('Falta: ' + missing[0].q); return; }
+    draft.med = $('fMed').value.trim();
+    loadDetector();
+    go('paso3');
+  });
+
+  // ---------- foto ----------
+  $('fFoto').addEventListener('change', function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    var url = URL.createObjectURL(f), im = new Image();
+    im.onload = function () { img = im; prepare(); URL.revokeObjectURL(url); };
+    im.onerror = function () { toast('No se pudo abrir la imagen. Probá con otra foto (JPG o PNG).'); };
+    im.src = url;
+  });
+  $('fOverlay').addEventListener('change', draw);
+
+  // ---------- detector de rostro (MediaPipe Face Landmarker, gratis, corre en el teléfono) ----------
+  var MP_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.0';
+  var MP_MODEL = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+  var DET = { p: null, lm: null, v: null };
+  function loadDetector() {
+    if (DET.p) return DET.p;
+    DET.p = import(MP_BASE + '/vision_bundle.mjs').then(function (v) {
+      DET.v = v; return v.FilesetResolver.forVisionTasks(MP_BASE + '/wasm');
+    }).then(function (fs) {
+      return DET.v.FaceLandmarker.createFromOptions(fs, { baseOptions: { modelAssetPath: MP_MODEL, delegate: 'CPU' }, runningMode: 'IMAGE', numFaces: 1 });
+    }).then(function (lm) { DET.lm = lm; return lm; }).catch(function (e) { console.warn('Detector no disponible', e); return null; });
+    return DET.p;
+  }
+  function withTimeout(p, ms) { return Promise.race([p, sleep(ms).then(function () { return null; })]); }
+
+  function prepare() {
+    // JPEG para la IA: lado largo hasta 1440 px (el motor pide lado corto de 480 px como mínimo)
+    var long = Math.max(img.width, img.height), k = Math.min(1, 1440 / long);
+    var c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    draft.jpeg = c.toDataURL('image/jpeg', 0.88).split(',')[1];
+    draft.small = Math.min(c.width, c.height) < 480;
+    var t = document.createElement('canvas'), tw = 120; t.width = tw; t.height = Math.round(img.height * tw / img.width);
+    t.getContext('2d').drawImage(img, 0, 0, t.width, t.height);
+    try { draft.thumb = t.toDataURL('image/jpeg', 0.7); } catch (e) { draft.thumb = ''; }
+
+    // lienzo de análisis
+    var W = 420, H = Math.round(img.height * W / img.width);
+    var off = document.createElement('canvas'); off.width = W; off.height = H;
+    off.getContext('2d').drawImage(img, 0, 0, W, H);
+    $('drop').hidden = true; $('photoBox').hidden = false;
+    $('quality').innerHTML = '<div class="banner"><strong>Ubicando el rostro…</strong> La primera vez puede tardar unos segundos.</div>';
+    $('to4').disabled = true;
+    draft.geom = { W: W, H: H, hull: null, ellipse: null };
+    draw();
+    withTimeout(loadDetector(), 15000).then(function (lm) {
+      var pts = null;
+      if (lm) {
+        try {
+          var res = lm.detect(off);
+          var f = res && res.faceLandmarks && res.faceLandmarks[0];
+          if (f) pts = f.map(function (p) { return [p.x * W, p.y * H]; });
+          else { draft.local = null; draft.zones = null; showQuality({ noFace: true }, false); return; }
+        } catch (e) { console.warn(e); }
+      }
+      localAnalyze(off, pts);
+    });
+  }
+
+  // Envolvente convexa de un conjunto de puntos
+  function hull(points) {
+    var p = points.slice().sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; });
+    if (p.length < 3) return p;
+    var cross = function (o, a, b) { return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); };
+    var lo = [], up = [], i;
+    for (i = 0; i < p.length; i++) { while (lo.length >= 2 && cross(lo[lo.length - 2], lo[lo.length - 1], p[i]) <= 0) lo.pop(); lo.push(p[i]); }
+    for (i = p.length - 1; i >= 0; i--) { while (up.length >= 2 && cross(up[up.length - 2], up[up.length - 1], p[i]) <= 0) up.pop(); up.push(p[i]); }
+    up.pop(); lo.pop(); return lo.concat(up);
+  }
+  function scalePoly(poly, s) {
+    var cx = 0, cy = 0; poly.forEach(function (q) { cx += q[0]; cy += q[1]; }); cx /= poly.length; cy /= poly.length;
+    return poly.map(function (q) { return [cx + (q[0] - cx) * s, cy + (q[1] - cy) * s]; });
+  }
+  function bbox(poly) {
+    var b = [1e9, 1e9, -1e9, -1e9]; poly.forEach(function (q) { b[0] = Math.min(b[0], q[0]); b[1] = Math.min(b[1], q[1]); b[2] = Math.max(b[2], q[0]); b[3] = Math.max(b[3], q[1]); }); return b;
+  }
+  function inPoly(x, y, poly) {
+    var inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+    }
+    return inside;
+  }
+  function featurePts(pts, conns) {
+    var seen = {}, out = [];
+    (conns || []).forEach(function (c) { [c.start, c.end].forEach(function (k) { if (!seen[k] && pts[k]) { seen[k] = 1; out.push(pts[k]); } }); });
+    return out;
+  }
+
+  // Análisis local por color y textura. Con el detector mide por zonas del rostro; sin él, usa un óvalo central.
+  function localAnalyze(off, pts) {
+    var W = off.width, H = off.height, data = off.getContext('2d').getImageData(0, 0, W, H).data;
+    var N = W * H, L = new Float32Array(N), A = new Float32Array(N), M = new Uint8Array(N), Z = new Int8Array(N).fill(-1);
+    var zones = null, region, excl = [], warn = [], box;
+
+    if (pts) {
+      var FL = DET.v.FaceLandmarker;
+      region = hull(featurePts(pts, FL.FACE_LANDMARKS_FACE_OVAL));
+      [[FL.FACE_LANDMARKS_LEFT_EYE, 1.6], [FL.FACE_LANDMARKS_RIGHT_EYE, 1.6], [FL.FACE_LANDMARKS_LEFT_EYEBROW, 1.3], [FL.FACE_LANDMARKS_RIGHT_EYEBROW, 1.3], [FL.FACE_LANDMARKS_LIPS, 1.15]].forEach(function (e) {
+        var h = scalePoly(hull(featurePts(pts, e[0])), e[1]); if (h.length > 2) excl.push({ poly: h, b: bbox(h) });
+      });
+      var mid = function (a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]; };
+      var cheekA = pts[50], cheekB = pts[280];
+      var leftFirst = cheekA[0] < cheekB[0];
+      zones = [
+        { id: 'frente', name: 'frente', at: pts[151] },
+        { id: 'mejI', name: 'mejilla izquierda (en la foto)', at: leftFirst ? cheekA : cheekB },
+        { id: 'mejD', name: 'mejilla derecha (en la foto)', at: leftFirst ? cheekB : cheekA },
+        { id: 'nariz', name: 'nariz', at: mid(pts[4], pts[195], 0.4) },
+        { id: 'menton', name: 'mentón', at: mid(pts[152], pts[17], 0.35) }
+      ].map(function (z) { z.n = 0; z.red = 0; z.dark = 0; z.shine = 0; return z; });
+      box = bbox(region);
+      // calidad: tamaño, inclinación y giro
+      var faceW = (box[2] - box[0]) / W;
+      if (faceW < 0.45) warn.push('El rostro ocupa poco de la foto: acercá el teléfono (ideal, más de la mitad del ancho).');
+      var e1 = pts[33], e2 = pts[263], roll = Math.abs(Math.atan2(e2[1] - e1[1], e2[0] - e1[0]) * 180 / Math.PI);
+      if (roll > 90) roll = 180 - roll;
+      if (roll > 8) warn.push('La cabeza está inclinada: enderezala.');
+      var l = pts[234], r = pts[454], ratio = (pts[1][0] - Math.min(l[0], r[0])) / Math.abs(r[0] - l[0]);
+      if (ratio < 0.38 || ratio > 0.62) warn.push('La cara está girada: que mire de frente a la cámara.');
+      if (box[0] < 2 || box[1] < 2 || box[2] > W - 2 || box[3] > H - 2) warn.push('El rostro quedó cortado en el borde.');
+    } else {
+      var cx = W / 2, cy = H / 2, rx = W * 0.34, ry = Math.min(H * 0.44, rx * 1.45);
+      region = []; for (var a = 0; a < 48; a++) region.push([cx + rx * Math.cos(a / 48 * 2 * Math.PI), cy + ry * Math.sin(a / 48 * 2 * Math.PI)]);
+      box = bbox(region);
+    }
+    draft.geom.hull = region;
+
+    var inReg = 0, skin = 0, Ls = [], As = [];
+    for (var y = Math.max(0, Math.floor(box[1])); y < Math.min(H, Math.ceil(box[3])); y++) {
+      for (var x = Math.max(0, Math.floor(box[0])); x < Math.min(W, Math.ceil(box[2])); x++) {
+        if (!inPoly(x, y, region)) continue;
+        var skip = false;
+        for (var k = 0; k < excl.length && !skip; k++) { var b = excl[k].b; if (x >= b[0] && x <= b[2] && y >= b[1] && y <= b[3] && inPoly(x, y, excl[k].poly)) skip = true; }
+        if (skip) continue;
+        inReg++;
+        var i = y * W + x, rr = data[i * 4], g = data[i * 4 + 1], bb = data[i * 4 + 2];
+        var cr = 128 + 0.5 * rr - 0.4187 * g - 0.0813 * bb, cb = 128 - 0.1687 * rr - 0.3313 * g + 0.5 * bb;
+        if (cr < 133 || cr > 182 || cb < 77 || cb > 132) continue;
+        var lab = toLab(rr, g, bb); L[i] = lab[0]; A[i] = lab[1]; M[i] = 1; skin++; Ls.push(lab[0]); As.push(lab[1]);
+        if (zones) {
+          var best = 0, bd = 1e12;
+          for (var z = 0; z < zones.length; z++) { var dx = x - zones[z].at[0], dy = y - zones[z].at[1], d = dx * dx + dy * dy; if (d < bd) { bd = d; best = z; } }
+          Z[i] = best; zones[best].n++;
+        }
+      }
+    }
+    var meanL = avg(Ls);
+    if (meanL && meanL < 38) warn.push('La foto está oscura: buscá más luz de frente.');
+    if (meanL > 82) warn.push('La foto está muy iluminada o con flash.');
+    if (draft.small) warn.push('La foto tiene poca resolución.');
+    if (skin < 500 || (inReg && skin / inReg < 0.3)) {
+      draft.local = null; draft.zones = null;
+      showQuality({ msgs: warn.concat(pts ? ['No se distingue bien la piel: revisá la luz.'] : ['Acercá el rostro y centralo dentro del óvalo.']) }, false); return;
+    }
+    var medL = median(Ls), medA = median(As), red = 0, dark = 0, shine = 0, lap = 0, lapN = 0;
+    overlay = new Uint8Array(N);
+    for (var j = 0; j < N; j++) {
+      if (!M[j]) continue;
+      var zz = zones && Z[j] >= 0 ? zones[Z[j]] : null;
+      if (A[j] > medA + 7) { red++; overlay[j] = 1; if (zz) zz.red++; }
+      else if (L[j] < medL - 9) { dark++; overlay[j] = 2; if (zz) zz.dark++; }
+      if (L[j] > Math.min(96, medL + 22)) { shine++; if (zz) zz.shine++; }
+      var x2 = j % W;
+      if (x2 > 0 && x2 < W - 1 && j > W && j < N - W && M[j - 1] && M[j + 1] && M[j - W] && M[j + W]) { lap += Math.abs(4 * L[j] - L[j - 1] - L[j + 1] - L[j - W] - L[j + W]); lapN++; }
+    }
+    var lapMean = lapN ? lap / lapN : 0;
+    draft.local = {
+      redness: Math.round(clamp(100 - (red / skin) * 260, 5, 98)),
+      spots: Math.round(clamp(100 - (dark / skin) * 300, 5, 98)),
+      oil: Math.round(clamp(100 - (shine / skin) * 450, 5, 98)),
+      texture: Math.round(clamp(100 - Math.max(0, lapMean - 1.5) * 9, 5, 98))
+    };
+    draft.zones = zones ? {
+      redness: where(zones, 'red', red / skin, 0.04),
+      spots: where(zones, 'dark', dark / skin, 0.02),
+      oil: where(zones, 'shine', shine / skin, 0.02)
+    } : null;
+    draft.method = zones ? 'zonas' : 'ovalo';
+    draw(); showQuality({ msgs: warn }, true);
+  }
+  // Zonas donde un signo se concentra más que en el resto del rostro
+  function where(zones, key, globalFrac, minFrac) {
+    var list = zones.filter(function (z) { return z.n > 150; }).map(function (z) { return { z: z, f: z[key] / z.n }; })
+      .filter(function (o) { return o.f >= Math.max(globalFrac * 1.3, minFrac); })
+      .sort(function (a, b) { return b.f - a.f; }).slice(0, 2).map(function (o) { return o.z.id; });
+    if (list.indexOf('mejI') >= 0 && list.indexOf('mejD') >= 0) return ['mejillas'];
+    return list;
+  }
+  var ZONE_NAMES = { frente: 'frente', mejI: 'mejilla izquierda de la foto', mejD: 'mejilla derecha de la foto', nariz: 'nariz', menton: 'mentón', mejillas: 'ambas mejillas' };
+  function zoneText(ids) {
+    var n = (ids || []).map(function (i) { return ZONE_NAMES[i] || i; });
+    return n.length === 2 ? n[0] + ' y ' + n[1] : n[0] || '';
+  }
+  function draw() {
+    if (!img || !draft || !draft.geom) return;
+    var g = draft.geom, cv = $('cv'); cv.width = g.W; cv.height = g.H;
+    var c = cv.getContext('2d'); c.drawImage(img, 0, 0, g.W, g.H);
+    if ($('fOverlay').checked && overlay && overlay.length === g.W * g.H) {
+      var id = c.getImageData(0, 0, g.W, g.H), d = id.data;
+      for (var i = 0; i < overlay.length; i++) {
+        if (!overlay[i]) continue;
+        var col = overlay[i] === 1 ? [229, 72, 77] : [123, 75, 216];
+        d[i * 4] = d[i * 4] * 0.45 + col[0] * 0.55; d[i * 4 + 1] = d[i * 4 + 1] * 0.45 + col[1] * 0.55; d[i * 4 + 2] = d[i * 4 + 2] * 0.45 + col[2] * 0.55;
+      }
+      c.putImageData(id, 0, 0);
+    }
+    if (g.hull && g.hull.length > 2) {
+      c.strokeStyle = 'rgba(255,255,255,0.85)'; c.setLineDash([8, 6]); c.lineWidth = 2;
+      c.beginPath(); c.moveTo(g.hull[0][0], g.hull[0][1]);
+      for (var h = 1; h < g.hull.length; h++) c.lineTo(g.hull[h][0], g.hull[h][1]);
+      c.closePath(); c.stroke();
+    }
+  }
+  function showQuality(q, ok) {
+    var msgs = q.msgs || [];
+    var box = $('quality');
+    if (!ok) {
+      box.innerHTML = '<div class="banner warn"><strong>' + (q.noFace ? 'No se encontró un rostro.' : 'No se pudo analizar.') + '</strong> ' +
+        esc(q.noFace ? 'Tomá la foto de frente, centrada y con buena luz.' : msgs.join(' ')) + '</div><label class="btn" for="fFoto">Tomar otra foto</label>';
+      $('to4').disabled = true; return;
+    }
+    var method = draft.method === 'zonas' ? 'Rostro ubicado: se mide frente, mejillas, nariz y mentón por separado.' : 'Se mide el centro de la foto (el detector de rostro no cargó).';
+    box.innerHTML = (msgs.length ? '<div class="banner warn"><strong>Revisá la foto.</strong> ' + esc(msgs.join(' ')) + ' Podés seguir o tomar otra.</div>' : '<div class="banner"><strong>Foto lista.</strong> ' + method + '</div>') +
+      '<label class="btn" for="fFoto">Tomar otra foto</label>';
+    $('to4').disabled = false;
+  }
+  function toLab(r, g, b) {
+    function lin(c) { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    var R = lin(r), G = lin(g), B = lin(b);
+    var X = (R * 0.4124 + G * 0.3576 + B * 0.1805) / 0.95047, Y = R * 0.2126 + G * 0.7152 + B * 0.0722, Z = (R * 0.0193 + G * 0.1192 + B * 0.9505) / 1.08883;
+    function f(t) { return t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116; }
+    var fx = f(X), fy = f(Y), fz = f(Z);
+    return [116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)];
+  }
+  function median(a) { var s = a.slice().sort(function (x, y) { return x - y; }); return s[Math.floor(s.length / 2)]; }
+  function avg(a) { if (!a.length) return 0; var t = 0; for (var i = 0; i < a.length; i++) t += a[i]; return t / a.length; }
+
+  // ---------- análisis con IA ----------
+  $('to4').addEventListener('click', function () {
+    go('analizando');
+    $('anTitle').textContent = 'Analizando la piel…'; $('anText').textContent = 'Suele tardar entre 10 y 30 segundos.';
+    runAI().then(function (res) { finish(res.scores, res.source, res.note); });
+  });
+  function runAI() {
+    var fallback = function (note) { return { scores: draft.local, source: 'demo', note: note }; };
+    if (!access || access.demo || access.offline || !access.aiEnabled) return Promise.resolve(fallback(''));
+    return api('/api/analyze', { code: access.code, image: draft.jpeg }).then(function (j) {
+      if (j._status === 403 && j.error === 'expired') { showExpired(j); return new Promise(function () {}); }
+      if (!j.ok) return fallback(j.message || 'No se pudo usar la IA.');
+      var tries = 0;
+      function poll() {
+        tries++;
+        if (tries > 30) return fallback('El análisis con IA tardó demasiado.');
+        if (tries === 8) $('anText').textContent = 'Está tardando un poco más de lo normal…';
+        return sleep(2500).then(function () { return api('/api/analyze-status', { code: access.code, taskId: j.taskId }); }).then(function (s) {
+          if (s.status === 'success') { if (typeof access.analysesLeft === 'number') access.analysesLeft--; return { scores: s.scores, source: 'ia', note: '' }; }
+          if (s.status === 'error') return fallback(errorText(s.error));
+          return poll();
+        });
+      }
+      return poll();
+    }).catch(function () { return fallback('No hubo conexión con el servicio de análisis.'); });
+  }
+  function errorText(code) {
+    var t = {
+      error_src_face_too_small: 'El rostro se ve chico en la foto: acercate más.',
+      error_src_face_out_of_bound: 'El rostro quedó cortado: centralo en la foto.',
+      error_lighting_dark: 'La foto está oscura: buscá más luz.',
+      error_below_min_image_size: 'La foto tiene poca resolución.'
+    };
+    return (t[code] || 'La IA no pudo analizar esta foto.') + ' Se muestra el análisis de demostración; podés repetir la foto.';
+  }
+  function finish(scores, source, note) {
+    if (!scores) { toast('No se pudo analizar la foto. Tomá otra.'); go('paso3'); return; }
+    var c;
+    if (draft.clientId) c = findClient(draft.clientId);
+    else { c = { id: uid(), name: $('fNombre').value.trim(), phone: $('fTel').value.trim(), sessions: [] }; state.clients.push(c); }
+    c.redes = $('fRedes').checked;
+    var s = { id: uid(), date: today(), answers: draft.answers, med: draft.med || '', scores: scores, source: source, zones: draft.zones || null, method: draft.method || '', thumb: draft.thumb };
+    c.sessions.push(s);
+    if (!save()) toast('No se pudo guardar en este teléfono. El informe se ve igual.');
+    renderReport(c, s, note);
+  }
+
+  // ---------- recomendaciones ----------
+  function flags(s) {
+    var a = s.answers, sc = s.scores, med = (s.med || '').toLowerCase();
+    return {
+      embarazo: a.embarazo === 'Sí',
+      iso: /isotretino|roacut|acnotin|isoface|retino/.test(med),
+      sensible: a.sensible === 'Sí, seguido' || (typeof sc.redness === 'number' && sc.redness < 45),
+      acneActivo: typeof sc.acne === 'number' && sc.acne < 50,
+      sinSol: a.sol === 'No'
+    };
+  }
+  function lowKeys(sc) { return present(sc).filter(function (k) { return sc[k.id] < 75; }).sort(function (x, y) { return sc[x.id] - sc[y.id]; }); }
+  function treatmentsFor(s) {
+    var sc = s.scores, f = flags(s), goal = GOAL_KEY[s.answers.objetivo], picks = [], skipped = [];
+    TREATS.forEach(function (t) {
+      if (state.treatOff[t.id]) return;
+      var rel = 0, why = [];
+      t.for.forEach(function (k) {
+        if (typeof sc[k] === 'number' && sc[k] < 75) { rel += (100 - sc[k]) * (k === goal ? 1.5 : 1); why.push(IND.filter(function (x) { return x.id === k; })[0].name.toLowerCase()); }
+      });
+      if (!rel) return;
+      var block = (t.avoid || []).filter(function (a) { return f[a]; });
+      if (block.length) { skipped.push({ t: t, why: block.map(function (b) { return AVOID_TXT[b]; }) }); return; }
+      picks.push({ t: t, rel: rel, why: why });
+    });
+    picks.sort(function (a, b) { return b.rel - a.rel; });
+    return { picks: picks.slice(0, 3), skipped: skipped.slice(0, 3) };
+  }
+  function routineFor(s) {
+    var a = s.answers, sc = s.scores, f = flags(s), med = (s.med || '').toLowerCase();
+    var low = lowKeys(sc).map(function (k) { return k.id; });
+    var goal = GOAL_KEY[a.objetivo] || low[0];
+    var v = function (k) { return typeof sc[k] === 'number' ? sc[k] : 100; };
+    var am = [], pm = [], notes = [];
+    am.push(item('limpiador', 'Una vez, con agua tibia'));
+    if (goal === 'redness' || f.sensible) am.push(item('calmante', 'Unas gotas sobre piel seca'));
+    else if (goal === 'spots') am.push(item(f.embarazo ? 'niacina' : 'despig', 'Antes de la crema'));
+    else if (goal === 'moisture' || goal === 'lines') am.push(item('hialuronico', 'Sobre piel apenas húmeda'));
+    else am.push(item('niacina', 'Regula brillo y poros'));
+    am.push(item(a.tipo === 'Seca' || f.sensible ? 'barrera' : 'hidrat', 'Cantidad de una arveja'));
+    am.push(item('spf', 'Renovar cada 2 a 3 horas al sol'));
+    pm.push(item('limpiador', 'Retirar protector y maquillaje'));
+    if ((goal === 'acne' || v('acne') < 60 || goal === 'pores') && !f.embarazo && !f.iso && !f.sensible) pm.push(item('salicilico', 'Noches alternas al principio'));
+    else if (goal === 'spots' && !f.sensible) pm.push(item('niacina', 'Todas las noches'));
+    else if (goal === 'texture' && !f.sensible && !f.iso && !f.embarazo) pm.push(item('exfol', '2 noches por semana'));
+    else pm.push(item(f.sensible ? 'calmante' : 'hialuronico', 'Todas las noches'));
+    pm.push(item(a.tipo === 'Grasa' && !f.sensible ? 'hidrat' : 'barrera', 'Capa final'));
+
+    if (v('redness') < 45 && a.sensible === 'Sí, seguido') notes.push({ k: 'derivar', t: 'Rojeces marcadas con ardor frecuente: sugerí una consulta dermatológica antes de usar activos fuertes.' });
+    if (f.iso) notes.push({ k: 'derivar', t: 'Medicación indicada por médico: sin exfoliantes, peelings ni activos sin el visto bueno de su dermatólogo.' });
+    if (f.embarazo) notes.push({ k: 'info', t: 'Embarazo o lactancia: la rutina evita retinoides, ácido salicílico y peelings. Confirmá cualquier activo con su médico.' });
+    if (a.sol !== 'Sí') notes.push({ k: 'info', t: 'No usa protector todos los días: es el paso que más cambia el resultado.' });
+    if (v('spots') < 45) notes.push({ k: 'derivar', t: 'Si alguna mancha cambió de forma, color o tamaño, derivar a dermatología.' });
+    if (v('acne') < 40) notes.push({ k: 'derivar', t: 'Acné inflamatorio marcado: puede necesitar tratamiento médico además del cosmetológico.' });
+    return { am: am, pm: pm, notes: notes };
+    function item(cat, how) {
+      var def = CATS.filter(function (c) { return c.id === cat; })[0], p = state.catalog[cat] || {};
+      return { cat: def.label, name: p.name || '', price: p.price || '', how: how };
+    }
+  }
+
+  // ---------- informe ----------
+  function ringSvg(v) {
+    var r = 41, C = 2 * Math.PI * r, col = 'var(--bar-' + level(v) + ')';
+    return '<svg class="ring" viewBox="0 0 100 100" role="img" aria-label="Puntaje general ' + v + ' de 100">' +
+      '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="var(--line-soft)" stroke-width="9"/>' +
+      '<circle cx="50" cy="50" r="' + r + '" fill="none" stroke="' + col + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (C * v / 100).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 50 50)"/>' +
+      '<text x="50" y="54" text-anchor="middle" font-size="27" font-weight="600" fill="var(--fg)" font-family="Bodoni Moda, Georgia, serif">' + v + '</text>' +
+      '<text x="50" y="71" text-anchor="middle" font-size="9" fill="var(--muted)" font-family="IBM Plex Mono, monospace" letter-spacing="1">DE 100</text></svg>';
+  }
+  function renderReport(c, s, note) {
+    var rt = routineFor(s), tr = treatmentsFor(s), sc = s.scores, gen = generalOf(sc);
+    var low = lowKeys(sc), worst = low[0] || present(sc).sort(function (x, y) { return sc[x.id] - sc[y.id]; })[0];
+    var srcTxt = s.source === 'ia' ? 'Análisis con inteligencia artificial' : s.source === 'ejemplo' ? 'Datos de ejemplo' : 'Análisis de demostración por color de la foto';
+    var html = '';
+    html += '<div class="stack" style="gap:4px"><span class="eyebrow">' + esc(brandName()) + ' · ' + fmtDate(s.date) + '</span><h1>' + esc(c.name) + '</h1></div>';
+    if (note) html += '<div class="banner warn">' + esc(note) + '</div>';
+    html += '<div class="card score">' + ringSvg(gen) + '<div class="stack" style="gap:4px"><strong>Puntaje general</strong><span class="small muted">' +
+      (worst ? 'Lo que más pide atención: ' + worst.name.toLowerCase() + '.' : '') + ' 100 = sin signos visibles.</span><span class="eyebrow">' + srcTxt + '</span></div></div>';
+    html += '<h2>Signos visibles</h2><div class="list">' + present(sc).map(function (k) {
+      var v = sc[k.id], lv = level(v);
+      var zt = s.zones && s.zones[k.id] && s.zones[k.id].length && v < 80 ? zoneText(s.zones[k.id]) : '';
+      return '<div class="ind"><div class="row between"><strong>' + k.name + '</strong><span class="num" style="font-weight:600;color:var(--' + lv + ')">' + v + '</span></div><div class="bar"><span style="width:' + v + '%;background:var(--bar-' + lv + ')"></span></div>' +
+        (zt ? '<span class="small muted">Se ve más en ' + esc(zt) + '</span>' : '') + '</div>';
+    }).join('') + '</div>';
+    html += rt.notes.map(function (n) { return '<div class="banner ' + (n.k === 'derivar' ? 'warn' : '') + '"><strong>' + (n.k === 'derivar' ? 'Sugerencia de derivación: ' : 'Nota: ') + '</strong>' + esc(n.t) + '</div>'; }).join('');
+    html += '<h2>Tratamientos en gabinete</h2>';
+    if (tr.picks.length) {
+      html += '<div class="list">' + tr.picks.map(function (p, i) {
+        var price = (state.catalog['t_' + p.t.id] || {}).price;
+        return '<div class="treat"><span class="n">' + (i + 1) + '</span><div class="grow"><strong>' + esc(p.t.name) + (price ? ' · ' + esc(price) : '') + '</strong><span class="sub">Para ' + esc(p.why.join(', ')) + ' · ' + esc(p.t.sessions) + '</span></div></div>';
+      }).join('') + '</div>';
+    } else html += '<p class="small muted">Con estos puntajes no hace falta un tratamiento intensivo: alcanza con la rutina y controles.</p>';
+    if (tr.skipped.length) html += '<p class="small muted">No sugeridos hoy: ' + tr.skipped.map(function (x) { return esc(x.t.name.toLowerCase()) + ' (' + esc(x.why.join(', ')) + ')'; }).join('; ') + '.</p>';
+    html += '<p class="small muted">Sugerencias orientativas: la indicación final es tuya, según tu evaluación y tu incumbencia.</p>';
+    html += '<h2>Rutina en casa</h2><div class="duo">' + list('Mañana', rt.am, true) + list('Noche', rt.pm, false) + '</div>';
+    html += '<p class="small">Próximo control sugerido: <strong>en 4 semanas</strong>, con la misma luz y sin maquillaje.</p>';
+    $('reportBody').innerHTML = html;
+
+    var nombre = c.name.replace(/\s*\(ejemplo\)/, '').split(' ')[0];
+    var lines = [
+      'Hola ' + nombre + ', este es tu informe de piel del ' + fmtDate(s.date) + '.', '',
+      'Puntaje general: ' + gen + '/100',
+      present(sc).map(function (k) { return k.name + ': ' + sc[k.id]; }).join(' · '), ''
+    ];
+    IND.forEach(function (k) {
+      if (s.zones && s.zones[k.id] && s.zones[k.id].length && typeof sc[k.id] === 'number' && sc[k.id] < 80) lines.push(k.name + ': se ve más en ' + zoneText(s.zones[k.id]) + '.');
+    });
+    if (s.zones && lines[lines.length - 1] !== '') lines.push('');
+    if (tr.picks.length) lines.push('Tratamiento recomendado en gabinete:', tr.picks.map(function (p, i) { return (i + 1) + '. ' + p.t.name + ' (' + p.t.sessions.toLowerCase() + ')'; }).join('\n'), '');
+    lines.push('Rutina de mañana:', rt.am.map(function (it, i) { return (i + 1) + '. ' + (it.name || it.cat); }).join('\n'), '',
+      'Rutina de noche:', rt.pm.map(function (it, i) { return (i + 1) + '. ' + (it.name || it.cat); }).join('\n'), '',
+      'Te espero en 4 semanas para el control.', '— ' + (state.brand.prof ? state.brand.prof + ', ' : '') + brandName());
+    lastReport = lines.join('\n');
+    $('copyText').textContent = lastReport;
+    var phone = (c.phone || '').replace(/\D/g, '');
+    if (phone && phone.length <= 10) phone = '549' + phone;
+    $('btnWa').href = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(lastReport);
+    go('informe');
+
+    function list(title, items, first) {
+      return '<div class="card stack" style="gap:8px"><span class="eyebrow"' + (first ? ' style="color:var(--accent-strong)"' : '') + '>' + title + '</span><ol>' + items.map(function (it) {
+        return '<li>' + esc(it.name || it.cat) + (it.price ? ' · ' + esc(it.price) : '') + '<span>' + esc(it.name ? it.cat + ' · ' : '') + esc(it.how) + '</span></li>';
+      }).join('') + '</ol></div>';
+    }
+  }
+  $('btnFin').addEventListener('click', function () { go('inicio'); });
+  $('btnCopy').addEventListener('click', function () {
+    var fallback = function () { var r = document.createRange(); r.selectNodeContents($('copyText')); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Texto seleccionado: copialo desde el menú'); };
+    try { navigator.clipboard.writeText(lastReport || '').then(function () { toast('Mensaje copiado'); }, fallback); } catch (e) { fallback(); }
+  });
+
+  // ---------- ficha ----------
+  function openFicha(id) {
+    var c = findClient(id); if (!c) return;
+    var first = c.sessions[0], s = last(c);
+    $('fichaSub').textContent = c.sessions.length + (c.sessions.length === 1 ? ' sesión' : ' sesiones') + (c.example ? ' · ejemplo' : '');
+    var cmp = '';
+    if (c.sessions.length > 1) {
+      var keys = present(s.scores).filter(function (k) { return typeof first.scores[k.id] === 'number'; });
+      cmp = '<div class="card stack"><div class="row between"><h3>Antes y después</h3><span class="small muted">' + fmtDate(first.date) + ' → ' + fmtDate(s.date) + '</span></div>' +
+        (first.thumb || s.thumb ? '<div class="duo">' + thumb(first) + thumb(s) + '</div>' : '') +
+        '<div class="compare"><span style="font-weight:800">Puntaje general</span><span class="num muted">' + generalOf(first.scores) + ' → ' + generalOf(s.scores) + '</span>' + delta(generalOf(s.scores) - generalOf(first.scores)) +
+        keys.map(function (k) { return '<span>' + k.name + '</span><span class="num muted">' + first.scores[k.id] + ' → ' + s.scores[k.id] + '</span>' + delta(s.scores[k.id] - first.scores[k.id]); }).join('') + '</div>' +
+        '<p class="small muted">' + (c.redes ? 'Autorizó usar el antes y después en redes.' : 'No autorizó usar sus fotos en redes.') + '</p></div>';
+    }
+    var hist = '<div class="list">' + c.sessions.slice().reverse().map(function (x) {
+      return '<button class="client" type="button" data-session="' + x.id + '"><span class="avatar">' + (x.thumb ? '<img alt="" src="' + x.thumb + '">' : '<span class="num">' + generalOf(x.scores) + '</span>') + '</span><span class="grow stack" style="gap:2px"><strong>' + fmtDate(x.date) + '</strong><span class="small muted">Puntaje ' + generalOf(x.scores) + ' · ' + (x.source === 'ia' ? 'con IA' : x.source === 'ejemplo' ? 'ejemplo' : 'demostración') + '</span></span><span class="chip plain">Ver informe</span></button>';
+    }).join('') + '</div>';
+    $('fichaBody').innerHTML =
+      '<div class="row"><span class="avatar" style="width:56px;height:56px;border-radius:28px;font-size:18px">' + esc(initials(c.name)) + '</span><div class="grow stack" style="gap:2px"><h1 style="font-size:26px">' + esc(c.name) + '</h1><span class="small muted">Piel ' + esc((s.answers.tipo || '').toLowerCase()) + ' · sensibilidad: ' + esc((s.answers.sensible || '').toLowerCase()) + (c.phone ? ' · ' + esc(c.phone) : '') + '</span></div></div>' +
+      '<button class="btn primary big" type="button" id="btnControl">Nueva sesión de control</button>' + cmp + '<h2>Historial</h2>' + hist +
+      (s.med ? '<div class="card"><span class="eyebrow">Medicación y alergias</span><p>' + esc(s.med) + '</p></div>' : '') +
+      '<div class="row" id="delRow"><button class="btn ghost" type="button" id="btnDel">Borrar la ficha de esta clienta</button></div>';
+    $('btnControl').onclick = function () { startDraft(c.id); };
+    $('btnDel').onclick = function () {
+      $('delRow').innerHTML = '<span class="small grow">¿Borrar a ' + esc(c.name) + ' con todas sus fotos? No se puede deshacer.</span><button class="btn" type="button" id="noDel">No</button><button class="btn primary" type="button" id="yesDel">Sí, borrar</button>';
+      $('noDel').onclick = function () { openFicha(c.id); };
+      $('yesDel').onclick = function () { state.clients = state.clients.filter(function (x) { return x.id !== c.id; }); save(); toast('Ficha borrada'); go('inicio'); };
+    };
+    $('fichaBody').onclick = function (e) {
+      var b = e.target.closest('[data-session]'); if (!b) return;
+      renderReport(c, c.sessions.filter(function (y) { return y.id === b.dataset.session; })[0], '');
+    };
+    go('ficha');
+    function delta(d) { return '<span class="chip ' + (d > 0 ? '' : d < 0 ? 'bad' : 'plain') + '">' + (d > 0 ? '+' : '') + d + '</span>'; }
+    function thumb(x) { return '<div class="stack" style="gap:6px">' + (x.thumb ? '<img alt="Foto del ' + fmtDate(x.date) + '" src="' + x.thumb + '" style="width:100%;border-radius:12px;aspect-ratio:3/4;object-fit:cover">' : '<div class="drop" style="aspect-ratio:3/4;padding:8px"><span class="small muted">Sin foto</span></div>') + '<span class="small muted">' + fmtDate(x.date) + '</span></div>'; }
+  }
+
+  // ---------- catálogo ----------
+  function renderCatalog() {
+    $('treatList').innerHTML = TREATS.map(function (t) {
+      var p = state.catalog['t_' + t.id] || {}, on = !state.treatOff[t.id];
+      return '<div class="prodrow"><label class="check" for="t-' + t.id + '-on"><input type="checkbox" id="t-' + t.id + '-on"' + (on ? ' checked' : '') + '><span><strong>' + esc(t.name) + '</strong><span class="small muted" style="display:block">Para ' + t.for.map(function (k) { return IND.filter(function (x) { return x.id === k; })[0].name.toLowerCase(); }).join(', ') + '</span></span></label>' +
+        '<input type="text" id="t-' + t.id + '-p" aria-label="Precio de ' + esc(t.name) + '" placeholder="Precio por sesión (opcional)" value="' + esc(p.price || '') + '"></div>';
+    }).join('');
+    $('catList').innerHTML = CATS.map(function (c) {
+      var p = state.catalog[c.id] || {};
+      return '<div class="prodrow"><strong>' + esc(c.label) + '</strong><div class="two">' +
+        '<input type="text" id="cat-' + c.id + '-n" aria-label="Producto para ' + esc(c.label) + '" placeholder="Marca y producto" value="' + esc(p.name || '') + '">' +
+        '<input type="text" id="cat-' + c.id + '-p" aria-label="Precio de ' + esc(c.label) + '" placeholder="Precio" value="' + esc(p.price || '') + '"></div></div>';
+    }).join('');
+  }
+  $('btnSaveCat').addEventListener('click', function () {
+    TREATS.forEach(function (t) {
+      if ($('t-' + t.id + '-on').checked) delete state.treatOff[t.id]; else state.treatOff[t.id] = true;
+      var pr = $('t-' + t.id + '-p').value.trim();
+      if (pr) state.catalog['t_' + t.id] = { price: pr }; else delete state.catalog['t_' + t.id];
+    });
+    CATS.forEach(function (c) {
+      var n = $('cat-' + c.id + '-n').value.trim(), p = $('cat-' + c.id + '-p').value.trim();
+      if (n || p) state.catalog[c.id] = { name: n, price: p }; else delete state.catalog[c.id];
+    });
+    toast(save() ? 'Catálogo guardado' : 'No se pudo guardar en este teléfono');
+  });
+  $('btnSaveBrand').addEventListener('click', function () {
+    state.brand.marca = $('fMarca').value.trim(); state.brand.prof = $('fProf').value.trim();
+    toast(save() ? 'Guardado' : 'No se pudo guardar en este teléfono');
+  });
+
+  // ---------- arranque ----------
+  var saved = getCode();
+  if (saved) { showGate(''); tryCode(saved, false); } else showGate('');
+})();
+</script>
+</body>
+</html>

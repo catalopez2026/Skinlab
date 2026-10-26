@@ -1,0 +1,9 @@
+{
+  "name": "skinlab",
+  "private": true,
+  "type": "module",
+  "description": "SKINLAB: análisis de piel para cosmetólogas",
+  "dependencies": {
+    "@netlify/blobs": "11.1.2"
+  }
+}

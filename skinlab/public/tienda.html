@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>SKINLAB · Panel de la tienda</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap">
+<script src="/qrcode.js"></script>
+<script src="/biblioteca.js"></script>
+<style>
+:root {
+  --bg: #FBF1F5; --surface: #FFFAFC; --line: #EBCFDD; --line-soft: #F4E2EA; --fg: #4A2238; --muted: #85586F;
+  --accent: #A8467A; --accent-ink: #FFFFFF; --accent-soft: #F6DCE8; --accent-strong: #7E2E58;
+  --rose-soft: #F6DCE8; --rose-ink: #7E2E58; --warn: #7E2E58; --warn-soft: #FCE9EF; --bad: #A3392B; --bad-soft: #F8E3DF;
+  --display: 'Cormorant Garamond', Georgia, serif; --body: 'Jost', system-ui, sans-serif; --mono: 'Jost', system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+[hidden] { display: none !important; }
+.wrap { max-width: 860px; margin: 0 auto; padding-block: 24px 64px; display: flex; flex-direction: column; gap: 18px; }
+h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 34px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+h2 { margin: 0; font-size: 18px; }
+p { margin: 0; }
+.muted { color: var(--muted); } .small { font-size: 13px; }
+.eyebrow { font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+label.f { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; flex: 1; min-width: 160px; }
+input[type=text], input[type=tel], select { min-height: 46px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 16px; width: 100%; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.small { min-height: 36px; padding: 0 10px; font-size: 13px; }
+:focus-visible { outline: 3px solid #C584B6; outline-offset: 2px; }
+.code { font-family: var(--mono); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; font-size: 20px !important; }
+.pill { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-strong); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.stat b { display: block; font-family: var(--display); font-size: 30px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.linkbox { font-family: var(--mono); font-size: 14px; background: var(--line-soft); border-radius: 10px; padding: 10px 12px; overflow-wrap: anywhere; user-select: all; }
+#qr { width: 180px; height: 180px; background: #fff; border-radius: 12px; padding: 10px; }
+.prod { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; padding: 12px 0; border-top: 1px solid var(--line-soft); align-items: center; }
+.prod:first-child { border-top: 0; }
+.prod .meta { font-size: 13px; color: var(--muted); }
+.lib { display: flex; flex-direction: column; gap: 10px; }
+.lib-list { max-height: 420px; overflow-y: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); padding: 0 14px; }
+.brands { display: flex; flex-wrap: wrap; gap: 6px; }
+.brands button { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 13px; cursor: pointer; }
+.brands button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.prod.off { opacity: 0.55; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px; }
+.checks label { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border-radius: 20px; border: 1.5px solid var(--line); font-size: 14px; font-weight: 600; cursor: pointer; }
+.checks input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); }
+.note { border-radius: 12px; padding: 10px 14px; background: var(--warn-soft); font-size: 14px; }
+.err { color: var(--bad); font-weight: 600; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 420px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; z-index: 20; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between">
+    <span class="eyebrow">SKINLAB · Panel de la tienda</span>
+    <a class="btn small" href="#" id="btnOut" hidden>Salir</a>
+  </div>
+
+  <form class="card" id="loginForm" style="max-width:420px">
+    <h1>Entrá a tu panel</h1>
+    <label class="f" for="fCode">Código de la tienda
+      <input type="text" class="code" id="fCode" maxlength="9" placeholder="XXXX-XXXX" autocomplete="one-time-code" required>
+    </label>
+    <div class="row"><button class="btn primary" type="submit">Entrar</button><span class="err" id="loginErr"></span></div>
+  </form>
+
+  <div id="panel" hidden style="display:flex;flex-direction:column;gap:18px">
+    <div class="row" style="justify-content:space-between;align-items:flex-end">
+      <div><h1 id="pName"></h1><p class="muted small" id="pStatus"></p></div>
+      <span class="pill" id="pDays"></span>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="grid2">
+      <div class="card">
+        <h2>Tu test de piel</h2>
+        <p class="small muted">Compartí este link en tu bio de Instagram y en WhatsApp, o imprimí el cartel con el QR para el mostrador.</p>
+        <div class="linkbox" id="link"></div>
+        <div class="row"><button class="btn small" type="button" id="btnCopyLink">Copiar link</button><a class="btn small" id="btnOpen" target="_blank" rel="noopener">Probar el test</a></div>
+      </div>
+      <div class="card" style="align-items:center;text-align:center">
+        <canvas id="qr" aria-label="Código QR del test"></canvas>
+        <a class="btn primary" id="btnPoster" href="#" download="cartel-test-de-piel.png">Descargar cartel para el mostrador</a>
+      </div>
+    </div>
+
+    <div id="coverage"></div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between"><h2>Productos <span class="muted small" id="pCount"></span></h2>
+        <div class="row"><button class="btn small" type="button" id="btnLib">Agregar desde la biblioteca</button><button class="btn small" type="button" id="btnExamples">Cargar ejemplos</button><button class="btn small primary" type="button" id="btnAdd">Agregar producto</button></div></div>
+      <p class="small muted">El test arma cada rutina con estos productos. Indicá para qué sirve cada uno, así la recomendación es precisa.</p>
+      <form id="editor" class="card" style="background:var(--bg)" hidden>
+        <h2 id="edTitle">Nuevo producto</h2>
+        <div class="row">
+          <label class="f" for="eName">Nombre<input type="text" id="eName" placeholder="Ej.: Sérum de niacinamida 10%" required></label>
+          <label class="f" for="eBrand" style="max-width:220px">Marca<input type="text" id="eBrand" placeholder="Ej.: COSRX"></label>
+          <label class="f" for="ePrice" style="max-width:160px">Precio<input type="text" id="ePrice" placeholder="$19.900"></label>
+        </div>
+        <label class="f" for="eCat" style="max-width:320px">Tipo de producto
+          <select id="eCat">
+            <option value="limpiador">Limpiador</option><option value="aceite">Aceite o bálsamo desmaquillante</option>
+            <option value="tonico">Tónico o esencia</option><option value="serum">Sérum o ampolla</option>
+            <option value="contorno">Contorno de ojos</option><option value="hidratante">Crema hidratante</option>
+            <option value="protector">Protector solar</option><option value="exfoliante">Exfoliante</option><option value="mascarilla">Mascarilla</option>
+          </select>
+        </label>
+        <fieldset style="border:0;padding:0;margin:0"><legend style="font-weight:700;font-size:14px;padding-bottom:8px">Sirve para</legend><div class="checks" id="eConcerns"></div></fieldset>
+        <fieldset style="border:0;padding:0;margin:0"><legend style="font-weight:700;font-size:14px;padding-bottom:8px">Tipo de piel</legend><div class="checks" id="eSkins"></div></fieldset>
+        <label class="f" for="ePreg" style="max-width:320px">¿Apto embarazo y lactancia?
+          <select id="ePreg"><option value="si">Sí</option><option value="no">No (retinol, ácidos fuertes)</option><option value="nose" selected>No sé</option></select>
+        </label>
+        <label class="f" for="eTier" style="max-width:320px">Gama de precio
+          <select id="eTier"><option value="economica">Económica</option><option value="media" selected>Media</option><option value="alta">Alta</option></select>
+        </label>
+        <p class="small muted">Con los precios cargados, la rutina económica elige el más barato. Sin precio, usa la gama.</p>
+        <div class="row"><button class="btn primary" type="submit">Guardar producto</button><button class="btn" type="button" id="btnCancel">Cancelar</button><button class="btn" type="button" id="btnDelete" style="margin-left:auto" hidden>Eliminar</button></div>
+      </form>
+      <div class="lib card" id="libBox" style="background:var(--bg)" hidden>
+        <div class="row" style="justify-content:space-between"><h2>Biblioteca de productos</h2><button class="btn small" type="button" id="btnLibClose">Cerrar</button></div>
+        <p class="small muted">Productos faciales comunes en farmacias y perfumerías de Argentina, ya clasificados. Tocá "Agregar" y después completá el precio con "Editar". Revisá que el nombre coincida con el que vendés.</p>
+        <label class="f" for="libQ">Buscar<input type="text" id="libQ" placeholder="Ej.: niacinamida, Effaclar, protector"></label>
+        <div class="brands" id="libBrands"></div>
+        <div class="lib-list" id="libList"></div>
+      </div>
+      <div id="prods"></div>
+    </div>
+
+    <div class="card">
+      <h2>Datos de contacto</h2>
+      <div class="row">
+        <label class="f" for="iWa">WhatsApp que recibe los pedidos<input type="tel" id="iWa" placeholder="11 5555 5555"></label>
+        <label class="f" for="iIg">Instagram<input type="text" id="iIg" placeholder="@tutienda"></label>
+      </div>
+      <div class="row"><button class="btn primary" type="button" id="btnSaveInfo">Guardar datos</button></div>
+    </div>
+
+    <div class="card">
+      <h2>Últimos días</h2>
+      <div class="tablewrap"><table><thead><tr><th>Día</th><th>Visitas</th><th>Tests completos</th><th>WhatsApp</th><th>En el local</th></tr></thead><tbody id="days"></tbody></table></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function toast(m) { var t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(function () { t.hidden = true; }, 2400); }
+  var CONC = [['acne', 'Granitos y acné'], ['manchas', 'Manchas'], ['rojeces', 'Rojeces y sensibilidad'], ['poros', 'Poros y brillo'], ['lineas', 'Líneas y arrugas'], ['hidratacion', 'Hidratación'], ['luminosidad', 'Luminosidad']];
+  var SKINS = [['todas', 'Todas'], ['grasa', 'Grasa'], ['mixta', 'Mixta'], ['seca', 'Seca'], ['normal', 'Normal'], ['sensible', 'Sensible']];
+  var CATN = { limpiador: 'Limpiador', aceite: 'Aceite desmaquillante', tonico: 'Tónico o esencia', serum: 'Sérum', contorno: 'Contorno de ojos', hidratante: 'Crema hidratante', protector: 'Protector solar', exfoliante: 'Exfoliante', mascarilla: 'Mascarilla' };
+  var EXAMPLES = [
+    ['Gel limpiador suave', 'limpiador', ['rojeces', 'acne'], ['todas'], 'si'], ['Sérum de niacinamida', 'serum', ['poros', 'acne', 'manchas'], ['grasa', 'mixta'], 'si'],
+    ['Sérum de vitamina C', 'serum', ['manchas', 'luminosidad'], ['todas'], 'si'], ['Sérum calmante de centella', 'serum', ['rojeces', 'hidratacion'], ['sensible', 'seca'], 'si'],
+    ['Crema gel liviana', 'hidratante', ['poros', 'hidratacion'], ['grasa', 'mixta'], 'si'], ['Crema reparadora', 'hidratante', ['hidratacion', 'rojeces'], ['seca', 'sensible'], 'si'],
+    ['Protector solar FPS 50', 'protector', ['manchas', 'lineas'], ['todas'], 'si']
+  ];
+  var code = '', data = null, products = [], editing = -1;
+
+  function api(body) {
+    body.code = code;
+    return fetch('/api/shop-panel', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().then(function (j) { j._status = r.status; return j; }); });
+  }
+  $('fCode').addEventListener('input', function () { var v = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8); this.value = v.length > 4 ? v.slice(0, 4) + '-' + v.slice(4) : v; });
+  $('loginForm').addEventListener('submit', function (e) { e.preventDefault(); login($('fCode').value.replace(/[^A-Z0-9]/gi, '')); });
+  function login(c) {
+    code = c; $('loginErr').textContent = '';
+    api({ action: 'get' }).then(function (j) {
+      if (!j.ok) { $('loginErr').textContent = j.message || 'No se pudo entrar.'; return; }
+      try { sessionStorage.setItem('skinlab-shop-code', c); } catch (e) {}
+      data = j; products = j.products.slice(); render();
+      $('loginForm').hidden = true; $('panel').hidden = false; $('btnOut').hidden = false;
+    }).catch(function () { $('loginErr').textContent = 'No se pudo conectar con el servidor.'; });
+  }
+  $('btnOut').addEventListener('click', function (e) { e.preventDefault(); try { sessionStorage.removeItem('skinlab-shop-code'); } catch (er) {} location.hash = ''; location.reload(); });
+
+  function render() {
+    var s = data.shop, t = data.stats.totals || {};
+    $('pName').textContent = s.name;
+    $('pStatus').textContent = 'Estado: ' + s.status + (s.expiresAt ? ' · la prueba vence el ' + new Date(s.expiresAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) : '');
+    $('pDays').textContent = s.status === 'Vencida' ? 'Prueba terminada' : 'Quedan ' + s.daysLeft + ' días';
+    $('pDays').className = 'pill' + (s.daysLeft <= 2 ? ' warn' : '');
+    var comp = t.complete || 0, orders = (t.whatsapp || 0) + (t.counter || 0);
+    $('stats').innerHTML = stat(t.view || 0, 'visitas al test') + stat(comp, 'rutinas recomendadas') + stat(t.whatsapp || 0, 'pedidos por WhatsApp') + stat(t.counter || 0, 'mostradas en el local') +
+      stat(comp ? Math.min(100, Math.round(orders / comp * 100)) + '%' : '—', 'de las rutinas terminan en pedido');
+    var url = location.origin + '/t/' + s.slug;
+    $('link').textContent = url; $('btnOpen').href = url;
+    drawQR(url);
+    $('iWa').value = s.whatsapp ? '+' + s.whatsapp : ''; $('iIg').value = s.instagram || '';
+    var days = Object.keys(data.stats.days || {}).sort().reverse().slice(0, 14);
+    $('days').innerHTML = days.length ? days.map(function (d) { var x = data.stats.days[d]; return '<tr><td>' + d.slice(8) + '/' + d.slice(5, 7) + '</td><td>' + (x.view || 0) + '</td><td>' + (x.complete || 0) + '</td><td>' + (x.whatsapp || 0) + '</td><td>' + (x.counter || 0) + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="muted">Todavía no hay visitas.</td></tr>';
+    renderProducts();
+  }
+  function stat(n, t) { return '<div class="stat"><b>' + n + '</b><span class="small muted">' + t + '</span></div>'; }
+
+  function renderProducts() {
+    $('pCount').textContent = '(' + products.length + ')';
+    $('btnExamples').hidden = products.length > 0;
+    $('prods').innerHTML = products.length ? products.map(function (p, i) {
+      return '<div class="prod' + (p.active === false ? ' off' : '') + '"><div><strong>' + esc(p.name) + '</strong>' + (p.brand ? ' · ' + esc(p.brand) : '') +
+        '<div class="meta">' + esc(CATN[p.cat] || p.cat) + ' · ' + esc({ economica: 'gama económica', media: 'gama media', alta: 'gama alta' }[p.tier] || 'gama media') + ' · ' + esc((p.concerns || []).map(function (c) { return (CONC.filter(function (x) { return x[0] === c; })[0] || [c, c])[1].toLowerCase(); }).join(', ') || 'sin indicar para qué sirve') + (p.price ? ' · ' + esc(p.price) : ' · <strong style="color:var(--accent)">sin precio</strong>') + '</div></div>' +
+        '<div class="row"><button class="btn small" type="button" data-toggle="' + i + '">' + (p.active === false ? 'Mostrar' : 'Ocultar') + '</button><button class="btn small" type="button" data-edit="' + i + '">Editar</button></div></div>';
+    }).join('') : '<p class="muted small">Todavía no cargaste productos.</p>';
+    var have = {}; products.forEach(function (p) { if (p.active !== false) have[p.cat] = true; });
+    var missing = ['limpiador', 'serum', 'hidratante', 'protector'].filter(function (c) { return !have[c]; });
+    $('coverage').innerHTML = missing.length ? '<p class="note">Para que el test arme rutinas completas te falta cargar: <strong>' + missing.map(function (c) { return CATN[c].toLowerCase(); }).join(', ') + '</strong>.</p>' : '';
+  }
+  $('prods').addEventListener('click', function (e) {
+    var t = e.target.closest('[data-toggle]'), ed = e.target.closest('[data-edit]');
+    if (t) { var p = products[+t.dataset.toggle]; p.active = p.active === false; saveProducts('Producto ' + (p.active ? 'visible' : 'oculto')); }
+    if (ed) openEditor(+ed.dataset.edit);
+  });
+  function checks(el, list, sel, name) { $(el).innerHTML = list.map(function (o) { return '<label><input type="checkbox" name="' + name + '" value="' + o[0] + '"' + (sel.indexOf(o[0]) >= 0 ? ' checked' : '') + '>' + o[1] + '</label>'; }).join(''); }
+  function openEditor(i) {
+    editing = i; var p = i >= 0 ? products[i] : { name: '', brand: '', price: '', cat: 'serum', concerns: [], skins: ['todas'], pregnancy: 'nose' };
+    $('edTitle').textContent = i >= 0 ? 'Editar producto' : 'Nuevo producto';
+    $('eName').value = p.name; $('eBrand').value = p.brand || ''; $('ePrice').value = p.price || ''; $('eCat').value = p.cat; $('ePreg').value = p.pregnancy || 'nose'; $('eTier').value = p.tier || 'media';
+    checks('eConcerns', CONC, p.concerns || [], 'c'); checks('eSkins', SKINS, p.skins || ['todas'], 's');
+    $('btnDelete').hidden = i < 0; $('editor').hidden = false; $('eName').focus();
+  }
+  $('btnAdd').addEventListener('click', function () { openEditor(-1); });
+  $('btnCancel').addEventListener('click', function () { $('editor').hidden = true; });
+  $('btnDelete').addEventListener('click', function () {
+    if ($('btnDelete').dataset.confirm !== '1') { $('btnDelete').dataset.confirm = '1'; $('btnDelete').textContent = 'Tocá de nuevo para eliminar'; return; }
+    $('btnDelete').dataset.confirm = ''; $('btnDelete').textContent = 'Eliminar';
+    products.splice(editing, 1); $('editor').hidden = true; saveProducts('Producto eliminado');
+  });
+  $('editor').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var val = function (n) { return Array.prototype.map.call(document.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
+    var p = { id: editing >= 0 ? products[editing].id : 'p' + Date.now().toString(36), name: $('eName').value.trim(), brand: $('eBrand').value.trim(), price: $('ePrice').value.trim(), cat: $('eCat').value, concerns: val('c'), skins: val('s'), pregnancy: $('ePreg').value, tier: $('eTier').value, active: editing >= 0 ? products[editing].active !== false : true };
+    if (!p.name) { toast('Escribí el nombre del producto'); return; }
+    if (!p.concerns.length && ['serum', 'tonico', 'exfoliante', 'mascarilla', 'contorno'].indexOf(p.cat) >= 0) { toast('Indicá para qué sirve'); return; }
+    if (editing >= 0) products[editing] = p; else products.push(p);
+    $('editor').hidden = true; saveProducts('Producto guardado');
+  });
+  // ----- biblioteca -----
+  var LIB = window.SKINLAB_LIB || [], libBrand = '';
+  function libKey(x) { return (x.brand + ' ' + x.name).toLowerCase(); }
+  function renderLib() {
+    var brands = []; LIB.forEach(function (x) { if (brands.indexOf(x.brand) < 0) brands.push(x.brand); });
+    $('libBrands').innerHTML = ['Todas'].concat(brands).map(function (b) { var v = b === 'Todas' ? '' : b; return '<button type="button" data-brand="' + esc(v) + '" aria-pressed="' + (libBrand === v) + '">' + esc(b) + '</button>'; }).join('');
+    var q = $('libQ').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    var have = {}; products.forEach(function (p) { have[(p.brand + ' ' + p.name).toLowerCase()] = true; });
+    var norm = function (v) { return String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); };
+    var words = q ? q.split(/\s+/) : [];
+    var rows = LIB.filter(function (x) {
+      if (libBrand && x.brand !== libBrand) return false;
+      if (!words.length) return true;
+      var hay = norm(x.brand + ' ' + x.name + ' ' + CATN[x.cat] + ' ' + (x.tags || '') + ' ' + x.concerns.map(function (c) { return (CONC.filter(function (k) { return k[0] === c; })[0] || [c, c])[1]; }).join(' '));
+      return words.every(function (w) { return hay.indexOf(w) >= 0; });
+    });
+    if (words.length) rows.sort(function (a, b) {
+      var sc = function (x) { var c = norm(CATN[x.cat]); return words.reduce(function (t, w) { return t + (c.indexOf(w) >= 0 ? 2 : 0); }, 0); };
+      return sc(b) - sc(a);
+    });
+    $('libList').innerHTML = rows.length ? rows.map(function (x) {
+      var i = LIB.indexOf(x), added = have[libKey(x)];
+      return '<div class="prod"><div><strong>' + esc(x.name) + '</strong> · ' + esc(x.brand) + '<div class="meta">' + esc(CATN[x.cat]) + ' · ' + esc({ economica: 'gama económica', media: 'gama media', alta: 'gama alta' }[x.tier] || '') + ' · ' +
+        esc(x.concerns.map(function (c) { return (CONC.filter(function (k) { return k[0] === c; })[0] || [c, c])[1].toLowerCase(); }).join(', ')) + '</div></div>' +
+        (added ? '<span class="pill">Agregado</span>' : '<button class="btn small primary" type="button" data-lib="' + i + '">Agregar</button>') + '</div>';
+    }).join('') : '<p class="small muted" style="padding:12px 0">No hay productos con esa búsqueda.</p>';
+  }
+  $('btnLib').addEventListener('click', function () { $('libBox').hidden = false; renderLib(); $('libQ').focus(); });
+  $('btnLibClose').addEventListener('click', function () { $('libBox').hidden = true; });
+  $('libQ').addEventListener('input', renderLib);
+  $('libBrands').addEventListener('click', function (e) { var b = e.target.closest('[data-brand]'); if (!b) return; libBrand = b.dataset.brand; renderLib(); });
+  $('libList').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-lib]'); if (!b) return;
+    var x = LIB[+b.dataset.lib];
+    products.push({ id: 'l' + Date.now().toString(36) + b.dataset.lib, name: x.name, brand: x.brand, price: '', cat: x.cat, concerns: x.concerns.slice(), skins: x.skins.slice(), pregnancy: x.pregnancy, tier: x.tier || 'media', active: true });
+    b.disabled = true;
+    saveProducts('Agregado: ' + x.name + '. Completá el precio con Editar.');
+  });
+
+  $('btnExamples').addEventListener('click', function () {
+    products = EXAMPLES.map(function (x, i) { return { id: 'ej' + i, name: x[0], brand: '', price: '', cat: x[1], concerns: x[2], skins: x[3], pregnancy: x[4], active: true }; });
+    saveProducts('Ejemplos cargados: editá nombres y precios con los tuyos');
+  });
+  function saveProducts(msg) {
+    api({ action: 'save', products: products }).then(function (j) {
+      if (!j.ok) { toast(j.message || 'No se pudo guardar'); return; }
+      data = j; products = j.products.slice(); render(); if (!$('libBox').hidden) renderLib(); toast(msg);
+    }).catch(function () { toast('Sin conexión: no se guardó'); });
+  }
+  $('btnSaveInfo').addEventListener('click', function () {
+    api({ action: 'save', info: { whatsapp: $('iWa').value, instagram: $('iIg').value } }).then(function (j) { if (j.ok) { data = j; render(); toast('Datos guardados'); } else toast(j.message || 'No se pudo guardar'); });
+  });
+  $('btnCopyLink').addEventListener('click', function () { try { navigator.clipboard.writeText($('link').textContent).then(function () { toast('Link copiado'); }); } catch (e) {} });
+
+  // QR y cartel
+  function qrMatrix(text) { var q = qrcode(0, 'M'); q.addData(text); q.make(); return q; }
+  function paintQR(ctx, q, x, y, size) {
+    var n = q.getModuleCount(), cell = size / (n + 8);
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(x, y, size, size); ctx.fillStyle = '#4A2238';
+    for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) ctx.fillRect(Math.floor(x + (c + 4) * cell), Math.floor(y + (r + 4) * cell), Math.ceil(cell), Math.ceil(cell));
+  }
+  function drawQR(url) {
+    var q = qrMatrix(url), cv = $('qr'); cv.width = 360; cv.height = 360;
+    paintQR(cv.getContext('2d'), q, 0, 0, 360);
+    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { poster(url, q); });
+  }
+  function poster(url, q) {
+    var W = 1240, H = 1754, c = document.createElement('canvas'); c.width = W; c.height = H; var g = c.getContext('2d');
+    var grd = g.createLinearGradient(0, 0, W, H); grd.addColorStop(0, '#E7B9D2'); grd.addColorStop(0.5, '#C584B6'); grd.addColorStop(1, '#A8467A');
+    g.fillStyle = grd; g.fillRect(0, 0, W, H);
+    g.strokeStyle = 'rgba(255,255,255,0.8)'; g.lineWidth = 3; roundRect(g, 48, 48, W - 96, H - 96, 28); g.stroke();
+    g.textAlign = 'center'; g.fillStyle = '#FFFFFF';
+    g.font = '500 36px Jost, sans-serif'; spaced(g, data.shop.name.toUpperCase(), W / 2, 200, 10);
+    g.font = '600 150px "Cormorant Garamond", Georgia, serif'; spaced(g, 'TU PIEL,', W / 2, 400, 6); spaced(g, 'TU RUTINA', W / 2, 545, 6);
+    g.font = '300 44px Jost, sans-serif'; g.fillText('Hacé el test en 2 minutos y', W / 2, 650); g.fillText('descubrí qué necesita tu piel', W / 2, 708);
+    var s = 600; g.fillStyle = '#FFFFFF'; roundRect(g, (W - s) / 2 - 30, 790, s + 60, s + 60, 36); g.fill();
+    paintQR(g, q, (W - s) / 2, 820, s);
+    g.fillStyle = '#FFFFFF'; g.font = '500 40px Jost, sans-serif'; spaced(g, 'ESCANEÁ CON TU CELULAR', W / 2, 1560, 6);
+    g.font = '300 30px Jost, sans-serif'; g.fillText(url.replace(/^https?:\/\//, ''), W / 2, 1620);
+    g.font = '500 24px Jost, sans-serif'; spaced(g, 'CON TECNOLOGÍA SKINLAB', W / 2, 1670, 8);
+    try { $('btnPoster').href = c.toDataURL('image/png'); } catch (e) {}
+  }
+  function spaced(g, text, cx, y, sp) {
+    var w = 0, i; for (i = 0; i < text.length; i++) w += g.measureText(text[i]).width + (i < text.length - 1 ? sp : 0);
+    var x = cx - w / 2, al = g.textAlign; g.textAlign = 'left';
+    for (i = 0; i < text.length; i++) { g.fillText(text[i], x, y); x += g.measureText(text[i]).width + sp; }
+    g.textAlign = al;
+  }
+  function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+
+  // arranque: código en #code=XXXX o guardado en esta pestaña
+  var fromHash = (location.hash.match(/code=([A-Za-z0-9-]+)/) || [])[1];
+  var saved = ''; try { saved = sessionStorage.getItem('skinlab-shop-code') || ''; } catch (e) {}
+  if (fromHash || saved) login((fromHash || saved).replace(/[^A-Z0-9]/gi, '').toUpperCase());
+})();
+</script>
+</body>
+</html>

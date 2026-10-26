@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SKINLAB">
+  <rect width="512" height="512" rx="112" fill="#55654F"/>
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#F4EDE6" stroke-width="18"/>
+  <path d="M190 330c10-92 64-150 150-166-8 90-62 150-150 166z" fill="#E3C3BA"/>
+  <path d="M190 330c38-40 74-86 112-140" fill="none" stroke="#55654F" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="346" cy="352" r="16" fill="#F4EDE6"/>
+</svg>
