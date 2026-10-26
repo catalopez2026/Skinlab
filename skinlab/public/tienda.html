@@ -8,15 +8,15 @@
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Outfit:wght@300;400;500;600;700&display=swap">
 <script src="/qrcode.js"></script>
 <script src="/biblioteca.js"></script>
 <style>
 :root {
-  --bg: #FBF1F5; --surface: #FFFAFC; --line: #EBCFDD; --line-soft: #F4E2EA; --fg: #4A2238; --muted: #85586F;
-  --accent: #A8467A; --accent-ink: #FFFFFF; --accent-soft: #F6DCE8; --accent-strong: #7E2E58;
-  --rose-soft: #F6DCE8; --rose-ink: #7E2E58; --warn: #7E2E58; --warn-soft: #FCE9EF; --bad: #A3392B; --bad-soft: #F8E3DF;
-  --display: 'Cormorant Garamond', Georgia, serif; --body: 'Jost', system-ui, sans-serif; --mono: 'Jost', system-ui, sans-serif;
+  --bg: #FDF1E7; --surface: #FFF9F3; --line: #F2D3C6; --line-soft: #F8E4D9; --fg: #4A2326; --muted: #8B5A55;
+  --coral: #EE6670; --accent: #D9475A; --accent-ink: #FFFFFF; --accent-soft: #FCDCD5; --accent-strong: #A8303F; --sun: #FFCD6B;
+  --rose-soft: #FCDCD5; --rose-ink: #A8303F; --warn: #7A4A00; --warn-soft: #FFEDC4; --bad: #A3392B; --bad-soft: #F8E3DF;
+  --display: 'Bodoni Moda', Georgia, serif; --body: 'Outfit', system-ui, sans-serif; --mono: 'Outfit', system-ui, sans-serif;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
@@ -24,7 +24,9 @@ body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--bo
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 [hidden] { display: none !important; }
 .wrap { max-width: 860px; margin: 0 auto; padding-block: 24px 64px; display: flex; flex-direction: column; gap: 18px; }
-h1 { margin: 0; font-family: var(--display); font-weight: 600; font-size: 34px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-strong); }
+h1 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 36px; line-height: 1.05; letter-spacing: -0.01em; color: var(--accent-strong); }
+h2 { font-family: var(--display); font-weight: 500; font-size: 22px !important; letter-spacing: -0.01em; color: var(--accent-strong); }
+.logo { width: 104px; height: 40px; fill: var(--coral); display: block; }
 h2 { margin: 0; font-size: 18px; }
 p { margin: 0; }
 .muted { color: var(--muted); } .small { font-size: 13px; }
@@ -37,7 +39,7 @@ input[type=text], input[type=tel], select { min-height: 46px; padding: 10px 12px
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .btn.small { min-height: 36px; padding: 0 10px; font-size: 13px; }
-:focus-visible { outline: 3px solid #C584B6; outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 .code { font-family: var(--mono); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; font-size: 20px !important; }
 .pill { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-strong); }
 .pill.warn { background: var(--warn-soft); color: var(--warn); }
@@ -54,6 +56,7 @@ input[type=text], input[type=tel], select { min-height: 46px; padding: 10px 12px
 .brands { display: flex; flex-wrap: wrap; gap: 6px; }
 .brands button { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 13px; cursor: pointer; }
 .brands button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.btn.primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
 .prod.off { opacity: 0.55; }
 .checks { display: flex; flex-wrap: wrap; gap: 8px; }
 .checks label { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border-radius: 20px; border: 1.5px solid var(--line); font-size: 14px; font-weight: 600; cursor: pointer; }
@@ -70,7 +73,7 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
 <body>
 <div class="wrap">
   <div class="row" style="justify-content:space-between">
-    <span class="eyebrow">SKINLAB · Panel de la tienda</span>
+    <span class="row" style="gap:12px"><svg class="logo" viewBox="-10 -215 740 277" role="img" aria-label="SKINLAB"><path d="M12.40 2L9 2L9-27.90L13-27.90Q14.60-20.60 19.10-14.75Q23.60-8.90 30.10-5.55Q36.60-2.20 44.10-2.20Q49.80-2.20 54.70-3.95Q59.60-5.70 62.60-9.25Q65.60-12.80 65.60-18.20Q65.60-24.20 61.70-27.70Q57.80-31.20 51.65-33.55Q45.50-35.90 38.60-38.20Q31.70-40.50 25.60-43.80Q19.50-47.10 15.60-52.65Q11.70-58.20 11.70-67.10Q11.70-73.90 14.80-80Q17.90-86.10 24.20-89.95Q30.50-93.80 39.90-93.80Q46.70-93.80 52.35-91.60Q58-89.40 62.30-85.70L70.60-93.90L74.10-93.90L74.10-66L70.10-66Q69-72 65.05-77.40Q61.10-82.80 54.75-86.25Q48.40-89.70 40.10-89.70Q35.40-89.70 31.50-88.10Q27.60-86.50 25.30-83.50Q23-80.50 23-76.40Q23-71.10 27.05-67.75Q31.10-64.40 37.55-62Q44-59.60 51.15-57.10Q58.30-54.60 64.75-51.10Q71.20-47.60 75.25-42.10Q79.30-36.60 79.30-28.10Q79.30-18.80 74.75-12Q70.20-5.20 62.60-1.60Q55 2 45.70 2Q38.60 2 32.30-0.40Q26-2.80 21.10-7.10L12.40 2M146.20 0L95.10 0L95.10-3.90L112.40-3.90L112.40-146.10L95.10-146.10L95.10-150L133.10-150L133.10-54.50L176.80-88.10L156.60-88.10L156.60-92L199.50-92L199.50-88.10L182.30-88.10L148.50-61.60L196.40-3.90L207.20-3.90L207.20 0L158 0L158-3.90L171-3.90L133.10-50.10L133.10-3.90L146.20-3.90L146.20 0M242.90-124.70Q237.40-124.70 233.50-128.65Q229.60-132.60 229.60-138.20Q229.60-143.80 233.50-147.70Q237.40-151.60 242.90-151.60Q248.60-151.60 252.50-147.70Q256.40-143.80 256.40-138.20Q256.40-132.60 252.50-128.65Q248.60-124.70 242.90-124.70M219.30-92L253.30-92L253.30-3.90L266.50-3.90L266.50 0L219.30 0L219.30-3.90L232.50-3.90L232.50-88.10L219.30-88.10L219.30-92M280.20-92L313.80-92L313.80-63.50Q315.50-69.90 318.70-75.90Q322.80-83.70 329.75-88.80Q336.70-93.90 347.30-93.90Q358.90-93.90 364.75-90.05Q370.60-86.20 372.70-79.40Q374.80-72.60 374.80-63.90L374.80-3.90L388.10-3.90L388.10 0L342.10 0L342.10-3.90L354.40-3.90L354.40-61Q354.40-69.40 353.65-75.45Q352.90-81.50 350.45-84.75Q348-88 342.90-88Q335.50-88 330-83.80Q324.50-79.60 320.95-73Q317.40-66.40 315.60-58.95Q313.80-51.50 313.80-44.80L313.80-3.90L326-3.90L326 0L280.20 0L280.20-3.90L293.50-3.90L293.50-88.10L280.20-88.10M421.31 2.68Q410.19 2.68 404.89-2.14Q399.60-6.97 399.60-14.61Q399.60-17.69 400-20.03Q400.41-22.38 400.94-24.12L447.17-195.77L422.65-195.77L422.65-201L473.57-201L423.32-14.20Q423.05-13 422.85-11.79Q422.65-10.59 422.65-9.65Q422.65-4.56 427.61-4.56Q433.10-4.56 438.06-8.44Q443.02-12.33 448.18-20.70Q453.34-29.08 458.83-43.01L463.92-41.27Q458.03-25.86 451.93-16.15Q445.83-6.43 438.53-1.88Q431.23 2.68 421.31 2.68M553.80 2Q548.60 2 544.35 0.30Q540.10-1.40 537.55-5.30Q535-9.20 535-15.60L535-20.20Q534.40-18.20 533.60-16.40Q529.80-7.70 522.70-2.85Q515.60 2 505.40 2Q492.40 2 484.65-4.65Q476.90-11.30 476.90-22.70Q476.90-36.10 488.45-43.75Q500-51.40 521.30-51.40L535-51.40L535-60.90Q535-68.10 533.75-74.70Q532.50-81.30 528.55-85.50Q524.60-89.70 516.60-89.70Q512.20-89.70 507.35-88.70Q502.50-87.70 498.30-85.70Q497.50-85.20 496.70-84.80Q501.30-84.60 505.10-81.80Q509-78.80 509-73.30Q509-67 504.95-64.05Q500.90-61.10 496.20-61.10Q491-61.10 487.45-64.15Q483.90-67.20 483.90-72.90Q483.90-77.90 487-81.70Q490.10-85.50 495.35-88.15Q500.60-90.80 507.15-92.20Q513.70-93.60 520.50-93.60Q534.70-93.60 542.20-88.95Q549.70-84.30 552.50-76.85Q555.30-69.40 555.30-60.90L555.30-12Q555.30-8.70 556.50-6.40Q557.70-4.10 561.40-4.10Q564-4.10 567.25-6.20Q570.50-8.30 572.30-11.80L574.30-8.50Q571.60-3.90 566.30-0.95Q561 2 553.80 2M535-36.50L535-48L523.10-48Q514.60-48 509.45-44.35Q504.30-40.70 501.90-35.35Q499.50-30 499.50-24.60Q499.50-19.70 500.95-15.25Q502.40-10.80 505.55-8Q508.70-5.20 513.60-5.20Q518.80-5.20 523.65-8.65Q528.50-12.10 531.75-19.05Q535-26 535-36.50M648.40 2Q636.40 2 628.10-6.30Q619.80-14.60 616.50-28.70L616.50 0L582.50 0L582.50-3.90L595.80-3.90L595.80-146.10L582.50-146.10L582.50-150L616.50-150L616.50-63.20Q619.80-77.40 628.05-85.60Q636.30-93.80 648.40-93.80Q659-93.80 668.45-88.10Q677.90-82.40 683.80-71.70Q689.70-61 689.70-46Q689.70-31 683.80-20.25Q677.90-9.50 668.45-3.75Q659 2 648.40 2M643.90-3.70Q651.10-3.70 656.05-8.60Q661-13.50 663.55-22.95Q666.10-32.40 666.10-46Q666.10-59.60 663.55-69Q661-78.40 656.05-83.25Q651.10-88.10 643.90-88.10Q636.90-88.10 630.60-83.20Q624.30-78.30 620.40-68.90Q616.50-59.50 616.50-46Q616.50-32.50 620.40-23Q624.30-13.50 630.60-8.60Q636.90-3.70 643.90-3.70"/><path d="M497.57 -199C501.40999999999997 -178.84 501.40999999999997 -178.84 521.5699999999999 -175C501.40999999999997 -171.16 501.40999999999997 -171.16 497.57 -151C493.73 -171.16 493.73 -171.16 473.57 -175C493.73 -178.84 493.73 -178.84 497.57 -199Z"/></svg><span class="eyebrow">Panel de la tienda</span></span>
     <a class="btn small" href="#" id="btnOut" hidden>Salir</a>
   </div>
 
@@ -107,7 +110,8 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
 
     <div class="card">
       <div class="row" style="justify-content:space-between"><h2>Productos <span class="muted small" id="pCount"></span></h2>
-        <div class="row"><button class="btn small" type="button" id="btnLib">Agregar desde la biblioteca</button><button class="btn small" type="button" id="btnExamples">Cargar ejemplos</button><button class="btn small primary" type="button" id="btnAdd">Agregar producto</button></div></div>
+        <div class="row"><button class="btn small primary" type="button" id="btnAll">Cargar toda la biblioteca</button><button class="btn small" type="button" id="btnLib">Elegir de la biblioteca</button><button class="btn small" type="button" id="btnExamples">Cargar ejemplos</button><button class="btn small" type="button" id="btnAdd">Agregar producto propio</button></div></div>
+      <div class="row" id="bulkRow"></div>
       <p class="small muted">El test arma cada rutina con estos productos. Indicá para qué sirve cada uno, así la recomendación es precisa.</p>
       <form id="editor" class="card" style="background:var(--bg)" hidden>
         <h2 id="edTitle">Nuevo producto</h2>
@@ -129,6 +133,9 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
         <label class="f" for="ePreg" style="max-width:320px">¿Apto embarazo y lactancia?
           <select id="ePreg"><option value="si">Sí</option><option value="no">No (retinol, ácidos fuertes)</option><option value="nose" selected>No sé</option></select>
         </label>
+        <label class="f" for="eTags">Ingredientes activos (opcional)
+          <input type="text" id="eTags" placeholder="Ej.: niacinamida, ácido hialurónico, retinol, FPS 50">
+        </label>
         <label class="f" for="eTier" style="max-width:320px">Gama de precio
           <select id="eTier"><option value="economica">Económica</option><option value="media" selected>Media</option><option value="alta">Alta</option></select>
         </label>
@@ -140,6 +147,7 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
         <p class="small muted">Productos faciales comunes en farmacias y perfumerías de Argentina, ya clasificados. Tocá "Agregar" y después completá el precio con "Editar". Revisá que el nombre coincida con el que vendés.</p>
         <label class="f" for="libQ">Buscar<input type="text" id="libQ" placeholder="Ej.: niacinamida, Effaclar, protector"></label>
         <div class="brands" id="libBrands"></div>
+        <div class="row"><button class="btn small primary" type="button" id="btnAddShown">Agregar todos los que se ven</button><span class="small muted" id="libCount"></span></div>
         <div class="lib-list" id="libList"></div>
       </div>
       <div id="prods"></div>
@@ -215,7 +223,24 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   }
   function stat(n, t) { return '<div class="stat"><b>' + n + '</b><span class="small muted">' + t + '</span></div>'; }
 
+  function renderBulk() {
+    if (!products.length) { $('bulkRow').innerHTML = ''; return; }
+    var noPrice = products.filter(function (p) { return p.active !== false && !p.price; }).length;
+    $('bulkRow').innerHTML = (noPrice ? '<button class="btn small" type="button" id="btnHideNoPrice">Ocultar los ' + noPrice + ' sin precio</button>' : '') +
+      '<button class="btn small" type="button" id="btnShowAll">Mostrar todos</button><button class="btn small" type="button" id="btnClear">Quitar todos los productos</button>';
+  }
+  document.addEventListener('click', function (e) {
+    var id = e.target && e.target.id;
+    if (id === 'btnHideNoPrice') { products.forEach(function (p) { if (!p.price) p.active = false; }); saveProducts('Ocultos los productos sin precio: el test usa solo los que tienen precio'); }
+    if (id === 'btnShowAll') { products.forEach(function (p) { p.active = true; }); saveProducts('Todos los productos visibles'); }
+    if (id === 'btnClear') {
+      $('bulkRow').innerHTML = '<span class="small grow">¿Quitar los ' + products.length + ' productos? No se puede deshacer.</span><button class="btn small" type="button" id="btnClearNo">No</button><button class="btn small primary" type="button" id="btnClearYes">Sí, quitar todos</button>';
+    }
+    if (id === 'btnClearNo') renderBulk();
+    if (id === 'btnClearYes') { products = []; saveProducts('Se quitaron todos los productos'); }
+  });
   function renderProducts() {
+    renderBulk();
     $('pCount').textContent = '(' + products.length + ')';
     $('btnExamples').hidden = products.length > 0;
     $('prods').innerHTML = products.length ? products.map(function (p, i) {
@@ -236,7 +261,7 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   function openEditor(i) {
     editing = i; var p = i >= 0 ? products[i] : { name: '', brand: '', price: '', cat: 'serum', concerns: [], skins: ['todas'], pregnancy: 'nose' };
     $('edTitle').textContent = i >= 0 ? 'Editar producto' : 'Nuevo producto';
-    $('eName').value = p.name; $('eBrand').value = p.brand || ''; $('ePrice').value = p.price || ''; $('eCat').value = p.cat; $('ePreg').value = p.pregnancy || 'nose'; $('eTier').value = p.tier || 'media';
+    $('eName').value = p.name; $('eBrand').value = p.brand || ''; $('ePrice').value = p.price || ''; $('eCat').value = p.cat; $('ePreg').value = p.pregnancy || 'nose'; $('eTier').value = p.tier || 'media'; $('eTags').value = p.tags || '';
     checks('eConcerns', CONC, p.concerns || [], 'c'); checks('eSkins', SKINS, p.skins || ['todas'], 's');
     $('btnDelete').hidden = i < 0; $('editor').hidden = false; $('eName').focus();
   }
@@ -250,7 +275,7 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   $('editor').addEventListener('submit', function (e) {
     e.preventDefault();
     var val = function (n) { return Array.prototype.map.call(document.querySelectorAll('input[name="' + n + '"]:checked'), function (x) { return x.value; }); };
-    var p = { id: editing >= 0 ? products[editing].id : 'p' + Date.now().toString(36), name: $('eName').value.trim(), brand: $('eBrand').value.trim(), price: $('ePrice').value.trim(), cat: $('eCat').value, concerns: val('c'), skins: val('s'), pregnancy: $('ePreg').value, tier: $('eTier').value, active: editing >= 0 ? products[editing].active !== false : true };
+    var p = { id: editing >= 0 ? products[editing].id : 'p' + Date.now().toString(36), name: $('eName').value.trim(), brand: $('eBrand').value.trim(), price: $('ePrice').value.trim(), cat: $('eCat').value, concerns: val('c'), skins: val('s'), pregnancy: $('ePreg').value, tier: $('eTier').value, tags: $('eTags').value.trim(), active: editing >= 0 ? products[editing].active !== false : true };
     if (!p.name) { toast('Escribí el nombre del producto'); return; }
     if (!p.concerns.length && ['serum', 'tonico', 'exfoliante', 'mascarilla', 'contorno'].indexOf(p.cat) >= 0) { toast('Indicá para qué sirve'); return; }
     if (editing >= 0) products[editing] = p; else products.push(p);
@@ -276,6 +301,10 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
       var sc = function (x) { var c = norm(CATN[x.cat]); return words.reduce(function (t, w) { return t + (c.indexOf(w) >= 0 ? 2 : 0); }, 0); };
       return sc(b) - sc(a);
     });
+    var missing = rows.filter(function (x) { return !have[libKey(x)]; }).length;
+    $('libCount').textContent = rows.length + ' productos' + (libBrand ? ' de ' + libBrand : '') + ' · ' + missing + ' sin agregar';
+    $('btnAddShown').textContent = libBrand ? 'Agregar todos los de ' + libBrand : 'Agregar todos los que se ven';
+    $('btnAddShown').disabled = !missing;
     $('libList').innerHTML = rows.length ? rows.map(function (x) {
       var i = LIB.indexOf(x), added = have[libKey(x)];
       return '<div class="prod"><div><strong>' + esc(x.name) + '</strong> · ' + esc(x.brand) + '<div class="meta">' + esc(CATN[x.cat]) + ' · ' + esc({ economica: 'gama económica', media: 'gama media', alta: 'gama alta' }[x.tier] || '') + ' · ' +
@@ -287,12 +316,47 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   $('btnLibClose').addEventListener('click', function () { $('libBox').hidden = true; });
   $('libQ').addEventListener('input', renderLib);
   $('libBrands').addEventListener('click', function (e) { var b = e.target.closest('[data-brand]'); if (!b) return; libBrand = b.dataset.brand; renderLib(); });
+  function fromLib(x, i) {
+    return { id: 'l' + Date.now().toString(36) + i, name: x.name, brand: x.brand, price: '', cat: x.cat, concerns: x.concerns.slice(), skins: x.skins.slice(), pregnancy: x.pregnancy, tier: x.tier || 'media', tags: x.tags || '', active: true };
+  }
+  // Agrega los que faltan y actualiza los datos de los que ya están (sin tocar precio ni visibilidad).
+  function addMany(list) {
+    var byKey = {}, added = 0, updated = 0;
+    products.forEach(function (p, i) { byKey[(p.brand + ' ' + p.name).toLowerCase()] = i; });
+    list.forEach(function (x) {
+      var k = libKey(x), i = LIB.indexOf(x);
+      if (byKey[k] != null) {
+        var p = products[byKey[k]];
+        p.cat = x.cat; p.concerns = x.concerns.slice(); p.skins = x.skins.slice(); p.pregnancy = x.pregnancy; p.tier = x.tier || p.tier; p.tags = x.tags || p.tags || '';
+        updated++;
+      } else { products.push(fromLib(x, i)); byKey[k] = products.length - 1; added++; }
+    });
+    return { added: added, updated: updated };
+  }
+  function visibleLib() {
+    var q = norm2($('libQ').value.trim()), words = q ? q.split(/\s+/) : [];
+    return LIB.filter(function (x) {
+      if (libBrand && x.brand !== libBrand) return false;
+      if (!words.length) return true;
+      var hay = norm2(x.brand + ' ' + x.name + ' ' + CATN[x.cat] + ' ' + (x.tags || ''));
+      return words.every(function (w) { return hay.indexOf(w) >= 0; });
+    });
+  }
+  function norm2(v) { return String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   $('libList').addEventListener('click', function (e) {
     var b = e.target.closest('[data-lib]'); if (!b) return;
     var x = LIB[+b.dataset.lib];
-    products.push({ id: 'l' + Date.now().toString(36) + b.dataset.lib, name: x.name, brand: x.brand, price: '', cat: x.cat, concerns: x.concerns.slice(), skins: x.skins.slice(), pregnancy: x.pregnancy, tier: x.tier || 'media', active: true });
+    products.push(fromLib(x, b.dataset.lib));
     b.disabled = true;
     saveProducts('Agregado: ' + x.name + '. Completá el precio con Editar.');
+  });
+  $('btnAddShown').addEventListener('click', function () {
+    var r = addMany(visibleLib());
+    saveProducts((r.added ? r.added + ' productos agregados' : 'No había productos nuevos') + (r.updated ? ', ' + r.updated + ' actualizados' : '') + '. Completá los precios con Editar.');
+  });
+  $('btnAll').addEventListener('click', function () {
+    var r = addMany(LIB);
+    saveProducts('Biblioteca cargada: ' + r.added + ' productos nuevos' + (r.updated ? ' y ' + r.updated + ' actualizados' : '') + '. Completá los precios y ocultá los que no vendés.');
   });
 
   $('btnExamples').addEventListener('click', function () {
@@ -314,28 +378,36 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   function qrMatrix(text) { var q = qrcode(0, 'M'); q.addData(text); q.make(); return q; }
   function paintQR(ctx, q, x, y, size) {
     var n = q.getModuleCount(), cell = size / (n + 8);
-    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(x, y, size, size); ctx.fillStyle = '#4A2238';
+    ctx.fillStyle = '#FFF4EA'; ctx.fillRect(x, y, size, size); ctx.fillStyle = '#4A2326';
     for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) ctx.fillRect(Math.floor(x + (c + 4) * cell), Math.floor(y + (r + 4) * cell), Math.ceil(cell), Math.ceil(cell));
   }
   function drawQR(url) {
     var q = qrMatrix(url), cv = $('qr'); cv.width = 360; cv.height = 360;
     paintQR(cv.getContext('2d'), q, 0, 0, 360);
-    (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { poster(url, q); });
+    var fl = document.fonts && document.fonts.load ? Promise.all(['500 170px "Bodoni Moda"', 'italic 500 170px "Bodoni Moda"', '300 44px Outfit', '500 34px Outfit'].map(function (f) { return document.fonts.load(f); })).catch(function () {}) : Promise.resolve();
+    fl.then(function () { poster(url, q); });
   }
+  var WM = { x: -10.0, y: -215.0, w: 740.0, h: 277.0, d: [
+    'M12.40 2L9 2L9-27.90L13-27.90Q14.60-20.60 19.10-14.75Q23.60-8.90 30.10-5.55Q36.60-2.20 44.10-2.20Q49.80-2.20 54.70-3.95Q59.60-5.70 62.60-9.25Q65.60-12.80 65.60-18.20Q65.60-24.20 61.70-27.70Q57.80-31.20 51.65-33.55Q45.50-35.90 38.60-38.20Q31.70-40.50 25.60-43.80Q19.50-47.10 15.60-52.65Q11.70-58.20 11.70-67.10Q11.70-73.90 14.80-80Q17.90-86.10 24.20-89.95Q30.50-93.80 39.90-93.80Q46.70-93.80 52.35-91.60Q58-89.40 62.30-85.70L70.60-93.90L74.10-93.90L74.10-66L70.10-66Q69-72 65.05-77.40Q61.10-82.80 54.75-86.25Q48.40-89.70 40.10-89.70Q35.40-89.70 31.50-88.10Q27.60-86.50 25.30-83.50Q23-80.50 23-76.40Q23-71.10 27.05-67.75Q31.10-64.40 37.55-62Q44-59.60 51.15-57.10Q58.30-54.60 64.75-51.10Q71.20-47.60 75.25-42.10Q79.30-36.60 79.30-28.10Q79.30-18.80 74.75-12Q70.20-5.20 62.60-1.60Q55 2 45.70 2Q38.60 2 32.30-0.40Q26-2.80 21.10-7.10L12.40 2M146.20 0L95.10 0L95.10-3.90L112.40-3.90L112.40-146.10L95.10-146.10L95.10-150L133.10-150L133.10-54.50L176.80-88.10L156.60-88.10L156.60-92L199.50-92L199.50-88.10L182.30-88.10L148.50-61.60L196.40-3.90L207.20-3.90L207.20 0L158 0L158-3.90L171-3.90L133.10-50.10L133.10-3.90L146.20-3.90L146.20 0M242.90-124.70Q237.40-124.70 233.50-128.65Q229.60-132.60 229.60-138.20Q229.60-143.80 233.50-147.70Q237.40-151.60 242.90-151.60Q248.60-151.60 252.50-147.70Q256.40-143.80 256.40-138.20Q256.40-132.60 252.50-128.65Q248.60-124.70 242.90-124.70M219.30-92L253.30-92L253.30-3.90L266.50-3.90L266.50 0L219.30 0L219.30-3.90L232.50-3.90L232.50-88.10L219.30-88.10L219.30-92M280.20-92L313.80-92L313.80-63.50Q315.50-69.90 318.70-75.90Q322.80-83.70 329.75-88.80Q336.70-93.90 347.30-93.90Q358.90-93.90 364.75-90.05Q370.60-86.20 372.70-79.40Q374.80-72.60 374.80-63.90L374.80-3.90L388.10-3.90L388.10 0L342.10 0L342.10-3.90L354.40-3.90L354.40-61Q354.40-69.40 353.65-75.45Q352.90-81.50 350.45-84.75Q348-88 342.90-88Q335.50-88 330-83.80Q324.50-79.60 320.95-73Q317.40-66.40 315.60-58.95Q313.80-51.50 313.80-44.80L313.80-3.90L326-3.90L326 0L280.20 0L280.20-3.90L293.50-3.90L293.50-88.10L280.20-88.10M421.31 2.68Q410.19 2.68 404.89-2.14Q399.60-6.97 399.60-14.61Q399.60-17.69 400-20.03Q400.41-22.38 400.94-24.12L447.17-195.77L422.65-195.77L422.65-201L473.57-201L423.32-14.20Q423.05-13 422.85-11.79Q422.65-10.59 422.65-9.65Q422.65-4.56 427.61-4.56Q433.10-4.56 438.06-8.44Q443.02-12.33 448.18-20.70Q453.34-29.08 458.83-43.01L463.92-41.27Q458.03-25.86 451.93-16.15Q445.83-6.43 438.53-1.88Q431.23 2.68 421.31 2.68M553.80 2Q548.60 2 544.35 0.30Q540.10-1.40 537.55-5.30Q535-9.20 535-15.60L535-20.20Q534.40-18.20 533.60-16.40Q529.80-7.70 522.70-2.85Q515.60 2 505.40 2Q492.40 2 484.65-4.65Q476.90-11.30 476.90-22.70Q476.90-36.10 488.45-43.75Q500-51.40 521.30-51.40L535-51.40L535-60.90Q535-68.10 533.75-74.70Q532.50-81.30 528.55-85.50Q524.60-89.70 516.60-89.70Q512.20-89.70 507.35-88.70Q502.50-87.70 498.30-85.70Q497.50-85.20 496.70-84.80Q501.30-84.60 505.10-81.80Q509-78.80 509-73.30Q509-67 504.95-64.05Q500.90-61.10 496.20-61.10Q491-61.10 487.45-64.15Q483.90-67.20 483.90-72.90Q483.90-77.90 487-81.70Q490.10-85.50 495.35-88.15Q500.60-90.80 507.15-92.20Q513.70-93.60 520.50-93.60Q534.70-93.60 542.20-88.95Q549.70-84.30 552.50-76.85Q555.30-69.40 555.30-60.90L555.30-12Q555.30-8.70 556.50-6.40Q557.70-4.10 561.40-4.10Q564-4.10 567.25-6.20Q570.50-8.30 572.30-11.80L574.30-8.50Q571.60-3.90 566.30-0.95Q561 2 553.80 2M535-36.50L535-48L523.10-48Q514.60-48 509.45-44.35Q504.30-40.70 501.90-35.35Q499.50-30 499.50-24.60Q499.50-19.70 500.95-15.25Q502.40-10.80 505.55-8Q508.70-5.20 513.60-5.20Q518.80-5.20 523.65-8.65Q528.50-12.10 531.75-19.05Q535-26 535-36.50M648.40 2Q636.40 2 628.10-6.30Q619.80-14.60 616.50-28.70L616.50 0L582.50 0L582.50-3.90L595.80-3.90L595.80-146.10L582.50-146.10L582.50-150L616.50-150L616.50-63.20Q619.80-77.40 628.05-85.60Q636.30-93.80 648.40-93.80Q659-93.80 668.45-88.10Q677.90-82.40 683.80-71.70Q689.70-61 689.70-46Q689.70-31 683.80-20.25Q677.90-9.50 668.45-3.75Q659 2 648.40 2M643.90-3.70Q651.10-3.70 656.05-8.60Q661-13.50 663.55-22.95Q666.10-32.40 666.10-46Q666.10-59.60 663.55-69Q661-78.40 656.05-83.25Q651.10-88.10 643.90-88.10Q636.90-88.10 630.60-83.20Q624.30-78.30 620.40-68.90Q616.50-59.50 616.50-46Q616.50-32.50 620.40-23Q624.30-13.50 630.60-8.60Q636.90-3.70 643.90-3.70',
+    'M497.57 -199C501.40999999999997 -178.84 501.40999999999997 -178.84 521.5699999999999 -175C501.40999999999997 -171.16 501.40999999999997 -171.16 497.57 -151C493.73 -171.16 493.73 -171.16 473.57 -175C493.73 -178.84 493.73 -178.84 497.57 -199Z' ] };
+  var SPARK = 'M0-28C4.5-4.5 4.5-4.5 28 0C4.5 4.5 4.5 4.5 0 28C-4.5 4.5-4.5 4.5-28 0C-4.5-4.5-4.5-4.5 0-28Z';
+  function drawPath(g, d, x, y, s) { g.save(); g.translate(x, y); g.scale(s, s); g.fill(new Path2D(d)); g.restore(); }
   function poster(url, q) {
     var W = 1240, H = 1754, c = document.createElement('canvas'); c.width = W; c.height = H; var g = c.getContext('2d');
-    var grd = g.createLinearGradient(0, 0, W, H); grd.addColorStop(0, '#E7B9D2'); grd.addColorStop(0.5, '#C584B6'); grd.addColorStop(1, '#A8467A');
-    g.fillStyle = grd; g.fillRect(0, 0, W, H);
-    g.strokeStyle = 'rgba(255,255,255,0.8)'; g.lineWidth = 3; roundRect(g, 48, 48, W - 96, H - 96, 28); g.stroke();
-    g.textAlign = 'center'; g.fillStyle = '#FFFFFF';
-    g.font = '500 36px Jost, sans-serif'; spaced(g, data.shop.name.toUpperCase(), W / 2, 200, 10);
-    g.font = '600 150px "Cormorant Garamond", Georgia, serif'; spaced(g, 'TU PIEL,', W / 2, 400, 6); spaced(g, 'TU RUTINA', W / 2, 545, 6);
-    g.font = '300 44px Jost, sans-serif'; g.fillText('Hacé el test en 2 minutos y', W / 2, 650); g.fillText('descubrí qué necesita tu piel', W / 2, 708);
-    var s = 600; g.fillStyle = '#FFFFFF'; roundRect(g, (W - s) / 2 - 30, 790, s + 60, s + 60, 36); g.fill();
+    g.fillStyle = '#EE6670'; g.fillRect(0, 0, W, H);
+    g.fillStyle = '#FFCD6B'; g.beginPath(); g.arc(W - 60, 70, 250, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#FFF4EA'; drawPath(g, SPARK, W - 250, 330, 1.5); drawPath(g, SPARK, 150, 1420, 1.0);
+    g.strokeStyle = 'rgba(255,244,234,0.85)'; g.lineWidth = 3; roundRect(g, 48, 48, W - 96, H - 96, 28); g.stroke();
+    g.textAlign = 'center'; g.fillStyle = '#FFF4EA';
+    g.font = '500 34px Outfit, sans-serif'; spaced(g, data.shop.name.toUpperCase(), W / 2, 190, 10);
+    g.font = '500 170px "Bodoni Moda", Georgia, serif'; g.fillText('Tu piel,', W / 2, 400);
+    g.font = 'italic 500 170px "Bodoni Moda", Georgia, serif'; g.fillText('tu rutina', W / 2, 560);
+    g.font = '300 44px Outfit, sans-serif'; g.fillText('Hacé el test en 2 minutos y', W / 2, 660); g.fillText('descubrí qué necesita tu piel', W / 2, 718);
+    var s = 580; g.fillStyle = '#FFF4EA'; roundRect(g, (W - s) / 2 - 30, 790, s + 60, s + 60, 40); g.fill();
     paintQR(g, q, (W - s) / 2, 820, s);
-    g.fillStyle = '#FFFFFF'; g.font = '500 40px Jost, sans-serif'; spaced(g, 'ESCANEÁ CON TU CELULAR', W / 2, 1560, 6);
-    g.font = '300 30px Jost, sans-serif'; g.fillText(url.replace(/^https?:\/\//, ''), W / 2, 1620);
-    g.font = '500 24px Jost, sans-serif'; spaced(g, 'CON TECNOLOGÍA SKINLAB', W / 2, 1670, 8);
+    g.fillStyle = '#FFF4EA'; g.font = '500 38px Outfit, sans-serif'; spaced(g, 'ESCANEÁ CON TU CELULAR', W / 2, 1530, 6);
+    g.font = '300 30px Outfit, sans-serif'; g.fillText(url.replace(/^https?:\/\//, ''), W / 2, 1585);
+    var ls = 230 / WM.w; WM.d.forEach(function (d) { drawPath(g, d, W / 2 - (WM.w / 2 + WM.x) * ls, 1680 - (WM.y + WM.h) * ls + 10, ls); });
     try { $('btnPoster').href = c.toDataURL('image/png'); } catch (e) {}
   }
   function spaced(g, text, cx, y, sp) {
