@@ -92,6 +92,7 @@ export function cleanProduct(p, idx) {
     skins: arr(p.skins, SKINS).length ? arr(p.skins, SKINS) : ["todas"],
     pregnancy: ["si", "no", "nose"].includes(p.pregnancy) ? p.pregnancy : "nose",
     tier: ["economica", "media", "alta"].includes(p.tier) ? p.tier : "media",
+    tags: String(p.tags || "").trim().slice(0, 140),
     active: p.active !== false,
   };
 }
@@ -102,7 +103,7 @@ export function publicShop(shop) {
     slug: shop.slug, name: shop.name, whatsapp: shop.whatsapp, instagram: shop.instagram,
     available: status(shop) === "Activa" || status(shop) === "Sin activar",
     products: (shop.products || []).filter((p) => p.active && p.name)
-      .map(({ id, name, brand, price, cat, concerns, skins, pregnancy, tier }) => ({ id, name, brand, price, cat, concerns, skins, pregnancy, tier })),
+      .map(({ id, name, brand, price, cat, concerns, skins, pregnancy, tier, tags }) => ({ id, name, brand, price, cat, concerns, skins, pregnancy, tier, tags })),
   };
 }
 
