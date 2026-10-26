@@ -19,7 +19,7 @@ export default async (req) => {
     if (typeof info.instagram === "string") shop.instagram = info.instagram.trim().slice(0, 60);
     if (typeof info.name === "string" && info.name.trim()) shop.name = info.name.trim().slice(0, 80);
     if (Array.isArray(body.products)) {
-      shop.products = body.products.slice(0, 150).map(cleanProduct).filter((p) => p.name);
+      shop.products = body.products.slice(0, 250).map(cleanProduct).filter((p) => p.name);
     }
     shop.updatedAt = new Date().toISOString();
   }
