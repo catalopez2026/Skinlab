@@ -5,21 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Test de piel</title>
 <meta name="description" content="Descubrí la rutina de skincare ideal para tu piel en 2 minutos.">
-<meta name="theme-color" content="#A8467A">
+<meta name="theme-color" content="#EE6670">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="/biblioteca.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Outfit:wght@300;400;500;600&display=swap">
 <style>
-/* SKINLAB para tiendas: rosa empolvado, orquídea y frambuesa; títulos serif en mayúsculas con marcos de línea fina. Un solo tema claro, por decisión de marca. */
+/* SKINLAB: coral, crema y amarillo sol; Bodoni Moda para títulos y Outfit para texto. Un solo tema claro, por decisión de marca. */
 :root {
-  --bg: #FBF1F5; --surface: #FFFAFC; --line: #EBCFDD; --line-soft: #F4E2EA;
-  --fg: #4A2238; --muted: #85586F;
-  --accent: #A8467A; --accent-ink: #FFFFFF; --accent-soft: #F6DCE8; --accent-strong: #7E2E58;
-  --orchid: #C584B6; --mauve: #C69AB8; --blush: #F5DDF0;
-  --rose: #C69AB8; --rose-soft: #F6DCE8; --rose-ink: #7E2E58; --warn: #7E2E58; --warn-soft: #FCE9EF;
-  --display: 'Cormorant Garamond', 'Didot', Georgia, serif; --body: 'Jost', 'Futura', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono: 'Jost', system-ui, sans-serif;
+  --bg: #FDF1E7; --surface: #FFF9F3; --line: #F2D3C6; --line-soft: #F8E4D9;
+  --fg: #4A2326; --muted: #8B5A55;
+  --coral: #EE6670; --accent: #D9475A; --accent-ink: #FFFFFF; --accent-soft: #FCDCD5; --accent-strong: #A8303F;
+  --sun: #FFCD6B; --sun-soft: #FFEDC4;
+  --orchid: #EE6670; --mauve: #EBB3A9; --blush: #FCE5DD;
+  --rose: #EBB3A9; --rose-soft: #FCDCD5; --rose-ink: #A8303F; --warn: #A8303F; --warn-soft: #FFEDC4;
+  --display: 'Bodoni Moda', 'Didot', Georgia, serif; --body: 'Outfit', 'Futura', system-ui, -apple-system, 'Segoe UI', sans-serif; --mono: 'Outfit', system-ui, sans-serif;
   color-scheme: light;
 }
 * { box-sizing: border-box; }
@@ -29,8 +31,9 @@ body { background: var(--bg); color: var(--fg); font-family: var(--body); font-s
 [hidden] { display: none !important; }
 .app { max-width: 520px; margin: 0 auto; min-height: 100vh; padding-block: max(20px, env(safe-area-inset-top, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 18px; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
-h1 { font-family: var(--display); font-weight: 600; font-size: 34px; line-height: 1.02; text-transform: uppercase; letter-spacing: 0.03em; color: var(--accent-strong); }
-h2 { font-family: var(--display); font-weight: 600; font-size: 30px; line-height: 1.1; color: var(--accent-strong); }
+h1 { font-family: var(--display); font-weight: 500; font-size: 36px; line-height: 1.05; letter-spacing: -0.01em; color: var(--accent-strong); }
+h1 em, h2 em { font-style: italic; color: var(--accent); }
+h2 { font-family: var(--display); font-weight: 500; font-size: 30px; letter-spacing: -0.01em; line-height: 1.1; color: var(--accent-strong); }
 h3 { font-family: var(--body); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
 p { margin: 0; }
 strong { font-weight: 600; }
@@ -41,22 +44,35 @@ strong { font-weight: 600; }
 .grow { flex: 1; min-width: 0; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
 .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-.shopname { font-family: var(--display); font-weight: 600; font-size: 22px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-strong); }
+.shopname { font-family: var(--display); font-weight: 500; font-size: 22px; letter-spacing: 0; color: var(--accent-strong); }
 .by { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 500; letter-spacing: 0.24em; color: var(--muted); text-transform: uppercase; }
-.by svg { width: 18px; height: 18px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--mauve); background: var(--surface); color: var(--accent-strong); font: inherit; font-size: 14px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center; }
+.by svg { width: 80px; height: 30px; fill: #E2525E; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--mauve); background: var(--surface); color: var(--accent-strong); font: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center; }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .btn.big { min-height: 58px; width: 100%; }
 .btn.ghost { background: transparent; border-color: transparent; color: var(--accent); padding: 0 6px; letter-spacing: 0.12em; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-:focus-visible { outline: 3px solid var(--orchid); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
 .hero { display: flex; flex-direction: column; gap: 16px; padding-top: 2vh; }
-.hero-art { position: relative; width: 100%; max-width: 100%; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden;
-  background: radial-gradient(120% 90% at 80% 10%, #F3CFE2 0%, transparent 55%), linear-gradient(160deg, #D9A6C3 0%, #C584B6 45%, #A8467A 100%); }
-.hero-art::after { content: ""; position: absolute; inset: 14px; border: 1px solid rgba(255, 255, 255, 0.75); border-radius: 12px; pointer-events: none; }
-.hero-art .ht { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; color: #FFFFFF; font-family: var(--display); font-weight: 500; font-size: 40px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
-.hero-art .hs { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; color: rgba(255, 255, 255, 0.92); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; }
-.hero-art svg { position: absolute; left: 50%; top: 18%; width: 34%; transform: translateX(-50%); }
+.car { position: relative; margin-inline: -16px; }
+.car-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 16px 8px; scroll-padding-inline: 16px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.car-track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 86%; scroll-snap-align: start; border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; background: var(--coral); color: #FFF7EF; }
+.slide.sun { background: var(--sun); color: #5A2A1F; }
+.slide.cream { background: #FFF9F3; color: var(--fg); border: 1px solid var(--line); }
+.slide .ph { position: relative; aspect-ratio: 5 / 4; background: radial-gradient(90% 80% at 70% 20%, #FFE3A1 0%, transparent 60%), linear-gradient(150deg, #F7A08F 0%, #EE6670 100%); overflow: hidden; }
+.slide .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.slide .ph .spark { position: absolute; right: 16px; top: 14px; width: 26px; height: 26px; fill: #FFF7EF; filter: drop-shadow(0 1px 3px rgba(74, 35, 38, 0.25)); }
+.slide .tx { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.slide .k { font-size: 11.5px; font-weight: 500; letter-spacing: 0.24em; text-transform: lowercase; opacity: 0.9; }
+.slide .tt { font-family: var(--display); font-size: 27px; line-height: 1.08; font-weight: 500; letter-spacing: -0.01em; }
+.slide .tt em { font-style: italic; }
+.slide .d { font-size: 15px; line-height: 1.45; opacity: 0.95; }
+.dots { display: flex; justify-content: center; gap: 4px; }
+.dots button { width: 28px; height: 28px; border: 0; background: transparent; padding: 0; cursor: pointer; display: grid; place-items: center; }
+.dots button::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: var(--mauve); transition: width .2s, background .2s; }
+.dots button[aria-current="true"]::before { width: 22px; background: var(--accent); }
+.credit { text-align: center; font-size: 11px; color: var(--muted); }
 .progress { height: 3px; border-radius: 2px; background: var(--line); overflow: hidden; }
 .progress > span { display: block; height: 100%; background: var(--accent); border-radius: 2px; transition: width .25s; }
 .opts { display: flex; flex-direction: column; gap: 10px; }
@@ -91,23 +107,29 @@ strong { font-weight: 600; }
 .tab { min-height: 54px; border: 0; border-radius: 999px; background: transparent; color: var(--accent-strong); font: inherit; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2; }
 .tab small { font-size: 14px; letter-spacing: 0.02em; text-transform: none; font-weight: 500; opacity: 0.85; }
 .tab[aria-selected="true"] { background: var(--accent); color: #FFFFFF; }
-@media (prefers-reduced-motion: reduce) { .progress > span { transition: none; } }
+.pc { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 2px 12px; align-items: start; padding: 16px; }
+.pc + .pc { border-top: 1px solid var(--line-soft); }
+.pc .n { font-family: var(--display); font-style: italic; font-size: 28px; line-height: 0.95; color: var(--accent); }
+.pc .brand { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.pc .name { display: block; font-weight: 500; font-size: 16px; line-height: 1.3; }
+.pc .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.pc .meta span { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); }
+.pc .how { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; }
+.pc .price { font-size: 15px; font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--accent-strong); }
+.order { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 14.5px; }
+.order b { font-weight: 600; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); padding-top: 2px; }
+@media (prefers-reduced-motion: reduce) { .progress > span, .dots button::before { transition: none; } .car-track { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="logo" viewBox="0 0 512 512">
-    <circle cx="256" cy="256" r="232" fill="#A8467A"/>
-    <circle cx="256" cy="256" r="150" fill="none" stroke="#FFF4F8" stroke-width="18"/>
-    <path d="M190 330c10-92 64-150 150-166-8 90-62 150-150 166z" fill="#F6CFE0"/>
-    <path d="M190 330c38-40 74-86 112-140" fill="none" stroke="#A8467A" stroke-width="10" stroke-linecap="round"/>
-    <circle cx="346" cy="352" r="17" fill="#FFF4F8"/>
-  </symbol>
+  <symbol id="logo" viewBox="-10 -215 740 277"><path d="M12.40 2L9 2L9-27.90L13-27.90Q14.60-20.60 19.10-14.75Q23.60-8.90 30.10-5.55Q36.60-2.20 44.10-2.20Q49.80-2.20 54.70-3.95Q59.60-5.70 62.60-9.25Q65.60-12.80 65.60-18.20Q65.60-24.20 61.70-27.70Q57.80-31.20 51.65-33.55Q45.50-35.90 38.60-38.20Q31.70-40.50 25.60-43.80Q19.50-47.10 15.60-52.65Q11.70-58.20 11.70-67.10Q11.70-73.90 14.80-80Q17.90-86.10 24.20-89.95Q30.50-93.80 39.90-93.80Q46.70-93.80 52.35-91.60Q58-89.40 62.30-85.70L70.60-93.90L74.10-93.90L74.10-66L70.10-66Q69-72 65.05-77.40Q61.10-82.80 54.75-86.25Q48.40-89.70 40.10-89.70Q35.40-89.70 31.50-88.10Q27.60-86.50 25.30-83.50Q23-80.50 23-76.40Q23-71.10 27.05-67.75Q31.10-64.40 37.55-62Q44-59.60 51.15-57.10Q58.30-54.60 64.75-51.10Q71.20-47.60 75.25-42.10Q79.30-36.60 79.30-28.10Q79.30-18.80 74.75-12Q70.20-5.20 62.60-1.60Q55 2 45.70 2Q38.60 2 32.30-0.40Q26-2.80 21.10-7.10L12.40 2M146.20 0L95.10 0L95.10-3.90L112.40-3.90L112.40-146.10L95.10-146.10L95.10-150L133.10-150L133.10-54.50L176.80-88.10L156.60-88.10L156.60-92L199.50-92L199.50-88.10L182.30-88.10L148.50-61.60L196.40-3.90L207.20-3.90L207.20 0L158 0L158-3.90L171-3.90L133.10-50.10L133.10-3.90L146.20-3.90L146.20 0M242.90-124.70Q237.40-124.70 233.50-128.65Q229.60-132.60 229.60-138.20Q229.60-143.80 233.50-147.70Q237.40-151.60 242.90-151.60Q248.60-151.60 252.50-147.70Q256.40-143.80 256.40-138.20Q256.40-132.60 252.50-128.65Q248.60-124.70 242.90-124.70M219.30-92L253.30-92L253.30-3.90L266.50-3.90L266.50 0L219.30 0L219.30-3.90L232.50-3.90L232.50-88.10L219.30-88.10L219.30-92M280.20-92L313.80-92L313.80-63.50Q315.50-69.90 318.70-75.90Q322.80-83.70 329.75-88.80Q336.70-93.90 347.30-93.90Q358.90-93.90 364.75-90.05Q370.60-86.20 372.70-79.40Q374.80-72.60 374.80-63.90L374.80-3.90L388.10-3.90L388.10 0L342.10 0L342.10-3.90L354.40-3.90L354.40-61Q354.40-69.40 353.65-75.45Q352.90-81.50 350.45-84.75Q348-88 342.90-88Q335.50-88 330-83.80Q324.50-79.60 320.95-73Q317.40-66.40 315.60-58.95Q313.80-51.50 313.80-44.80L313.80-3.90L326-3.90L326 0L280.20 0L280.20-3.90L293.50-3.90L293.50-88.10L280.20-88.10M421.31 2.68Q410.19 2.68 404.89-2.14Q399.60-6.97 399.60-14.61Q399.60-17.69 400-20.03Q400.41-22.38 400.94-24.12L447.17-195.77L422.65-195.77L422.65-201L473.57-201L423.32-14.20Q423.05-13 422.85-11.79Q422.65-10.59 422.65-9.65Q422.65-4.56 427.61-4.56Q433.10-4.56 438.06-8.44Q443.02-12.33 448.18-20.70Q453.34-29.08 458.83-43.01L463.92-41.27Q458.03-25.86 451.93-16.15Q445.83-6.43 438.53-1.88Q431.23 2.68 421.31 2.68M553.80 2Q548.60 2 544.35 0.30Q540.10-1.40 537.55-5.30Q535-9.20 535-15.60L535-20.20Q534.40-18.20 533.60-16.40Q529.80-7.70 522.70-2.85Q515.60 2 505.40 2Q492.40 2 484.65-4.65Q476.90-11.30 476.90-22.70Q476.90-36.10 488.45-43.75Q500-51.40 521.30-51.40L535-51.40L535-60.90Q535-68.10 533.75-74.70Q532.50-81.30 528.55-85.50Q524.60-89.70 516.60-89.70Q512.20-89.70 507.35-88.70Q502.50-87.70 498.30-85.70Q497.50-85.20 496.70-84.80Q501.30-84.60 505.10-81.80Q509-78.80 509-73.30Q509-67 504.95-64.05Q500.90-61.10 496.20-61.10Q491-61.10 487.45-64.15Q483.90-67.20 483.90-72.90Q483.90-77.90 487-81.70Q490.10-85.50 495.35-88.15Q500.60-90.80 507.15-92.20Q513.70-93.60 520.50-93.60Q534.70-93.60 542.20-88.95Q549.70-84.30 552.50-76.85Q555.30-69.40 555.30-60.90L555.30-12Q555.30-8.70 556.50-6.40Q557.70-4.10 561.40-4.10Q564-4.10 567.25-6.20Q570.50-8.30 572.30-11.80L574.30-8.50Q571.60-3.90 566.30-0.95Q561 2 553.80 2M535-36.50L535-48L523.10-48Q514.60-48 509.45-44.35Q504.30-40.70 501.90-35.35Q499.50-30 499.50-24.60Q499.50-19.70 500.95-15.25Q502.40-10.80 505.55-8Q508.70-5.20 513.60-5.20Q518.80-5.20 523.65-8.65Q528.50-12.10 531.75-19.05Q535-26 535-36.50M648.40 2Q636.40 2 628.10-6.30Q619.80-14.60 616.50-28.70L616.50 0L582.50 0L582.50-3.90L595.80-3.90L595.80-146.10L582.50-146.10L582.50-150L616.50-150L616.50-63.20Q619.80-77.40 628.05-85.60Q636.30-93.80 648.40-93.80Q659-93.80 668.45-88.10Q677.90-82.40 683.80-71.70Q689.70-61 689.70-46Q689.70-31 683.80-20.25Q677.90-9.50 668.45-3.75Q659 2 648.40 2M643.90-3.70Q651.10-3.70 656.05-8.60Q661-13.50 663.55-22.95Q666.10-32.40 666.10-46Q666.10-59.60 663.55-69Q661-78.40 656.05-83.25Q651.10-88.10 643.90-88.10Q636.90-88.10 630.60-83.20Q624.30-78.30 620.40-68.90Q616.50-59.50 616.50-46Q616.50-32.50 620.40-23Q624.30-13.50 630.60-8.60Q636.90-3.70 643.90-3.70"/><path d="M497.57 -199C501.40999999999997 -178.84 501.40999999999997 -178.84 521.5699999999999 -175C501.40999999999997 -171.16 501.40999999999997 -171.16 497.57 -151C493.73 -171.16 493.73 -171.16 473.57 -175C493.73 -178.84 493.73 -178.84 497.57 -199Z"/></symbol>
+  <symbol id="spark" viewBox="-30 -30 60 60"><path d="M0-28C4.5-4.5 4.5-4.5 28 0C4.5 4.5 4.5 4.5 0 28C-4.5 4.5-4.5 4.5-28 0C-4.5-4.5-4.5-4.5 0-28Z"/></symbol>
 </svg>
 <div class="app" id="app">
   <header class="top">
     <span class="shopname" id="shopName">…</span>
-    <span class="by"><svg aria-hidden="true"><use href="#logo"/></svg>SKINLAB</span>
+    <span class="by"><svg role="img" aria-label="SKINLAB"><use href="#logo"/></svg></span>
   </header>
 
   <!-- cargando / no disponible -->
@@ -119,15 +141,16 @@ strong { font-weight: 600; }
 
   <!-- inicio -->
   <section id="v-intro" class="hero" hidden>
-    <div class="hero-art" aria-hidden="true">
-      <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="74" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M68 140c6-52 36-86 86-94-5 51-35 86-86 94z" fill="rgba(255,255,255,0.85)"/><path d="M68 140c22-23 42-49 63-80" fill="none" stroke="#C584B6" stroke-width="2.5" stroke-linecap="round"/></svg>
-      <span class="ht">Tu piel</span><span class="hs">Tu rutina ideal</span>
+    <div class="car" aria-roledescription="carrusel" aria-label="Consejos para cuidar tu piel">
+      <div class="car-track" id="carTrack" tabindex="0"></div>
     </div>
+    <div class="dots" id="carDots" role="group" aria-label="Elegir consejo"></div>
     <span class="eyebrow">Test de piel · 2 minutos</span>
-    <h1>Descubrí qué rutina necesita tu piel</h1>
+    <h1>Descubrí qué rutina necesita <em>tu piel</em></h1>
     <p class="muted">Respondé unas preguntas y sacate una selfie. Te armamos una rutina de mañana y noche con productos de <strong id="shopName2"></strong>.</p>
     <button class="btn primary big" type="button" id="btnStart">Empezar</button>
     <p class="small muted">Es una recomendación orientativa, no un diagnóstico médico.</p>
+    <p class="credit">Fotos: Unsplash</p>
   </section>
 
   <!-- pregunta -->
@@ -167,11 +190,8 @@ strong { font-weight: 600; }
       <button class="tab" type="button" role="tab" id="tabEco" aria-selected="false">Económica<small id="tEco"></small></button>
     </div>
     <p class="small muted" id="rTabNote"></p>
-    <h3>Mañana</h3>
-    <div class="list" id="rAM"></div>
-    <h3>Noche</h3>
-    <div class="list" id="rPM"></div>
-    <div class="list"><div id="rProducts"></div><div class="total"><span>Total de la rutina</span><b id="rTotal"></b></div></div>
+    <div class="list"><div id="rList"></div><div class="total"><span>Total de la rutina</span><b id="rTotal"></b></div></div>
+    <div class="card stack" id="rHow" style="gap:10px"></div>
     <button class="btn primary big" type="button" id="btnWa">Pedir mi rutina por WhatsApp</button>
     <button class="btn big" type="button" id="btnCounter">Estoy en el local</button>
     <p class="small muted">Recomendación orientativa según tus respuestas. No reemplaza la consulta con un profesional de la piel. Si algo te irrita, suspendelo.</p>
@@ -288,6 +308,46 @@ strong { font-weight: 600; }
   });
   $('btnNext').addEventListener('click', next);
   function next() { if (qi < QS.length - 1) { qi++; renderQ(); } else { loadDetector(); showOnly('v-selfie'); } }
+
+  // ----- carrusel de consejos -----
+  var SLIDES = [
+    { c: '', img: '1728727267814-792db55ce678', k: '01 · tu piel', t: 'Tu piel, <em>tu rutina</em>', d: 'Respondé 11 preguntas, sacate una selfie y te armamos una rutina de mañana y noche.' },
+    { c: 'sun', img: '1761718209708-9ab9ba1c7252', k: '02 · limpieza', t: 'Limpiá <em>mañana y noche</em>', d: 'Un limpiador suave para tu tipo de piel, con agua tibia y sin frotar fuerte.' },
+    { c: 'cream', img: '1713768704571-6aeb0d0e5105', k: '03 · sérum', t: 'Un sérum para <em>tu objetivo</em>', d: 'Vitamina C de día; niacinamida o retinol de noche. Te decimos cuál y cuándo.' },
+    { c: '', img: '1585945037805-5fd82c2e60b1', k: '04 · hidratación', t: 'Hidratá <em>siempre</em>', d: 'Aunque tengas piel grasa: una textura liviana equilibra el brillo.' },
+    { c: 'sun', img: '1632127579802-ff69469091a4', k: '05 · protección', t: 'Protector solar, <em>todos los días</em>', d: 'FPS 50 aunque esté nublado. Es el mejor tratamiento antimanchas y antiedad.' },
+    { c: 'cream', img: '1631730486572-226d1f595b68', k: '06 · tu tienda', t: 'Con productos de <em class="carShop">tu tienda</em>', d: 'Una rutina recomendada y otra económica, para pedir por WhatsApp o en el local.' }
+  ];
+  var carIdx = 0;
+  function buildCarousel(shopName) {
+    var tr = $('carTrack');
+    tr.innerHTML = SLIDES.map(function (s, i) {
+      return '<article class="slide ' + s.c + '" role="group" aria-roledescription="consejo" aria-label="' + (i + 1) + ' de ' + SLIDES.length + '">' +
+        '<div class="ph"><img src="https://images.unsplash.com/photo-' + s.img + '?auto=format&fit=crop&w=900&h=720&q=70" alt="" loading="' + (i < 2 ? 'eager' : 'lazy') + '" onerror="this.remove()">' +
+        '<svg class="spark" aria-hidden="true"><use href="#spark"/></svg></div>' +
+        '<div class="tx"><span class="k">' + s.k + '</span><p class="tt">' + s.t + '</p><p class="d">' + s.d + '</p></div></article>';
+    }).join('');
+    Array.prototype.forEach.call(tr.querySelectorAll('.carShop'), function (el) { el.textContent = shopName || 'tu tienda'; });
+    $('carDots').innerHTML = SLIDES.map(function (s, i) { return '<button type="button" aria-label="Consejo ' + (i + 1) + '"' + (i === 0 ? ' aria-current="true"' : '') + '></button>'; }).join('');
+    Array.prototype.forEach.call($('carDots').children, function (b, i) { b.addEventListener('click', function () { goSlide(i); }); });
+    var tick;
+    tr.addEventListener('scroll', function () {
+      clearTimeout(tick); tick = setTimeout(function () {
+        var w = tr.children[0] ? tr.children[0].getBoundingClientRect().width + 12 : 1;
+        carIdx = Math.max(0, Math.min(SLIDES.length - 1, Math.round(tr.scrollLeft / w)));
+        Array.prototype.forEach.call($('carDots').children, function (b, i) { if (i === carIdx) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+      }, 60);
+    }, { passive: true });
+    tr.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); goSlide(Math.min(SLIDES.length - 1, carIdx + 1)); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); goSlide(Math.max(0, carIdx - 1)); }
+    });
+  }
+  function goSlide(i) {
+    var tr = $('carTrack'), el = tr.children[i]; if (!el) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    tr.scrollTo({ left: el.offsetLeft - 16, behavior: reduce ? 'auto' : 'smooth' });
+  }
   $('btnBack').addEventListener('click', function () { if (qi > 0) { qi--; renderQ(); } else showOnly('v-intro'); });
   $('btnStart').addEventListener('click', function () { ans = {}; qi = 0; selfie = null; track('start'); renderQ(); });
   $('btnRestart').addEventListener('click', function () { ans = {}; qi = 0; selfie = null; $('selfieBox').hidden = true; $('btnFoto').textContent = 'Sacar selfie'; $('btnFoto').className = 'btn primary big'; $('btnResult').hidden = true; showOnly('v-intro'); });
@@ -414,101 +474,320 @@ strong { font-weight: 600; }
       if (selfie.oil < 70) w.poros += selfie.oil < 50 ? 2 : 1;
     }
     var top = Object.keys(w).filter(function (k) { return w[k] > 0; }).sort(function (a, b) { return w[b] - w[a]; });
+    var maxW = Math.max.apply(null, Object.keys(w).map(function (k) { return w[k]; }).concat([1])), wn = {};
+    Object.keys(w).forEach(function (k) { wn[k] = w[k] / maxW * 3; });
     return {
-      w: w, top: top, skin: ans.skin, sensitive: ans.sens === 'si', minor: age === 'u18',
+      w: w, wn: wn, top: top, skin: ans.skin, sensitive: ans.sens === 'si', minor: age === 'u18',
+      ageN: { u18: 16, '18': 21, '25': 30, '35': 40, '45': 50, '55': 60 }[age] || 30, beginner: ans.now === 'nada',
+      seed: JSON.stringify(ans),
       pregnant: ans.preg === 'si' || ans.preg === 'nd', size: ans.size || 'completa', mature: older > 0 || age === '25',
       spots: sp, hormonalSpots: hormonal
     };
   }
-  function scoreProduct(p, pr, focus) {
-    var s = 0;
-    (p.concerns || []).forEach(function (c) { s += (pr.w[c] || 0) * (focus && c === focus ? 2 : 1); });
-    var skins = p.skins || ['todas'];
-    if (skins.indexOf('todas') >= 0 || skins.indexOf(pr.skin) >= 0) s += 1.5; else s -= 2;
-    if (pr.sensitive) { if (skins.indexOf('sensible') >= 0 || (p.concerns || []).indexOf('rojeces') >= 0) s += 1.5; }
-    if (pr.pregnant && p.pregnancy !== 'si') s -= 1.5;
+  // ---------- criterio dermatológico ----------
+  // Cada producto se lee por sus activos (nombre + ingredientes). Con eso se decide:
+  // mañana o noche, si irrita, si es apto en embarazo o piel sensible, y para qué preocupación sirve mejor.
+  function norm(v) { return String(v || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  var ACT_RX = {
+    vitc: /vitamina c|vit\.? ?c\b|flavo-c|aclara|\bc10\b/,
+    niacinamida: /niacinamid|mela b3/,
+    salicilico: /salicil|\bbha\b|\blha\b|effaclar duo/,
+    glicolico: /glicol|glycolic|\baha\b/,
+    retinol: /retinol|retino/,
+    despigmentante: /despigment/,
+    hialuronico: /hialuron|hyalu|hydro boost|hyaluronic/,
+    ceramidas: /ceramid|cerave|toleriane/,
+    calmante: /calmant|centella|pantenol|\bb5\b|ectoin|rojeces|descongest|sensitive|sensible|termal|cicaplast|mineral 89/,
+    antiedad: /peptid|lifting|liftactiv|q10|coenzima|colagen|collagen|antiage|antiedad|antiarrugas|estructura|volumen|renew/,
+    purificante: /azufre|carbon|zinc|purific|seborreg|\bmat\b|matific|anti ?sebo|control|deep clean|secante|detox/,
+    color: /color|unify/
+  };
+  var ACT_LABEL = { vitc: 'vitamina C', niacinamida: 'niacinamida', salicilico: 'ácido salicílico', glicolico: 'ácido glicólico', retinol: 'retinol', despigmentante: 'activos despigmentantes', hialuronico: 'ácido hialurónico', ceramidas: 'ceramidas', calmante: 'activos calmantes', antiedad: 'activos antiedad', purificante: 'activos purificantes' };
+  var ACT_SHORT = { vitc: 'vitamina C', niacinamida: 'niacinamida', salicilico: 'salicílico', glicolico: 'glicólico', retinol: 'retinol', despigmentante: 'despigmentante', hialuronico: 'hialurónico', ceramidas: 'ceramidas', calmante: 'calmante', antiedad: 'antiedad', purificante: 'purificante' };
+  // Qué activos elige un dermatólogo para cada preocupación, de mañana y de noche (en orden de preferencia).
+  var PREF = {
+    acne: { am: ['niacinamida', 'salicilico', 'purificante'], pm: ['salicilico', 'retinol', 'niacinamida', 'purificante'] },
+    manchas: { am: ['vitc', 'niacinamida'], pm: ['despigmentante', 'glicolico', 'niacinamida', 'retinol'] },
+    rojeces: { am: ['calmante', 'niacinamida', 'ceramidas'], pm: ['calmante', 'ceramidas', 'hialuronico'] },
+    poros: { am: ['niacinamida', 'purificante'], pm: ['salicilico', 'retinol', 'niacinamida', 'glicolico'] },
+    lineas: { am: ['vitc', 'antiedad', 'hialuronico'], pm: ['retinol', 'antiedad', 'hialuronico'] },
+    hidratacion: { am: ['hialuronico', 'ceramidas', 'calmante'], pm: ['hialuronico', 'ceramidas', 'calmante'] },
+    luminosidad: { am: ['vitc', 'niacinamida'], pm: ['glicolico', 'retinol', 'vitc'] }
+  };
+  var PRIMARY_ORDER = ['retinol', 'glicolico', 'despigmentante', 'salicilico', 'vitc', 'niacinamida', 'hialuronico', 'antiedad', 'calmante', 'ceramidas', 'purificante'];
+
+  function actives(p) {
+    if (p._act) return p._act;
+    var t = norm(p.name + ' ' + (p.tags || ''));
+    var a = {};
+    Object.keys(ACT_RX).forEach(function (k) { if (ACT_RX[k].test(t)) a[k] = true; });
+    var m = t.match(/(?:fps|spf)\s*(\d{2})/);
+    a.fps = p.cat === 'protector' || /\bfps\b|\bspf\b/.test(t);
+    a.fpsLevel = m ? +m[1] : (p.cat === 'protector' ? 50 : 0);
+    a.micelar = /micelar|desmaquill|\bleche\b/.test(t);
+    a.gentle = a.micelar || /suave|gentle|hidratante de limpieza|limpiador hidratante|sensitive|sensible|\bleche\b/.test(t);
+    var tm = /dia y noche/.test(t) ? 'ambos' : /noche|nocturn/.test(t) ? 'pm' : /\bdia\b/.test(t) ? 'am' : 'ambos';
+    if (p.cat === 'protector') tm = 'am';
+    if (p.cat === 'hidratante' && a.fps) tm = 'am';
+    if (p.cat !== 'limpiador' && !a.fps && (a.retinol || a.glicolico || a.despigmentante)) tm = 'pm';
+    if (p.cat === 'serum' && a.vitc && !a.retinol && !a.glicolico) tm = 'am';
+    a.time = tm;
+    a.leaveOn = ['limpiador', 'aceite', 'mascarilla'].indexOf(p.cat) < 0;
+    var irr = 0;
+    if (a.vitc && a.leaveOn) irr = 1;
+    if ((a.salicilico || a.glicolico || a.despigmentante) && a.leaveOn) irr = 2;
+    if (a.retinol) irr = 3;
+    if (p.cat === 'exfoliante') irr = Math.max(irr, 2);
+    a.scrub = p.cat === 'limpiador' && /exfoli/.test(t);
+    if (a.scrub) irr = Math.max(irr, 1);
+    if (irr && /sensible|sensitive/.test(t)) irr -= 1;
+    a.irr = irr;
+    a.strong = irr >= 2;
+    a.primary = '';
+    for (var i = 0; i < PRIMARY_ORDER.length; i++) if (a[PRIMARY_ORDER[i]]) { a.primary = PRIMARY_ORDER[i]; break; }
+    p._act = a;
+    return a;
+  }
+  function allowedFor(p, pr) {
+    var a = actives(p);
+    if (p.active === false) return false;
+    if (pr.pregnant && (p.pregnancy === 'no' || a.retinol || a.despigmentante || (a.salicilico && a.leaveOn))) return false;
+    if (pr.minor && (a.retinol || a.glicolico || a.despigmentante || (p.concerns || [])[0] === 'lineas')) return false;
+    if (pr.sensitive && a.irr >= 2) return false;
+    if (pr.beginner && a.irr >= 3) return false;
+    return true;
+  }
+  function skinFit(p, pr) {
+    var k = p.skins && p.skins.length ? p.skins : ['todas'];
+    if (k.indexOf(pr.skin) >= 0) return 2;
+    if (pr.sensitive && k.indexOf('sensible') >= 0) return 2;
+    if (k.indexOf('todas') >= 0) return 1;
+    var near = { normal: ['mixta', 'seca'], mixta: ['normal', 'grasa'], grasa: ['mixta'], seca: ['normal', 'sensible'] }[pr.skin] || [];
+    for (var i = 0; i < near.length; i++) if (k.indexOf(near[i]) >= 0) return 0;
+    return -4;
+  }
+  // Variación estable: mismas respuestas, misma rutina; respuestas distintas, marcas distintas entre productos parecidos.
+  function jitter(pr, p) {
+    var s = pr.seed + '|' + (p.id || p.name), h = 2166136261;
+    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return ((h >>> 0) % 1000) / 1000;
+  }
+  function baseScore(p, pr, ctx) {
+    var a = actives(p), s = skinFit(p, pr);
+    (p.concerns || []).forEach(function (c, i) { s += (pr.wn[c] || 0) * (i === 0 ? 0.7 : 0.45); });
+    if (pr.sensitive && (a.calmante || (p.skins || []).indexOf('sensible') >= 0)) s += 1.5;
+    if (pr.sensitive && a.irr === 1) s -= 1;
+    if (pr.pregnant && p.pregnancy !== 'si') s -= 2;
+    s -= (ctx.brands[p.brand] || 0) * 1.1;
+    return s + jitter(pr, p) * 0.9;
+  }
+  function slotBonus(p, pr, slot) {
+    var a = actives(p), t = norm(p.name + ' ' + (p.tags || '')), s = 0, oily = pr.skin === 'grasa' || pr.skin === 'mixta';
+    if (slot === 'limpiador') {
+      if ((pr.sensitive || pr.skin === 'seca') && (a.gentle || a.calmante || a.ceramidas)) s += 2.5;
+      if (oily && !pr.sensitive && (pr.wn.acne >= 1 || pr.wn.poros >= 1) && (a.purificante || a.salicilico)) s += 2.5;
+      if (pr.skin === 'seca' && a.purificante) s -= 3;
+      if (oily && a.micelar) s -= 1.5;
+      if (a.scrub) s -= (pr.sensitive || pr.minor || pr.beginner) ? 4 : 1.5;
+      if (a.vitc && (pr.wn.manchas >= 2 || pr.wn.luminosidad >= 2)) s += 0.8;
+    }
+    if (slot === 'hidratante' || slot === 'noche') {
+      if (oily && /gel|matific|ligera|legere|water|aqua|locion|fluid/.test(t)) s += 1.5;
+      if (pr.skin === 'seca' && /crema|riche|intensiv|reparad|baume|nutri/.test(t)) s += 1.5;
+      if (pr.skin === 'grasa' && /riche|baume|intensiv|lata|nutri/.test(t)) s -= 3;
+      if (pr.wn.rojeces >= 1.5 && (a.calmante || a.ceramidas)) s += 2;
+      if (pr.wn.manchas >= 2 && (a.glicolico || a.despigmentante || a.niacinamida)) s += 1;
+      if (slot === 'noche' && pr.wn.lineas > 0 && a.antiedad) s += 1.5;
+    }
+    if (slot === 'protector') {
+      if (a.fpsLevel >= 50) s += 1.5; else if (a.fpsLevel && a.fpsLevel < 30) s -= 3;
+      if (a.color) s += pr.hormonalSpots ? 3 : pr.wn.manchas >= 2 ? 2 : 0;
+      if (oily && /fluido|fresh|water|invisible|toque seco|\bmat\b/.test(t)) s += 1;
+    }
+    if (slot === 'contorno' && pr.wn.lineas > 0 && a.antiedad && !pr.sensitive) s += 1;
+    if (slot === 'contorno' && pr.sensitive && (a.hialuronico || a.ceramidas)) s += 1.5;
     return s;
   }
-  function allowed(p, pr) {
-    if (pr.pregnant && p.pregnancy === 'no') return false;
-    if (p.cat === 'exfoliante' && (pr.sensitive || pr.minor || pr.pregnant)) return false;
-    if (pr.minor && (p.concerns || []).length === 1 && p.concerns[0] === 'lineas') return false;
-    return true;
+  function treatFit(p, f, time) {
+    if (!PREF[f]) return null;
+    var a = actives(p), list = PREF[f][time], fit = -1, c = p.concerns || [];
+    for (var i = 0; i < list.length; i++) if (a[list[i]]) { fit = 3 - i * 0.6; break; }
+    if (fit < 0) { if (c.indexOf(f) < 0) return null; fit = 0.8; }
+    if (c[0] === f) fit += 1.2; else if (c.indexOf(f) >= 0) fit += 0.5;
+    return fit;
+  }
+  function timeOk(p, t) { var pt = actives(p).time; return !t || t === 'ambos' || pt === 'ambos' || pt === t; }
+  function candidates(cat, pr, ctx, time, extra) {
+    var out = [];
+    shop.products.forEach(function (p) {
+      if (p.cat !== cat || ctx.used[p.id] || !allowedFor(p, pr) || !timeOk(p, time)) return;
+      var s = baseScore(p, pr, ctx);
+      if (extra) { var e = extra(p); if (e === null) return; s += e; }
+      out.push({ p: p, s: s });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out;
   }
   var TIER = { economica: 0, media: 1, alta: 2 };
   function tierOf(p) { return TIER[p.tier] == null ? 1 : TIER[p.tier]; }
-  // eco = true: entre los productos que igual le sirven (puntaje cercano al mejor), el más barato.
-  function pick(cat, pr, used, focus, eco) {
-    var c = [];
-    shop.products.forEach(function (p) {
-      if (p.cat !== cat || used[p.id] || !allowed(p, pr)) return;
-      if (focus && (p.concerns || []).indexOf(focus) < 0) return;
-      c.push({ p: p, s: scoreProduct(p, pr, focus) });
+  // eco: entre los que le sirven casi igual de bien, el más barato (por precio cargado o, si falta, por gama).
+  function choose(list, eco, tol) {
+    if (!list.length) return null;
+    if (!eco) return list[0].p;
+    var ok = list.filter(function (x) { return x.s >= list[0].s - tol; });
+    var priced = ok.every(function (x) { return priceNum(x.p.price) > 0; });
+    ok.sort(function (a, b) {
+      if (priced) return (priceNum(a.p.price) - priceNum(b.p.price)) || (b.s - a.s);
+      return (tierOf(a.p) - tierOf(b.p)) || (b.s - a.s);
     });
-    if (!c.length) return null;
-    c.sort(function (a, b) { return b.s - a.s; });
-    var best = c[0];
-    if (eco) {
-      var skinOk = function (p) { var k = p.skins || ['todas']; return k.indexOf('todas') >= 0 || k.indexOf(pr.skin) >= 0 || (pr.sensitive && k.indexOf('sensible') >= 0); };
-      // tratamientos: tienen que apuntar igual de bien; básicos (limpiador, crema, protector): alcanza con que sean para su piel
-      var ok = c.filter(function (x) { return focus ? x.s >= best.s - 2.5 : (skinOk(x.p) && x.s >= best.s - 6); });
-      if (!ok.length) ok = [best];
-      var priced = ok.every(function (x) { return priceNum(x.p.price) > 0; });
-      ok.sort(function (a, b) {
-        if (priced) return priceNum(a.p.price) - priceNum(b.p.price);
-        return (tierOf(a.p) - tierOf(b.p)) || ((priceNum(a.p.price) || 1e12) - (priceNum(b.p.price) || 1e12)) || (b.s - a.s);
+    return ok[0].p;
+  }
+  function bestFocus(p, pr, time) {
+    var best = '', bv = -1;
+    pr.top.slice(0, 3).forEach(function (f) { var fit = treatFit(p, f, time); if (fit !== null && fit * pr.wn[f] > bv) { bv = fit * pr.wn[f]; best = f; } });
+    return best;
+  }
+  function pickTreatment(pr, ctx, time, eco, avoidActive, noStrong, covered, mustOther) {
+    var foci = pr.top.slice(0, 3);
+    var list = candidates('serum', pr, ctx, time === 'ambos' ? null : time, function (p) {
+      var a = actives(p), vals = [];
+      if (avoidActive && a.primary === avoidActive) return null;
+      if (noStrong && a.strong) return null;
+      foci.forEach(function (f, i) {
+        var fit = time === 'ambos' ? Math.max(treatFit(p, f, 'am') || -1, treatFit(p, f, 'pm') || -1) : treatFit(p, f, time);
+        if (fit === null || fit < 0) return;
+        vals.push(fit * (pr.wn[f] / 3) * (i === 0 ? 1.3 : 1) * (covered === f ? 0.45 : 1));
       });
-      best = ok[0];
-    }
-    used[best.p.id] = true;
-    return best.p;
+      if (!vals.length) return null;
+      if (covered && mustOther && !foci.some(function (f) { return f !== covered && pr.wn[f] >= 1 && (treatFit(p, f, time) || -1) > 0; })) return null;
+      vals.sort(function (x, y) { return y - x; });
+      var v = vals[0] + (vals[1] || 0) * 0.5;
+      if (time === 'am' && a.strong) v -= 1.5;
+      if (time === 'pm' && a.retinol && pr.ageN >= 35 && pr.wn.lineas >= 1) v += 1.5;
+      if ((pr.minor || pr.beginner) && a.strong) v -= 1;
+      return v * 2.2;
+    });
+    return choose(list, eco, 2.5);
   }
+  function extraFit(p, pr) {
+    var a = actives(p), oily = pr.skin === 'grasa' || pr.skin === 'mixta';
+    if (skinFit(p, pr) < 0) return null;
+    if (a.purificante && (!oily || pr.sensitive)) return null;
+    return 0;
+  }
+
   function buildRoutine(eco) {
-    var pr = profile(), used = {}, items = [];
-    var add = function (p, role, when, how) { if (p) items.push({ p: p, role: role, when: when, how: how }); return p; };
-    if (eco) {
-      add(pick('limpiador', pr, used, null, true), 'Limpieza', 'ambos', 'Mañana y noche');
-      if (pr.size !== 'basica') {
-        for (var e = 0; e < pr.top.length; e++) {
-          var se = pick('serum', pr, used, pr.top[e], true);
-          if (se) { var we = serumWhen(se); add(se, 'Tratamiento', we, we === 'noche' ? 'De noche' : we === 'manana' ? 'De mañana' : 'Mañana y noche'); break; }
-        }
+    var pr = profile(), ctx = { used: {}, brands: {} }, items = [];
+    function add(p, slot, when) {
+      if (!p) return null;
+      ctx.used[p.id] = true; ctx.brands[p.brand] = (ctx.brands[p.brand] || 0) + 1;
+      var it = { p: p, slot: slot, when: when || actives(p).time };
+      items.push(it); return it;
+    }
+    var size = eco ? (pr.size === 'basica' ? 'basica' : 'completa') : pr.size;
+
+    // 1. Limpieza (mañana y noche)
+    add(choose(candidates('limpiador', pr, ctx, null, function (p) { return slotBonus(p, pr, 'limpiador'); }), eco, 6), 'limpiador', 'ambos');
+    if (!eco && size === 'full' && !pr.sensitive && pr.skin !== 'seca') {
+      var dl = choose(candidates('aceite', pr, ctx, null), false, 0) ||
+        choose(candidates('limpiador', pr, ctx, null, function (p) { return actives(p).micelar ? 1 : null; }), false, 0);
+      add(dl, 'desmaquillante', 'pm');
+    }
+    if (!eco && size === 'full') add(choose(candidates('tonico', pr, ctx, null, function (p) { return extraFit(p, pr) === null ? null : slotBonus(p, pr, 'hidratante'); }), false, 0), 'tonico', 'ambos');
+
+    // 2. Tratamientos: uno de mañana y uno de noche, con activos distintos y que no se peleen entre sí
+    var pmIt = null;
+    if (size !== 'basica') {
+      if (eco) add(pickTreatment(pr, ctx, 'ambos', true), 'serum');
+      else {
+        var amIt = add(pickTreatment(pr, ctx, 'am', false), 'serum', 'am');
+        var cov = amIt ? bestFocus(amIt.p, pr, 'am') : '';
+        var avoid = amIt ? actives(amIt.p).primary : '', nst = amIt && actives(amIt.p).strong;
+        var pmP = pickTreatment(pr, ctx, 'pm', false, avoid, nst, cov, true) || pickTreatment(pr, ctx, 'pm', false, avoid, nst, cov, false);
+        pmIt = add(pmP, 'serum', 'pm');
       }
-      add(pick('hidratante', pr, used, null, true), 'Hidratación', 'ambos', 'Mañana y noche');
-      var spfE = add(pick('protector', pr, used, null, true), 'Protección solar', 'manana', 'Todas las mañanas, aunque esté nublado');
-      return { pr: pr, items: items, noSpf: !spfE, eco: true };
     }
-    add(pick('limpiador', pr, used), 'Limpieza', 'ambos', 'Mañana y noche');
-    if (pr.size === 'full') add(pick('aceite', pr, used), 'Primer paso de la limpieza', 'noche', 'De noche, antes del limpiador');
-    if (pr.size === 'full') add(pick('tonico', pr, used), 'Equilibrio e hidratación', 'ambos', 'Después de limpiar');
-    var serums = pr.size === 'basica' ? 0 : pr.size === 'completa' ? 2 : 2;
-    var focusList = pr.top.slice(0, 3), s1 = null;
-    for (var k = 0; k < focusList.length && serums > 0; k++) {
-      var s = pick('serum', pr, used, focusList[k]);
-      if (s) { serums--; var when = serumWhen(s); add(s, 'Tratamiento', when, when === 'noche' ? 'De noche' : when === 'manana' ? 'De mañana' : 'Mañana y noche'); if (!s1) s1 = s; }
+
+    // 3. Contorno (rutina más completa)
+    if (!eco && size === 'full' && (pr.wn.lineas > 0 || pr.ageN >= 25)) {
+      add(choose(candidates('contorno', pr, ctx, null, function (p) { return extraFit(p, pr) === null ? null : slotBonus(p, pr, 'contorno'); }), false, 0), 'contorno', 'ambos');
     }
-    if (pr.size === 'basica' && !s1 && pr.top.length) { /* básica: sin sérum */ }
-    if (pr.size === 'full' && (pr.mature || pr.w.lineas > 0)) add(pick('contorno', pr, used), 'Contorno de ojos', 'ambos', 'Mañana y noche, a toquecitos');
-    add(pick('hidratante', pr, used), 'Hidratación', 'ambos', 'Mañana y noche');
-    var spf = add(pick('protector', pr, used), 'Protección solar', 'manana', 'Todas las mañanas, aunque esté nublado');
-    if (pr.size === 'full') {
-      var ex = pick('exfoliante', pr, used);
-      if (ex) add(ex, 'Renovación', 'noche', '1 o 2 noches por semana');
-      else add(pick('mascarilla', pr, used), 'Extra', 'noche', '1 o 2 veces por semana');
-    } else if (pr.size === 'completa' && items.length < 5) {
-      var s2 = pick('serum', pr, used); if (s2 && items.length < 5) { var w2 = serumWhen(s2); add(s2, 'Tratamiento', w2, w2 === 'noche' ? 'De noche' : 'Mañana y noche'); }
+
+    // 4. Hidratación: una crema para mañana y noche; en la más completa, de día y de noche por separado
+    var singleCream = function (p) { var t = actives(p).time; return slotBonus(p, pr, 'hidratante') - (t === 'ambos' ? 0 : 4); };
+    if (!eco && size === 'full') {
+      var day = add(choose(candidates('hidratante', pr, ctx, 'am', function (p) { return slotBonus(p, pr, 'hidratante'); }), false, 0), 'hidratante', 'am');
+      var needNight = pr.wn.lineas >= 1 || (pr.wn.manchas >= 2 && !pr.sensitive);
+      var night = needNight ? add(choose(candidates('hidratante', pr, ctx, 'pm', function (p) { return actives(p).time === 'pm' && extraFit(p, pr) !== null ? slotBonus(p, pr, 'noche') + 1 : null; }), false, 0), 'noche', 'pm') : null;
+      if (day && !night) {
+        if (actives(day.p).time === 'ambos') day.when = 'ambos';
+        else add(choose(candidates('hidratante', pr, ctx, 'pm', singleCream), false, 0), 'noche', 'pm');
+      }
+    } else {
+      add(choose(candidates('hidratante', pr, ctx, null, singleCream), eco, 6), 'hidratante');
     }
-    return { pr: pr, items: items, noSpf: !spf };
+
+    // 5. Protector solar: siempre
+    var spf = add(choose(candidates('protector', pr, ctx, null, function (p) { return slotBonus(p, pr, 'protector'); }), eco, 6), 'protector', 'am');
+
+    // 6. Extra semanal (la más completa), nunca junto a un activo fuerte de noche
+    if (!eco && size === 'full') {
+      var pmStrong = pmIt && actives(pmIt.p).strong;
+      if (!pr.sensitive && !pr.minor && !pr.pregnant && !pmStrong) add(choose(candidates('exfoliante', pr, ctx, null, function (p) { return extraFit(p, pr); }), false, 0), 'exfoliante', 'semanal');
+      if (!items.some(function (i) { return i.slot === 'exfoliante'; })) add(choose(candidates('mascarilla', pr, ctx, null, function (p) { return extraFit(p, pr); }), false, 0), 'mascarilla', 'semanal');
+    }
+    items.sort(function (a, b) { return slotOrder(a) - slotOrder(b); });
+    return { pr: pr, items: items, noSpf: !spf, eco: !!eco };
   }
-  function serumWhen(p) {
-    var c = p.concerns || [];
-    if (c.indexOf('lineas') >= 0 && p.pregnancy === 'no') return 'noche';
-    if (c.indexOf('manchas') >= 0 && c.indexOf('luminosidad') >= 0) return 'manana';
-    return 'ambos';
+  var SLOT_ORDER = { desmaquillante: 0, limpiador: 1, tonico: 2, serum: 3, contorno: 4, hidratante: 5, noche: 6, protector: 7, exfoliante: 8, mascarilla: 9 };
+  function slotOrder(it) { return SLOT_ORDER[it.slot] + (it.slot === 'serum' && it.when === 'pm' ? 0.5 : 0); }
+  function roleOf(it, short) {
+    var a = actives(it.p);
+    switch (it.slot) {
+      case 'desmaquillante': return short ? 'Desmaquillante' : 'Desmaquillante (doble limpieza)';
+      case 'limpiador': return short ? 'Limpiador' : (a.micelar ? 'Limpieza con agua micelar' : 'Limpiador');
+      case 'tonico': return 'Tónico';
+      case 'serum':
+        var base = /crema|emulsion|gel secante/.test(norm(it.p.name)) ? 'Tratamiento' : 'Sérum';
+        return a.primary ? base + (short ? ' ' + ACT_SHORT[a.primary] : ' con ' + ACT_LABEL[a.primary]) : base;
+      case 'contorno': return 'Contorno de ojos';
+      case 'hidratante': return short ? 'Crema' : (it.when === 'am' ? 'Crema de día' : 'Crema hidratante');
+      case 'noche': return short ? 'Crema de noche' : 'Crema de noche';
+      case 'protector': return 'Protector solar';
+      case 'exfoliante': return 'Exfoliante';
+      case 'mascarilla': return 'Mascarilla';
+    }
+    return '';
+  }
+  function howOf(it) {
+    var a = actives(it.p), s = it.slot;
+    if (s === 'desmaquillante') return 'De noche, primero, para sacar protector y maquillaje.';
+    if (s === 'limpiador') return a.micelar ? 'Mañana y noche, con algodón.' : 'Mañana y noche: masajeá 30 segundos y enjuagá con agua tibia.';
+    if (s === 'tonico') return 'Después de limpiar, mañana y noche.';
+    if (s === 'serum') {
+      if (a.retinol) return 'De noche, 2 o 3 veces por semana al principio; si no irrita, día por medio.';
+      if (a.glicolico) return 'De noche, 2 o 3 veces por semana.';
+      if (a.despigmentante) return 'De noche, sobre las zonas con manchas.';
+      if (/secante/.test(norm(it.p.name))) return 'Solo sobre el granito, de noche.';
+      if (a.vitc && it.when !== 'pm') return 'De mañana, 3 o 4 gotas antes de la crema.';
+      if (a.salicilico) return (it.when === 'am' ? 'De mañana' : 'De noche') + '; si reseca, día por medio.';
+      return (it.when === 'am' ? 'De mañana' : it.when === 'pm' ? 'De noche' : 'Mañana y noche') + ', 3 o 4 gotas antes de la crema.';
+    }
+    if (s === 'contorno') return 'Mañana y noche, a toquecitos con el dedo anular.';
+    if (s === 'hidratante' || s === 'noche') return (it.when === 'am' ? 'De mañana' : it.when === 'pm' ? 'De noche' : 'Mañana y noche') + ', una cantidad del tamaño de una arveja.';
+    if (s === 'protector') return 'Último paso de la mañana: dos dedos de producto para cara y cuello. Renovalo cada 2 o 3 horas si estás al sol.';
+    if (s === 'exfoliante') return '1 o 2 noches por semana, en lugar del sérum de noche.';
+    if (s === 'mascarilla') return '1 o 2 veces por semana.';
+    return '';
+  }
+  var WHEN_TXT = { am: 'Mañana', pm: 'Noche', ambos: 'Mañana y noche', semanal: '1 o 2 por semana' };
+  function whyOf(it, pr) {
+    var foci = pr.top.slice(0, 3);
+    var c = (it.p.concerns || []).filter(function (x) { return foci.indexOf(x) >= 0; }).slice(0, 2).map(function (x) { return CONCERN_SHORT[x]; });
+    return c.length ? 'Para ' + joinY(c) : '';
   }
   function priceNum(s) { var t = String(s || '').replace(/[^\d,]/g, '').replace(',', '.'); var n = parseFloat(t); return isNaN(n) ? 0 : n; }
   function money(n) { return '$' + Math.round(n).toLocaleString('es-AR'); }
-  var ORDER = { aceite: 0, limpiador: 1, tonico: 2, serum: 3, contorno: 4, exfoliante: 2.5, hidratante: 5, mascarilla: 6, protector: 7 };
 
   // ---------- resultado ----------
   var last = null;
@@ -556,25 +835,33 @@ strong { font-weight: 600; }
   function renderRoutine() {
     var r = last[last.cur], pr = last.pr;
     $('tabRec').setAttribute('aria-selected', last.cur === 'rec'); $('tabEco').setAttribute('aria-selected', last.cur === 'eco');
-    var am = r.items.filter(function (i) { return i.when !== 'noche'; }).sort(function (a, b) { return ORDER[a.p.cat] - ORDER[b.p.cat]; });
-    var pm = r.items.filter(function (i) { return i.when !== 'manana'; }).sort(function (a, b) { return ORDER[a.p.cat] - ORDER[b.p.cat]; });
-    $('rAM').innerHTML = steps(am, pr); $('rPM').innerHTML = steps(pm, pr);
-    $('rProducts').innerHTML = '<div class="step" style="grid-template-columns:minmax(0,1fr) auto"><span class="eyebrow">Productos de tu rutina' + (r.eco ? ' económica' : '') + '</span><span></span></div>' + r.items.map(function (i) {
-      return '<div class="step" style="grid-template-columns:minmax(0,1fr) auto"><span><span class="name">' + esc(i.p.name) + '</span>' + (i.p.brand ? '<span class="why"> · ' + esc(i.p.brand) + '</span>' : '') + '</span><span class="price">' + esc(i.p.price || '') + '</span></div>';
+    if (!r.items.length) { $('rList').innerHTML = '<p class="small muted" style="padding:16px">Esta tienda todavía no cargó productos para armar tu rutina. Escribiles y te asesoran.</p>'; $('rHow').hidden = true; $('rTotal').textContent = ''; return; }
+    $('rList').innerHTML = r.items.map(function (it, n) {
+      var why = whyOf(it, pr);
+      return '<div class="pc"><span class="n">' + (n + 1) + '</span><div>' +
+        (it.p.brand ? '<span class="brand">' + esc(it.p.brand) + '</span>' : '') +
+        '<span class="name">' + esc(it.p.name) + '</span>' +
+        '<div class="meta"><span>' + esc(roleOf(it)) + '</span><span>' + esc(WHEN_TXT[it.when] || '') + '</span>' + (why ? '<span>' + esc(why) + '</span>' : '') + '</div>' +
+        '<span class="how">' + esc(howOf(it)) + '</span></div><span class="price">' + esc(it.p.price || '') + '</span></div>';
     }).join('');
+    var am = r.items.filter(function (i) { return i.when === 'am' || i.when === 'ambos'; });
+    var pm = r.items.filter(function (i) { return i.when === 'pm' || i.when === 'ambos'; });
+    var wk = r.items.filter(function (i) { return i.when === 'semanal'; });
+    var line = function (l) { return l.map(function (i) { return roleOf(i, true); }).join(' → '); };
+    var extra = [];
+    if (r.items.some(function (i) { return actives(i.p).retinol; })) extra.push('El retinol se usa solo de noche y te vuelve más sensible al sol: no te saltees el protector.');
+    if (pr.beginner && r.items.length > 3) extra.push('Si es tu primera rutina, empezá 2 semanas con limpiador, crema y protector, y después sumá los sérums de a uno.');
+    $('rHow').innerHTML = '<h3>Cómo usarla</h3><div class="order">' +
+      (am.length ? '<b>Mañana</b><span>' + esc(line(am)) + '</span>' : '') +
+      (pm.length ? '<b>Noche</b><span>' + esc(line(pm)) + '</span>' : '') +
+      (wk.length ? '<b>Semanal</b><span>' + esc(line(wk)) + ', 1 o 2 veces</span>' : '') + '</div>' +
+      extra.map(function (e) { return '<p class="small muted">' + esc(e) + '</p>'; }).join('');
+    $('rHow').hidden = false;
     var t = totalOf(r);
     $('rTotal').textContent = t.total ? money(t.total) : t.label.indexOf('+') > 0 ? t.label : 'Consultá en la tienda';
   }
   $('tabRec').addEventListener('click', function () { last.cur = 'rec'; renderRoutine(); });
   $('tabEco').addEventListener('click', function () { last.cur = 'eco'; renderRoutine(); });
-  function steps(list, pr) {
-    if (!list.length) return '<p class="small muted" style="padding:14px 16px">Sin pasos para este momento.</p>';
-    return list.map(function (i, n) {
-      var why = (i.p.concerns || []).filter(function (c) { return pr.top.slice(0, 3).indexOf(c) >= 0; }).map(function (c) { return CONCERN_SHORT[c]; });
-      var how = i.when === 'ambos' ? '' : ' · ' + i.how;
-      return '<div class="step"><span class="n">' + (n + 1) + '</span><span><span class="name">' + esc(i.p.name) + '</span><br><span class="why">' + esc(i.role) + (why.length ? ' · para ' + esc(joinY(why.slice(0, 2))) : '') + esc(how) + '</span></span><span class="price">' + esc(i.p.price || '') + '</span></div>';
-    }).join('');
-  }
   $('btnResult').addEventListener('click', function () { if (!selfie) { toast('Primero sacate la selfie'); return; } showResult(); });
 
   // ---------- cierre ----------
@@ -582,7 +869,7 @@ strong { font-weight: 600; }
   $('btnWa').addEventListener('click', function () {
     var r = last[last.cur], pr = last.pr, tt = totalOf(r);
     var lines = ['Hola! Hice el test de piel de ' + shop.name + ' y me recomendó esta rutina' + (r.eco ? ' (opción económica)' : '') + ':', ''];
-    r.items.forEach(function (i) { lines.push('• ' + i.p.name + (i.p.brand ? ' (' + i.p.brand + ')' : '') + (i.p.price ? ' — ' + i.p.price : '')); });
+    r.items.forEach(function (i) { lines.push('• ' + (i.p.brand ? i.p.brand + ' ' : '') + i.p.name + (i.p.price ? ' — ' + i.p.price : '') + ' (' + roleOf(i, true).toLowerCase() + ', ' + (WHEN_TXT[i.when] || '').toLowerCase() + ')'); });
     if (tt.total) lines.push('', 'Total: ' + money(tt.total));
     lines.push('', 'Mi piel: ' + (pr.skin || '') + (pr.sensitive ? ', sensible' : '') + '. Quiero mejorar: ' + joinY(pr.top.slice(0, 2).map(function (c) { return CONCERN_SHORT[c]; })) + '.' + (pr.spots.length ? ' Tengo manchas en: ' + spotsText(pr) + '.' : ''), '¿Me la preparás?');
     if (!last.closed) { last.closed = true; track('whatsapp'); }
@@ -595,7 +882,7 @@ strong { font-weight: 600; }
     $('cCode').textContent = 'Rutina ' + routineCode();
     $('cProfile').textContent = 'Piel ' + pr.skin + (pr.sensitive ? ', sensible' : '') + ' · foco en ' + joinY(pr.top.slice(0, 2).map(function (c) { return CONCERN_SHORT[c]; })) + (pr.spots.length ? ' · manchas en ' + spotsText(pr) : '') + (r.eco ? ' · opción económica' : '');
     $('cProducts').innerHTML = r.items.map(function (i) {
-      return '<div class="step" style="grid-template-columns:minmax(0,1fr) auto"><span><span class="name">' + esc(i.p.name) + '</span>' + (i.p.brand ? '<br><span class="why">' + esc(i.p.brand) + '</span>' : '') + '</span><span class="price">' + esc(i.p.price || '') + '</span></div>';
+      return '<div class="step" style="grid-template-columns:minmax(0,1fr) auto"><span>' + (i.p.brand ? '<span class="why" style="text-transform:uppercase;letter-spacing:.16em;font-size:11px">' + esc(i.p.brand) + '</span><br>' : '') + '<span class="name">' + esc(i.p.name) + '</span><br><span class="why">' + esc(roleOf(i)) + ' · ' + esc(WHEN_TXT[i.when] || '') + '</span></span><span class="price">' + esc(i.p.price || '') + '</span></div>';
     }).join('');
     $('cTotal').textContent = tt.total ? money(tt.total) : 'Consultar';
     if (!last.closed) { last.closed = true; track('counter'); }
@@ -606,12 +893,16 @@ strong { font-weight: 600; }
   // ---------- arranque ----------
   function start(s) {
     shop = s;
-    $('shopName').textContent = s.name; $('shopName2').textContent = s.name;
+    $('shopName').textContent = s.name; $('shopName2').textContent = s.name; buildCarousel(s.name);
     document.title = 'Test de piel · ' + s.name;
     $('foot').textContent = s.demo ? 'Versión de demostración con productos de ejemplo.' : (s.instagram ? s.instagram : '');
     if (!s.available) { showOnly('v-off'); return; }
     track('view');
     showOnly('v-intro');
+  }
+  if (window.SKINLAB_LIB && window.SKINLAB_LIB.length) {
+    DEMO.products = window.SKINLAB_LIB.map(function (x, i) { var o = {}; Object.keys(x).forEach(function (k) { o[k] = x[k]; }); o.id = 'lib' + i; return o; });
+    DEMO.name = 'Tienda de ejemplo';
   }
   if (!slug || slug === 'demo') { start(DEMO); return; }
   fetch('/api/shop?slug=' + encodeURIComponent(slug)).then(function (r) {
