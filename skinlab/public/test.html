@@ -94,6 +94,11 @@ strong { font-weight: 600; }
 .list { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
 .total { display: flex; justify-content: space-between; align-items: baseline; padding: 16px; border-top: 1px solid var(--line); background: var(--accent-soft); font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-strong); }
 .total b { font-family: var(--display); font-size: 26px; font-weight: 600; letter-spacing: 0.02em; }
+.field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 14px; }
+.field input { min-height: 52px; padding: 12px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; font-size: 16px; font-weight: 400; width: 100%; }
+.field input:focus { outline: 3px solid var(--accent-soft); border-color: var(--accent); }
+.consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.45; cursor: pointer; }
+.consent input { width: 22px; height: 22px; margin: 1px 0 0; flex-shrink: 0; accent-color: var(--accent); }
 .note { border-radius: 14px; padding: 12px 14px; background: var(--warn-soft); border-left: 0; font-size: 14.5px; color: var(--fg); }
 .photo { position: relative; width: 100%; border-radius: 20px; overflow: hidden; background: #3B2230; }
 .photo::after { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 12px; pointer-events: none; }
@@ -176,6 +181,21 @@ strong { font-weight: 600; }
     <input type="file" id="fFoto" accept="image/*" capture="user" hidden>
     <p class="small muted" id="selfieTips">De frente, con luz de ventana, sin maquillaje ni filtros.</p>
     <button class="btn primary big" type="button" id="btnResult" hidden>Ver mi rutina</button>
+  </section>
+
+  <!-- datos de la clienta -->
+  <section id="v-lead" class="stack" hidden>
+    <span class="eyebrow">Tu rutina está lista</span>
+    <h2>¿A nombre de quién la guardamos?</h2>
+    <p class="muted">Dejá tu nombre y tu WhatsApp y <strong class="leadShop"></strong> te puede ayudar con tu rutina y avisarte de novedades para tu piel.</p>
+    <form id="leadForm" class="stack" novalidate>
+      <label class="field" for="lName">Tu nombre<input type="text" id="lName" autocomplete="given-name" maxlength="60" placeholder="Ej.: Sofía"></label>
+      <label class="field" for="lWa">Tu WhatsApp<input type="tel" id="lWa" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="Ej.: 11 5555 5555"></label>
+      <label class="consent" for="lOk"><input type="checkbox" id="lOk"><span>Acepto que <span class="leadShop"></span> guarde mis datos y me escriba por WhatsApp sobre mi rutina.</span></label>
+      <p class="small" id="lErr" style="color:var(--accent-strong)" hidden></p>
+      <button class="btn primary big" type="submit">Ver mi rutina</button>
+    </form>
+    <button class="btn ghost" type="button" id="btnNoLead">Prefiero no dejar mis datos</button>
   </section>
 
   <!-- resultado -->
@@ -269,7 +289,7 @@ strong { font-weight: 600; }
   var ans = {}, qi = 0;
 
   function showOnly(id) {
-    ['v-loading', 'v-off', 'v-intro', 'v-q', 'v-selfie', 'v-result', 'v-counter'].forEach(function (k) { $(k).hidden = k !== id; });
+    ['v-loading', 'v-off', 'v-intro', 'v-q', 'v-selfie', 'v-lead', 'v-result', 'v-counter'].forEach(function (k) { $(k).hidden = k !== id; });
     window.scrollTo(0, 0);
   }
   function renderQ() {
@@ -350,7 +370,7 @@ strong { font-weight: 600; }
   }
   $('btnBack').addEventListener('click', function () { if (qi > 0) { qi--; renderQ(); } else showOnly('v-intro'); });
   $('btnStart').addEventListener('click', function () { ans = {}; qi = 0; selfie = null; track('start'); renderQ(); });
-  $('btnRestart').addEventListener('click', function () { ans = {}; qi = 0; selfie = null; $('selfieBox').hidden = true; $('btnFoto').textContent = 'Sacar selfie'; $('btnFoto').className = 'btn primary big'; $('btnResult').hidden = true; showOnly('v-intro'); });
+  $('btnRestart').addEventListener('click', function () { if (lead) lead.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); ans = {}; qi = 0; selfie = null; $('selfieBox').hidden = true; $('btnFoto').textContent = 'Sacar selfie'; $('btnFoto').className = 'btn primary big'; $('btnResult').hidden = true; showOnly('v-intro'); });
 
   // ---------- selfie con detector de rostro (todo en el teléfono) ----------
   var MP_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.1.0';
@@ -795,7 +815,7 @@ strong { font-weight: 600; }
     if (!shop.products.length) { toast('Esta tienda todavía no cargó productos.'); }
     var r = buildRoutine(), pr = r.pr; last = r;
     var skinTxt = { grasa: 'grasa', mixta: 'mixta', seca: 'seca', normal: 'normal' }[pr.skin] || '';
-    $('rTitle').textContent = 'Tu rutina para piel ' + skinTxt + (pr.sensitive ? ' y sensible' : '');
+    $('rTitle').textContent = (lead ? lead.name.split(' ')[0] + ', tu' : 'Tu') + ' rutina para piel ' + skinTxt + (pr.sensitive ? ' y sensible' : '');
     var focus = pr.top.slice(0, 2).map(function (c) { return CONCERN_NAMES[c]; });
     $('rChips').innerHTML = '<span class="chip">Piel ' + esc(skinTxt) + '</span>' + (pr.sensitive ? '<span class="chip">Sensible</span>' : '') +
       focus.map(function (f) { return '<span class="chip rose">Foco: ' + esc(f) + '</span>'; }).join('') +
@@ -862,17 +882,48 @@ strong { font-weight: 600; }
   }
   $('tabRec').addEventListener('click', function () { last.cur = 'rec'; renderRoutine(); });
   $('tabEco').addEventListener('click', function () { last.cur = 'eco'; renderRoutine(); });
-  $('btnResult').addEventListener('click', function () { if (!selfie) { toast('Primero sacate la selfie'); return; } showResult(); });
+  $('btnResult').addEventListener('click', function () { if (!selfie) { toast('Primero sacate la selfie'); return; } showLead(); });
+
+  // ---------- datos de la clienta (opcional, con consentimiento) ----------
+  var lead = null;
+  function showLead() {
+    if (lead) { showResult(); sendLead(); return; }
+    $('lErr').hidden = true;
+    Array.prototype.forEach.call(document.querySelectorAll('.leadShop'), function (el) { el.textContent = shop.name; });
+    showOnly('v-lead');
+  }
+  $('leadForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = $('lName').value.trim(), wa = $('lWa').value.replace(/\D/g, '');
+    var err = !name ? 'Escribí tu nombre.' : wa.length < 8 ? 'Revisá tu número de WhatsApp, con código de área.' : !$('lOk').checked ? 'Para guardar tus datos necesitamos que aceptes.' : '';
+    if (err) { $('lErr').textContent = err; $('lErr').hidden = false; return; }
+    lead = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8), name: name, wa: wa };
+    showResult(); sendLead();
+  });
+  $('btnNoLead').addEventListener('click', function () { lead = null; showResult(); });
+  function sendLead(outcome) {
+    if (!lead || !last || !shop || shop.demo) return;
+    var r = last[last.cur], pr = last.pr, tt = totalOf(r);
+    var body = { slug: shop.slug, lead: {
+      id: lead.id, name: lead.name, wa: lead.wa, consent: true,
+      skin: pr.skin || '', sens: !!pr.sensitive, focus: pr.top.slice(0, 2).map(function (c) { return CONCERN_SHORT[c]; }),
+      spots: pr.spots.length ? spotsText(pr) : '', eco: !!r.eco,
+      items: r.items.map(function (i) { return { n: (i.p.brand ? i.p.brand + ' ' : '') + i.p.name, p: i.p.price || '' }; }),
+      total: tt.total ? money(tt.total) : '', outcome: outcome || ''
+    } };
+    try { fetch('/api/shop-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), keepalive: true }).catch(function () {}); } catch (e) {}
+  }
 
   // ---------- cierre ----------
   function routineCode() { var a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789', s = ''; for (var i = 0; i < 4; i++) s += a[Math.floor(Math.random() * a.length)]; return s; }
   $('btnWa').addEventListener('click', function () {
     var r = last[last.cur], pr = last.pr, tt = totalOf(r);
-    var lines = ['Hola! Hice el test de piel de ' + shop.name + ' y me recomendó esta rutina' + (r.eco ? ' (opción económica)' : '') + ':', ''];
+    var lines = ['Hola! ' + (lead ? 'Soy ' + lead.name + '. ' : '') + 'Hice el test de piel de ' + shop.name + ' y me recomendó esta rutina' + (r.eco ? ' (opción económica)' : '') + ':', ''];
     r.items.forEach(function (i) { lines.push('• ' + (i.p.brand ? i.p.brand + ' ' : '') + i.p.name + (i.p.price ? ' — ' + i.p.price : '') + ' (' + roleOf(i, true).toLowerCase() + ', ' + (WHEN_TXT[i.when] || '').toLowerCase() + ')'); });
     if (tt.total) lines.push('', 'Total: ' + money(tt.total));
     lines.push('', 'Mi piel: ' + (pr.skin || '') + (pr.sensitive ? ', sensible' : '') + '. Quiero mejorar: ' + joinY(pr.top.slice(0, 2).map(function (c) { return CONCERN_SHORT[c]; })) + '.' + (pr.spots.length ? ' Tengo manchas en: ' + spotsText(pr) + '.' : ''), '¿Me la preparás?');
     if (!last.closed) { last.closed = true; track('whatsapp'); }
+    sendLead('whatsapp');
     var url = 'https://wa.me/' + (shop.whatsapp || '') + '?text=' + encodeURIComponent(lines.join('\n'));
     var w = window.open(url, '_blank', 'noopener');
     if (!w) location.href = url;
@@ -886,6 +937,7 @@ strong { font-weight: 600; }
     }).join('');
     $('cTotal').textContent = tt.total ? money(tt.total) : 'Consultar';
     if (!last.closed) { last.closed = true; track('counter'); }
+    sendLead('counter');
     showOnly('v-counter');
   });
   $('btnCounterBack').addEventListener('click', function () { showOnly('v-result'); });
