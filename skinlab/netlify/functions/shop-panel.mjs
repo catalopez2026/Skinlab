@@ -1,7 +1,7 @@
-// POST /api/shop-panel  { code, action: "get" | "save", info?, products? }
+// POST /api/shop-panel  { code, action: "get" | "save" | "lead-delete", info?, products?, id? }
 // Panel de la tienda: ver su link, sus números y editar su catálogo.
 import { json, readBody } from "../lib/common.mjs";
-import { cleanPhone, cleanProduct, getStats, saveShop, shopByCode, startIfNeeded, summaryShop } from "../lib/shops.mjs";
+import { cleanPhone, cleanProduct, deleteLead, getLeads, getStats, saveShop, shopByCode, startIfNeeded, summaryShop } from "../lib/shops.mjs";
 
 export default async (req) => {
   if (req.method !== "POST") return json(405, { error: "method" });
@@ -12,6 +12,11 @@ export default async (req) => {
     return json(404, { error: "invalid_code", message: "Ese código no existe. Revisá que esté bien escrito." });
   }
   if (shop.revoked) return json(403, { error: "revoked", message: "Este código fue desactivado." });
+
+  if (body.action === "lead-delete") {
+    await deleteLead(shop.slug, String(body.id || ""));
+    return json(200, { ok: true, leads: await getLeads(shop.slug) });
+  }
 
   if (body.action === "save") {
     const info = body.info || {};
@@ -27,7 +32,8 @@ export default async (req) => {
   if (started || body.action === "save") await saveShop(shop);
 
   const stats = await getStats(shop.slug);
-  return json(200, { ok: true, shop: summaryShop(shop), products: shop.products || [], stats });
+  const leads = await getLeads(shop.slug);
+  return json(200, { ok: true, shop: summaryShop(shop), products: shop.products || [], stats, leads });
 };
 
 export const config = { path: "/api/shop-panel" };

@@ -66,6 +66,9 @@ input[type=text], input[type=tel], select { min-height: 46px; padding: 10px 12px
 .tablewrap { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 420px; }
 th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line-soft); font-variant-numeric: tabular-nums; }
+table.leads { min-width: 680px; } table.leads td { vertical-align: top; } .leads .items { font-size: 12.5px; color: var(--muted); max-width: 360px; }
+.leads .res { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 8px; background: var(--line-soft); white-space: nowrap; }
+.leads .res.ok { background: var(--accent-soft); color: var(--accent-strong); }
 th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--fg); color: var(--bg); padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: 14px; z-index: 20; }
 </style>
@@ -92,6 +95,13 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
     </div>
 
     <div class="stats" id="stats"></div>
+    <div class="card" id="leadsCard">
+      <div class="row" style="justify-content:space-between"><h2>Clientas <span class="muted small" id="lCount"></span></h2>
+        <div class="row"><input type="text" id="lQ" placeholder="Buscar por nombre o piel" style="min-width:200px;width:auto;min-height:38px;font-size:14px"><button class="btn small" type="button" id="btnCsv">Descargar Excel</button></div></div>
+      <p class="small muted">Las clientas que hicieron el test y aceptaron que las contactes. Tocá "Escribirle" para abrir el chat de WhatsApp con un saludo listo.</p>
+      <div class="tablewrap"><table class="leads"><thead><tr><th>Fecha</th><th>Clienta</th><th>Su piel</th><th>Rutina</th><th>Resultado</th><th></th></tr></thead><tbody id="leads"></tbody></table></div>
+      <button class="btn small" type="button" id="btnMoreLeads" hidden>Ver más</button>
+    </div>
 
     <div class="grid2">
       <div class="card">
@@ -207,9 +217,9 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
   function render() {
     var s = data.shop, t = data.stats.totals || {};
     $('pName').textContent = s.name;
-    $('pStatus').textContent = 'Estado: ' + s.status + (s.expiresAt ? ' · la prueba vence el ' + new Date(s.expiresAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) : '');
-    $('pDays').textContent = s.status === 'Vencida' ? 'Prueba terminada' : 'Quedan ' + s.daysLeft + ' días';
-    $('pDays').className = 'pill' + (s.daysLeft <= 2 ? ' warn' : '');
+    $('pStatus').textContent = 'Estado: ' + s.status + (s.lifetime ? '' : s.expiresAt ? ' · la prueba vence el ' + new Date(s.expiresAt).toLocaleDateString('es-AR', { day: 'numeric', month: 'long' }) : '');
+    $('pDays').textContent = s.lifetime ? 'App activa' : s.status === 'Vencida' ? 'Prueba terminada' : 'Quedan ' + s.daysLeft + ' días';
+    $('pDays').className = 'pill' + (!s.lifetime && s.daysLeft <= 2 ? ' warn' : '');
     var comp = t.complete || 0, orders = (t.whatsapp || 0) + (t.counter || 0);
     $('stats').innerHTML = stat(t.view || 0, 'visitas al test') + stat(comp, 'rutinas recomendadas') + stat(t.whatsapp || 0, 'pedidos por WhatsApp') + stat(t.counter || 0, 'mostradas en el local') +
       stat(comp ? Math.min(100, Math.round(orders / comp * 100)) + '%' : '—', 'de las rutinas terminan en pedido');
@@ -220,7 +230,54 @@ th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-tran
     var days = Object.keys(data.stats.days || {}).sort().reverse().slice(0, 14);
     $('days').innerHTML = days.length ? days.map(function (d) { var x = data.stats.days[d]; return '<tr><td>' + d.slice(8) + '/' + d.slice(5, 7) + '</td><td>' + (x.view || 0) + '</td><td>' + (x.complete || 0) + '</td><td>' + (x.whatsapp || 0) + '</td><td>' + (x.counter || 0) + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="muted">Todavía no hay visitas.</td></tr>';
     renderProducts();
+    renderLeads();
   }
+  // ----- clientas -----
+  var leadsShown = 50;
+  var RES = { whatsapp: ['Pidió por WhatsApp', 'ok'], counter: ['Fue al local', 'ok'], '': ['Vio su rutina', ''] };
+  function fdt(iso) { var d = new Date(iso); return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' }) + ' ' + d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }); }
+  function skinOf(l) { return (l.skin ? 'Piel ' + l.skin : '') + (l.sens ? ', sensible' : '') + (l.focus && l.focus.length ? ' · ' + l.focus.join(' y ') : '') + (l.spots ? ' · manchas en ' + l.spots : ''); }
+  function filteredLeads() {
+    var q = $('lQ').value.trim().toLowerCase(), all = data.leads || [];
+    return q ? all.filter(function (l) { return (l.name + ' ' + l.wa + ' ' + skinOf(l)).toLowerCase().indexOf(q) >= 0; }) : all;
+  }
+  function renderLeads() {
+    var all = data.leads || [], list = filteredLeads();
+    $('lCount').textContent = '(' + all.length + ')';
+    $('btnCsv').disabled = !all.length;
+    $('leads').innerHTML = list.length ? list.slice(0, leadsShown).map(function (l) {
+      var first = l.name.split(' ')[0], r = RES[l.outcome || ''] || RES[''];
+      var hi = 'Hola ' + first + '! Te escribo de ' + data.shop.name + ' por la rutina que te armó el test de piel. ¿Cómo te fue?';
+      return '<tr><td style="white-space:nowrap">' + esc(fdt(l.at)) + '</td>' +
+        '<td><strong>' + esc(l.name) + '</strong><br><span class="small muted">+' + esc(l.wa) + '</span></td>' +
+        '<td class="small">' + esc(skinOf(l)) + '</td>' +
+        '<td><div class="items">' + esc((l.items || []).map(function (i) { return i.n; }).join(' · ')) + '</div>' + (l.total ? '<strong class="small">' + esc(l.total) + '</strong>' : '') + (l.eco ? ' <span class="small muted">(económica)</span>' : '') + '</td>' +
+        '<td><span class="res ' + r[1] + '">' + r[0] + '</span></td>' +
+        '<td style="white-space:nowrap"><a class="btn small primary" target="_blank" rel="noopener" href="https://wa.me/' + esc(l.wa) + '?text=' + encodeURIComponent(hi) + '">Escribirle</a> <button class="btn small" type="button" data-ldel="' + esc(l.id) + '" aria-label="Borrar a ' + esc(l.name) + '">Borrar</button></td></tr>';
+    }).join('') : '<tr><td colspan="6" class="muted">' + (all.length ? 'No hay clientas que coincidan.' : 'Todavía no hay clientas. Aparecen acá cuando alguien hace el test y deja su nombre y WhatsApp.') + '</td></tr>';
+    $('btnMoreLeads').hidden = list.length <= leadsShown;
+  }
+  $('lQ').addEventListener('input', function () { leadsShown = 50; renderLeads(); });
+  $('btnMoreLeads').addEventListener('click', function () { leadsShown += 100; renderLeads(); });
+  $('leads').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ldel]'); if (!b) return;
+    if (b.dataset.sure !== '1') { b.dataset.sure = '1'; b.textContent = '¿Seguro?'; return; }
+    b.disabled = true;
+    api({ action: 'lead-delete', id: b.dataset.ldel }).then(function (j) { if (j.ok) { data.leads = j.leads; renderLeads(); toast('Clienta borrada'); } });
+  });
+  $('btnCsv').addEventListener('click', function () {
+    var cell = function (v) { v = String(v == null ? '' : v); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    var rows = [['Fecha', 'Nombre', 'WhatsApp', 'Piel', 'Sensible', 'Quiere mejorar', 'Manchas', 'Rutina', 'Productos', 'Total', 'Resultado']];
+    (data.leads || []).forEach(function (l) {
+      rows.push([fdt(l.at), l.name, '+' + l.wa, l.skin, l.sens ? 'Sí' : 'No', (l.focus || []).join(', '), l.spots, l.eco ? 'Económica' : 'Recomendada',
+        (l.items || []).map(function (i) { return i.n + (i.p ? ' (' + i.p + ')' : ''); }).join(' | '), l.total, (RES[l.outcome || ''] || RES[''])[0]]);
+    });
+    var csv = '\ufeff' + rows.map(function (r) { return r.map(cell).join(';'); }).join('\r\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'clientas-' + data.shop.slug + '-' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  });
+
   function stat(n, t) { return '<div class="stat"><b>' + n + '</b><span class="small muted">' + t + '</span></div>'; }
 
   function renderBulk() {

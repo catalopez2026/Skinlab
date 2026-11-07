@@ -68,12 +68,14 @@ export function startIfNeeded(shop) {
 
 export function status(shop) {
   if (shop.revoked) return "Desactivada";
+  if (shop.lifetime) return "Activa";
   if (!shop.activatedAt) return "Sin activar";
   if (Date.now() > Date.parse(shop.expiresAt)) return "Vencida";
   return "Activa";
 }
 
 export function daysLeft(shop) {
+  if (shop.lifetime) return null;
   if (!shop.expiresAt) return shop.days;
   return Math.max(0, Math.ceil((Date.parse(shop.expiresAt) - Date.now()) / DAY_MS));
 }
@@ -130,6 +132,46 @@ export function summaryShop(shop, stats) {
     slug: shop.slug, name: shop.name, code: shop.code, pretty: pretty(shop.code),
     whatsapp: shop.whatsapp, instagram: shop.instagram, createdAt: shop.createdAt,
     activatedAt: shop.activatedAt, expiresAt: shop.expiresAt, days: shop.days, daysLeft: daysLeft(shop),
-    status: status(shop), products: (shop.products || []).length, totals: stats ? stats.totals : undefined,
+    status: status(shop), lifetime: !!shop.lifetime, products: (shop.products || []).length, totals: stats ? stats.totals : undefined,
   };
+}
+
+// Clientas que dejaron nombre y WhatsApp (con su consentimiento) al hacer el test.
+const MAX_LEADS = 2000;
+const OUTCOMES = ["", "whatsapp", "counter"];
+const txt = (v, n) => String(v == null ? "" : v).replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n);
+export function cleanLead(l) {
+  const id = String(l.id || "").replace(/[^a-zA-Z0-9]/g, "").slice(0, 20);
+  const name = txt(l.name, 60), wa = cleanPhone(l.wa || "");
+  if (!id || !name || wa.length < 8 || l.consent !== true) return null;
+  return {
+    id, name, wa,
+    skin: txt(l.skin, 20), sens: !!l.sens,
+    focus: (Array.isArray(l.focus) ? l.focus : []).slice(0, 3).map((f) => txt(f, 30)).filter(Boolean),
+    spots: txt(l.spots, 80), eco: !!l.eco,
+    items: (Array.isArray(l.items) ? l.items : []).slice(0, 10).map((i) => ({ n: txt(i && i.n, 110), p: txt(i && i.p, 20) })).filter((i) => i.n),
+    total: txt(l.total, 20),
+    outcome: OUTCOMES.includes(l.outcome) ? l.outcome : "",
+  };
+}
+export async function saveLead(slug, lead) {
+  const store = shops(), key = "leads/" + slug;
+  const list = (await store.get(key, { type: "json" })) || [];
+  const i = list.findIndex((x) => x.id === lead.id);
+  if (i >= 0) {
+    const old = list[i];
+    list[i] = { ...old, ...lead, at: old.at, outcome: lead.outcome || old.outcome };
+  } else {
+    list.unshift({ ...lead, at: new Date().toISOString() });
+    if (list.length > MAX_LEADS) list.length = MAX_LEADS;
+  }
+  await store.setJSON(key, list);
+}
+export async function getLeads(slug) {
+  return (await shops().get("leads/" + slug, { type: "json" })) || [];
+}
+export async function deleteLead(slug, id) {
+  const store = shops(), key = "leads/" + slug;
+  const list = (await store.get(key, { type: "json" })) || [];
+  await store.setJSON(key, list.filter((x) => x.id !== id));
 }

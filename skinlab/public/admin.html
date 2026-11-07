@@ -174,10 +174,11 @@ tr:last-child td { border-bottom: 0; }
         var t = x.totals || {}, cls = 's-' + x.status.split(' ')[0].replace('Activa', 'Activo').replace('Vencida', 'Vencido').replace('Desactivada', 'Desactivado');
         var acts = '<a class="btn small" href="/tienda.html#code=' + x.code + '" target="_blank" rel="noopener">Productos</a> ' +
           '<a class="btn small" href="/t/' + x.slug + '" target="_blank" rel="noopener">Ver test</a> ' +
-          '<button class="btn small" data-sact="shop-extend" data-slug="' + x.slug + '">+7 días</button> ' +
+          (x.lifetime ? '' : '<button class="btn small" data-sact="shop-extend" data-slug="' + x.slug + '">+7 días</button> ') +
+          '<button class="btn small" data-sact="shop-lifetime" data-slug="' + x.slug + '">' + (x.lifetime ? 'Volver a prueba' : 'Sin vencimiento') + '</button> ' +
           (x.status === 'Desactivada' ? '<button class="btn small" data-sact="shop-restore" data-slug="' + x.slug + '">Reactivar</button>' : '<button class="btn small" data-sact="shop-revoke" data-slug="' + x.slug + '">Desactivar</button>');
         return '<tr><td><strong>' + esc(x.name) + '</strong><br><span class="small muted mono">' + esc(x.pretty) + '</span> <span class="small muted">' + esc(x.instagram) + '</span></td>' +
-          '<td><span class="pill ' + cls + '">' + esc(x.status) + '</span></td><td>' + (x.expiresAt ? fdate(x.expiresAt) : '<span class="small muted">' + x.days + ' días desde el primer uso</span>') + '</td>' +
+          '<td><span class="pill ' + cls + '">' + esc(x.status) + '</span></td><td>' + (x.lifetime ? '<span class="small">Sin vencimiento</span>' : x.expiresAt ? fdate(x.expiresAt) : '<span class="small muted">' + x.days + ' días desde el primer uso</span>') + '</td>' +
           '<td class="mono">' + x.products + '</td><td class="mono">' + (t.view || 0) + '</td><td class="mono">' + (t.complete || 0) + '</td><td class="mono">' + ((t.whatsapp || 0) + (t.counter || 0)) + '</td><td style="white-space:nowrap">' + acts + '</td></tr>';
       }).join('') : '<tr><td colspan="8" class="muted">Todavía no creaste tiendas.</td></tr>';
     });
