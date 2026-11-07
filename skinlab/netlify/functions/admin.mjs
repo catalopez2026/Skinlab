@@ -60,11 +60,12 @@ export default async (req) => {
     const s = await createShop({ name, whatsapp: body.whatsapp, instagram: body.instagram, days: body.days });
     return json(200, { ok: true, item: summaryShop(s, { totals: {} }) });
   }
-  if (["shop-revoke", "shop-restore", "shop-extend"].includes(body.action)) {
+  if (["shop-revoke", "shop-restore", "shop-extend", "shop-lifetime"].includes(body.action)) {
     const s = await getShop(String(body.slug || ""));
     if (!s) return json(404, { error: "not_found", message: "No encontré esa tienda." });
     if (body.action === "shop-revoke") s.revoked = true;
     if (body.action === "shop-restore") s.revoked = false;
+    if (body.action === "shop-lifetime") s.lifetime = !s.lifetime;
     if (body.action === "shop-extend") {
       const add = Math.min(60, Math.max(1, Number(body.days) || 7));
       if (s.expiresAt) s.expiresAt = new Date(Math.max(Date.now(), Date.parse(s.expiresAt)) + add * DAY_MS).toISOString();
