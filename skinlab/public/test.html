@@ -187,15 +187,15 @@ strong { font-weight: 600; }
   <section id="v-lead" class="stack" hidden>
     <span class="eyebrow">Tu rutina está lista</span>
     <h2>¿A nombre de quién la guardamos?</h2>
-    <p class="muted">Dejá tu nombre y tu WhatsApp y <strong class="leadShop"></strong> te puede ayudar con tu rutina y avisarte de novedades para tu piel.</p>
+    <p class="muted">Dejá tu nombre y tu WhatsApp para ver tu rutina. Así <strong class="leadShop"></strong> te puede ayudar a elegir tus productos y avisarte de novedades para tu piel.</p>
     <form id="leadForm" class="stack" novalidate>
       <label class="field" for="lName">Tu nombre<input type="text" id="lName" autocomplete="given-name" maxlength="60" placeholder="Ej.: Sofía"></label>
       <label class="field" for="lWa">Tu WhatsApp<input type="tel" id="lWa" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="Ej.: 11 5555 5555"></label>
       <label class="consent" for="lOk"><input type="checkbox" id="lOk"><span>Acepto que <span class="leadShop"></span> guarde mis datos y me escriba por WhatsApp sobre mi rutina.</span></label>
+      <p class="small muted">🔒 Tus datos solo los usa <span class="leadShop"></span> y no se comparten con nadie.</p>
       <p class="small" id="lErr" style="color:var(--accent-strong)" hidden></p>
       <button class="btn primary big" type="submit">Ver mi rutina</button>
     </form>
-    <button class="btn ghost" type="button" id="btnNoLead">Prefiero no dejar mis datos</button>
   </section>
 
   <!-- resultado -->
@@ -895,12 +895,11 @@ strong { font-weight: 600; }
   $('leadForm').addEventListener('submit', function (e) {
     e.preventDefault();
     var name = $('lName').value.trim(), wa = $('lWa').value.replace(/\D/g, '');
-    var err = !name ? 'Escribí tu nombre.' : wa.length < 8 ? 'Revisá tu número de WhatsApp, con código de área.' : !$('lOk').checked ? 'Para guardar tus datos necesitamos que aceptes.' : '';
+    var err = !name ? 'Escribí tu nombre.' : wa.length < 8 ? 'Revisá tu número de WhatsApp, con código de área.' : !$('lOk').checked ? 'Marcá la casilla para ver tu rutina.' : '';
     if (err) { $('lErr').textContent = err; $('lErr').hidden = false; return; }
     lead = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8), name: name, wa: wa };
     showResult(); sendLead();
   });
-  $('btnNoLead').addEventListener('click', function () { lead = null; showResult(); });
   function sendLead(outcome) {
     if (!lead || !last || !shop || shop.demo) return;
     var r = last[last.cur], pr = last.pr, tt = totalOf(r);
